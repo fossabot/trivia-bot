@@ -86,7 +86,7 @@ async def vote(ctx):
     b = random.randint(0, 255)
     embed = discord.Embed(
         title='Vote for Randy',
-        description='Vote for Randy',
+        description='Vote for Trivia Bot',
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.add_field(name='BFD', value='https://botsfordiscord.com/bot/696185454759903264/vote')
@@ -108,7 +108,7 @@ async def about(ctx):
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Credits")
-    embed.add_field(name='Bot Commands', value=aryaid + ', ' + evanid, inline=False)
+    embed.add_field(name='Bot Commands', value=evanid, inline=False)
     embed.add_field(name='Special Help (Database)', value=rishiid, inline=False)
     embed.add_field(name='Special Help (Hosting)', value=johanid, inline=False)
     await ctx.send(embed=embed)
@@ -122,7 +122,7 @@ async def help(ctx):
     g = random.randint(0, 255)
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-    embed.set_author(name='Randy Command List')
+    embed.set_author(name="Triva Bot Command List')
     embed.add_field(name='`;about`', value=':eyes: About!', inline=True)
     embed.add_field(name='`;vote`', value=':v: Vote for Trivia Bot!', inline=True)
     embed.add_field(name='`;trivia`', value='Play Trivia!', inline=True)
