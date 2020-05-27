@@ -28,7 +28,6 @@ TOKEN = input("Token Please:")
 
 client = commands.Bot(command_prefix=';')
 
-
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 
@@ -83,22 +82,16 @@ async def trivia(ctx):
         with open('data.txt', 'w') as outfile:
             json.dump(data, outfile)
     
-@client.command(aliases=['sub'])
-async def subtract(ctx):
-    await ctx.send("What is the first number?")
-    firstnum = await get_input_of_type(int, ctx)
-    await ctx.send("What is the second number?")
-    secondnum = await get_input_of_type(int, ctx)
-    await ctx.send("{firstnum} - {secondnum} = {firstnum - secondnum}")
 
 @client.command(aliases=['top'])
 async def leaderboard(ctx):
     with open('data.txt') as json_file:
         data = json.load(json_file)
-        sorteddata = sorted(data,key=itemgetter(1))
-        firstuserid = sorteddata[0]
-        seconduserid = sorteddata[1]
-        thirduserid = sorteddata[2]
+        datalist = data.items()
+        sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
+        firstuserid = sorteddata[0][0]
+        seconduserid = sorteddata[1][0]
+        thirduserid = sorteddata[2][0]
         firstpoints = data[firstuserid]
         secondpoints = data[seconduserid]
         thirdpoints = data[thirduserid]
@@ -148,14 +141,13 @@ async def vote(ctx):
     g = random.randint(0, 255)
     b = random.randint(0, 255)
     embed = discord.Embed(
-        title='Vote for Randy',
+        title='Vote for Trivia Bot',
         description='Vote for Trivia Bot',
         color=discord.Colour.from_rgb(r, g, b),
     )
-    embed.add_field(name='BFD', value='https://botsfordiscord.com/bot/696185454759903264/vote')
-    embed.add_field(name='top.gg', value='https://top.gg/bot/696185454759903264/vote')
-    embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/706338290693046283/707085433552764968/RandyLogo.png')
-    embed.add_field(name='DBL', value='https://discordbotlist.com/bots/randy/upvote')
+    embed.add_field(name='top.gg', value='https://top.gg/bot/715047504126804000/vote')
+    embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png')
+    embed.add_field(name='DBL', value='https://discordbotlist.com/bots/trivia-bot/upvote')
     await ctx.send(embed=embed)
 
     
@@ -204,4 +196,4 @@ async def on_ready():
     print('------')
 
 
-client.run(TOKEN) 
+client.run(TOKEN)
