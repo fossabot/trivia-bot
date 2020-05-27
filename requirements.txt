@@ -73,3 +73,4 @@ wcwidth==0.1.8
 webencodings==0.5.1
 yarl==1.4.2
 zipp==3.1.0
+websockets==6.0
