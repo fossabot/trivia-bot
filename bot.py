@@ -17,11 +17,8 @@ from discord.utils import get
 from discord.utils import get
 import sys
 import os
-# from dotenv import load_dotenv
 import json
 
-# load_dotenv()
-# TOKEN = os.getenv("token")
 TOKEN = input("Token Please:")
 
 client = commands.Bot(command_prefix=';')
