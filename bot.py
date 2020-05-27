@@ -14,8 +14,6 @@ from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
 from discord.ext.commands import has_permissions, CheckFailure
 from discord.utils import get
-from discord.voice_client import VoiceClient
-from discord import FFmpegPCMAudio
 from discord.utils import get
 import sys
 import os
@@ -178,11 +176,11 @@ async def help(ctx):
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Triva Bot Command List")
-    embed.add_field(name='`;about`', value=':eyes: About!', inline=True)
-    embed.add_field(name='`;vote`', value=':v: Vote for Trivia Bot!', inline=True)
-    embed.add_field(name='`;trivia`', value='Play Trivia!', inline=True)
-    embed.add_field(name='`;leaderboard`', value=':notepad_spiral: Trivia Leaderboard', inline=True)
-    embed.add_field(name='`;points`', value='List your points', inline=True)
+    embed.add_field(name='`;about      `', value='About!', inline=True)
+    embed.add_field(name='`;vote       `', value='Vote for Trivia Bot!', inline=True)
+    embed.add_field(name='`;trivia     `', value='Play Trivia!', inline=True)
+    embed.add_field(name='`;leaderboard`', value='rivia Leaderboard', inline=True)
+    embed.add_field(name='`;points     `', value='List your points', inline=True)
 
     await ctx.send(embed=embed)
 
