@@ -45,7 +45,7 @@ async def get_input_of_type(func, ctx):
 async def trivia(ctx):
     with open('data.txt') as json_file:
         data = json.load(json_file)
-        r = requests.get("https://opentdb.com/api.php?amount=1&category=9&type=boolean&encode=url3986").text
+        r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986").text
         q = urllib.parse.unquote(loads(r)['results'][0]['question'])
         a = urllib.parse.unquote(loads(r)['results'][0]['correct_answer'])
         b = q + a
