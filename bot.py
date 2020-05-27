@@ -176,7 +176,7 @@ async def help(ctx):
     embed.add_field(name='`;about      `', value='About!', inline=True)
     embed.add_field(name='`;vote       `', value='Vote for Trivia Bot!', inline=True)
     embed.add_field(name='`;trivia     `', value='Play Trivia!', inline=True)
-    embed.add_field(name='`;leaderboard`', value='rivia Leaderboard', inline=True)
+    embed.add_field(name='`;leaderboard`', value='Trivia Leaderboard', inline=True)
     embed.add_field(name='`;points     `', value='List your points', inline=True)
 
     await ctx.send(embed=embed)
