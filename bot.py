@@ -122,7 +122,7 @@ async def help(ctx):
     g = random.randint(0, 255)
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-    embed.set_author(name="Triva Bot Command List')
+    embed.set_author(name="Triva Bot Command List")
     embed.add_field(name='`;about`', value=':eyes: About!', inline=True)
     embed.add_field(name='`;vote`', value=':v: Vote for Trivia Bot!', inline=True)
     embed.add_field(name='`;trivia`', value='Play Trivia!', inline=True)
