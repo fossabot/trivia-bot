@@ -26,7 +26,6 @@ escpos==1.6
 feedparser==5.2.1
 filelock==3.0.12
 flake8==3.8.1
-gitsome==0.8.4
 graphviz==0.13.2
 html5lib==1.0.1
 idna==2.8
