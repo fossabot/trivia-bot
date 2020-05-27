@@ -3,3 +3,4 @@ websockets==6.0
 requests==2.23.0
 asyncio==3.4.3
 aiohttp==3.6.2
+typing==3.7.4.1
