@@ -1,5 +1,6 @@
 import smtplib
 import discord
+from operator import itemgetter
 import requests
 import random
 import asyncio
@@ -43,30 +44,44 @@ async def get_input_of_type(func, ctx):
 
 @client.command()
 async def trivia(ctx):
-    r = requests.get("https://opentdb.com/api.php?amount=1&category=9&type=boolean&encode=url3986").text
-    q = urllib.parse.unquote(loads(r)['results'][0]['question'])
-    a = urllib.parse.unquote(loads(r)['results'][0]['correct_answer'])
-    b = q + a
-    html_text = 'YOUR QUESTION IS: ' + str(q)
-    html_text = html_text + " To respond, type 1 (true) or 2 (false) in this chat."
-    await ctx.send(html_text)
-    answer = await get_input_of_type(int, ctx)
-    if a == "True":
-        if answer == 1:
-            message = "Correct!"
-        if answer == 2:
-            message = "Incorrect :( The correct answer was true!"
-        else:
-            message = "Sorry but I couldnt understand what you said. Make sure to type 1 or 2"
-    elif a == "False":
-        if answer == 1:
-            message = "Incorrect :( The correct answer was false!"
-        if answer == 2:
-            message = "Correct!"
-        else:
-            message = "Sorry but I couldnt understand what you said. Make sure to type 1 or 2"
+    with open('data.txt') as json_file:
+        data = json.load(json_file)
+        r = requests.get("https://opentdb.com/api.php?amount=1&category=9&type=boolean&encode=url3986").text
+        q = urllib.parse.unquote(loads(r)['results'][0]['question'])
+        a = urllib.parse.unquote(loads(r)['results'][0]['correct_answer'])
+        b = q + a
+        html_text = 'YOUR QUESTION IS: ' + str(q)
+        html_text = html_text + " To respond, type 1 (true) or 2 (false) in this chat."
+        await ctx.send(html_text)
+        answer = await get_input_of_type(int, ctx)
+        uid = ctx.message.author.id
+        try:
+            if data[str(uid)] == 1:
+                print()
+        except KeyError:
+            data[str(uid)] = 1
+        if a == "True":
+            if answer == 1:
+                message = "Correct!"
+                data[str(uid)] += 1
+            elif answer == 2:
+                message = "Incorrect :( The correct answer was true!"
+                data[str(uid)] -= 1
+            else:
+                message = "Sorry but I couldnt understand what you said. Make sure to type 1 or 2"
+        elif a == "False":
+            if answer == 1:
+                message = "Incorrect :( The correct answer was false!"
+                data[str(uid)] -= 1
+            elif answer == 2:
+                message = "Correct!"
+                data[str(uid)] += 1
+            else:
+                message = "Sorry but I couldnt understand what you said. Make sure to type 1 or 2"
 
-    await ctx.send(message)
+        await ctx.send(message)
+        with open('data.txt', 'w') as outfile:
+            json.dump(data, outfile)
     
 @client.command(aliases=['sub'])
 async def subtract(ctx):
@@ -76,8 +91,56 @@ async def subtract(ctx):
     secondnum = await get_input_of_type(int, ctx)
     await ctx.send("{firstnum} - {secondnum} = {firstnum - secondnum}")
 
+@client.command(aliases=['top'])
+async def leaderboard(ctx):
+    with open('data.txt') as json_file:
+        data = json.load(json_file)
+        sorteddata = sorted(data,key=itemgetter(1))
+        firstuserid = sorteddata[0]
+        seconduserid = sorteddata[1]
+        thirduserid = sorteddata[2]
+        firstpoints = data[firstuserid]
+        secondpoints = data[seconduserid]
+        thirdpoints = data[thirduserid]
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+        embed = discord.Embed(
+            title='Leaderboard',
+            description='Top Globally',
+            color=discord.Colour.from_rgb(r, g, b),
+        )
+        data = str(data)
+        firstmessage = "<@" + str(firstuserid) + "> with " + str(firstpoints) + " points!"
+        secondmessage = "<@" + str(seconduserid) + "> with " + str(secondpoints) + " points!"
+        thirdmessage = "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
+        embed.add_field(name='1st Place', value=firstmessage)
+        embed.add_field(name='2nd Place', value=secondmessage)
+        embed.add_field(name='3rd Place', value=thirdmessage)
+        await ctx.send(embed=embed)
 
-
+@client.command()
+async def points(ctx):
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    uid = ctx.message.author.id
+    username = "<@"+str(uid)+">"
+    with open('data.txt') as json_file:
+        data = json.load(json_file)
+        try:
+            print(data[str(uid)])
+        except KeyError:
+            data[uid] = 0
+        current_points = data[str(uid)]
+    embed = discord.Embed(
+        title='Your Points',
+        description='The amount of points you have.',
+        color=discord.Colour.from_rgb(r, g, b),
+    )
+    embed.add_field(name='Username', value=username)
+    embed.add_field(name='Points', value=current_points)
+    await ctx.send(embed=embed)
 
 @client.command()
 async def vote(ctx):
