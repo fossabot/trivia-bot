@@ -127,13 +127,14 @@ async def help(ctx):
     embed.add_field(name='`;vote`', value=':v: Vote for Trivia Bot!', inline=True)
     embed.add_field(name='`;trivia`', value='Play Trivia!', inline=True)
     embed.add_field(name='`;leaderboard`', value=':notepad_spiral: Trivia Leaderboard', inline=True)
-    embed.add_field(name='`>points`', value='List your points', inline=True)
+    embed.add_field(name='`;points`', value='List your points', inline=True)
 
     await ctx.send(embed=embed)
 
 
 @client.event
 async def on_ready():
+    await client.change_presence(activity=discord.Activity(name=';help || Discord Trivia', type=3))
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
