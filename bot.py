@@ -147,7 +147,7 @@ async def vote(ctx):
     
 @client.command(pass_context=True)
 async def botservers(ctx):
-    await client.say("I'm in " + str(len(client.servers)) + " servers") 
+    await ctx.send("I'm in " + str(len(client.servers)) + " servers") 
     
 
 @client.command(brief="About the bot!", aliases=['About'], pass_context='True')
