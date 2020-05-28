@@ -144,8 +144,10 @@ async def vote(ctx):
     embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png')
     embed.add_field(name='DBL', value='https://discordbotlist.com/bots/trivia-bot/upvote')
     await ctx.send(embed=embed)
-
     
+@client.command(pass_context=True)
+async def botservers(ctx):
+    await client.say("I'm in " + str(len(client.servers)) + " servers") 
     
 
 @client.command(brief="About the bot!", aliases=['About'], pass_context='True')
