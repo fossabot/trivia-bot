@@ -37,7 +37,7 @@ async def get_input_of_type(func, ctx):
 
 @client.command(pass_context=True)
 async def botservers(ctx):
-    await client.say("I'm in " + str(len(client.servers)) + " servers! (Goal 75)") 
+    await ctx.send("I'm in " + str(len(client.servers)) + " servers! (Goal 75)") 
 
 
 @client.command()
