@@ -35,6 +35,10 @@ async def get_input_of_type(func, ctx):
         except ValueError:
             continue
 
+@client.command(pass_context=True)
+async def botservers(ctx):
+    await client.say("I'm in " + str(len(client.servers)) + " servers") 
+
 
 @client.command()
 async def trivia(ctx):
