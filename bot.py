@@ -76,20 +76,44 @@ async def trivia(ctx):
         await ctx.send(message)
         with open('data.txt', 'w') as outfile:
             json.dump(data, outfile)
-    
 
+@client.command(aliases=['debug'])
+async def triviadebug(ctx):
+    with open('data.txt') as json_file:
+        data = json.load(json_file)
+        datalist = data.items()
+        await ctx.send(str(data))        
+           
 @client.command(aliases=['top'])
-async def leaderboard(ctx):
+async def globalleaderboard(ctx):
     with open('data.txt') as json_file:
         data = json.load(json_file)
         datalist = data.items()
         sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
-        firstuserid = sorteddata[0][0]
-        seconduserid = sorteddata[1][0]
-        thirduserid = sorteddata[2][0]
-        firstpoints = data[firstuserid]
-        secondpoints = data[seconduserid]
-        thirdpoints = data[thirduserid]
+        try:
+            firstuserid = sorteddata[0][0]
+        except:
+            firstuserid = "null"
+        try:
+            seconduserid = sorteddata[1][0]
+        except:
+            seconduserid = "null"
+        try:
+            thirduserid = sorteddata[2][0]
+        except:
+            thirduserid = "null"
+        try:
+            firstpoints = data[firstuserid]
+        except:
+            firstpoints = "null"
+        try:
+            secondpoints = data[seconduserid]
+        except:
+            secondpoints = "null"
+        try:
+            thirdpoints = data[thirduserid]
+        except:
+            thirdpoints = "null"
         r = random.randint(0, 255)
         g = random.randint(0, 255)
         b = random.randint(0, 255)
@@ -107,6 +131,62 @@ async def leaderboard(ctx):
         embed.add_field(name='3rd Place', value=thirdmessage)
         await ctx.send(embed=embed)
 
+
+@client.command(aliases=['servertop'])
+async def serverleaderboard(ctx):
+    with open('data.txt') as json_file:
+        server_members=[]
+        first_found=False
+        second_found=False
+        third_found=False
+        data = json.load(json_file)
+        datalist = data.items()
+        sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
+        for id in ctx.guild.members:
+            id = id.id
+            server_members.append(str(id))
+        server_members = sorted(server_members, key=lambda x:data.get(x,0), reverse=True)
+        try:
+            firstuserid = server_members[0]
+        except:
+            firstuserid = "null"
+        try:
+            seconduserid = server_members[1]
+        except:
+            seconduserid = "null"
+        try:
+            thirduserid = server_members[2]
+        except:
+            thirduserid = "null"
+        try:
+            firstpoints = data[firstuserid]
+        except:
+            firstpoints = "null"
+        try:
+            secondpoints = data[seconduserid]
+        except:
+            secondpoints = "null"
+        try:
+            thirdpoints = data[thirduserid]
+        except:
+            thirdpoints = "null"
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+        embed = discord.Embed(
+            title='Leaderboard',
+            description='Top in this Server',
+            color=discord.Colour.from_rgb(r, g, b),
+        )
+        data = str(data)
+        firstmessage = "<@" + str(firstuserid) + "> with " + str(firstpoints) + " points!"
+        secondmessage = "<@" + str(seconduserid) + "> with " + str(secondpoints) + " points!"
+        thirdmessage = "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
+        embed.add_field(name='1st Place', value=firstmessage)
+        embed.add_field(name='2nd Place', value=secondmessage)
+        embed.add_field(name='3rd Place', value=thirdmessage)
+        await ctx.send(embed=embed)
+        
 @client.command()
 async def points(ctx):
     r = random.randint(0, 255)
@@ -165,7 +245,16 @@ async def about(ctx):
     embed.add_field(name='Special Help (Hosting)', value=johanid, inline=False)
     await ctx.send(embed=embed)
 
-
+@client.command(brief="Invite Link", aliases=['link'], pass_context='True')
+async def invite(ctx):
+    link = 'https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify'
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+    embed.set_author(name="Invite Link")
+    embed.add_field(name='Discord', value=link, inline=False)
+    await ctx.send(embed=embed)
 
 @client.remove_command("help")
 @client.command(pass_context=True)
@@ -175,11 +264,13 @@ async def help(ctx):
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Triva Bot Command List")
-    embed.add_field(name='`;about      `', value='About!', inline=True)
-    embed.add_field(name='`;vote       `', value='Vote for Trivia Bot!', inline=True)
-    embed.add_field(name='`;trivia     `', value='Play Trivia!', inline=True)
-    embed.add_field(name='`;leaderboard`', value='Trivia Leaderboard', inline=True)
-    embed.add_field(name='`;points     `', value='List your points', inline=True)
+    embed.add_field(name='`;about      `', value='About!                   ', inline=True)
+    embed.add_field(name='`;vote       `', value='Vote for Trivia Bot!     ', inline=True)
+    embed.add_field(name='`;trivia     `', value='Play Trivia!             ', inline=True)
+    embed.add_field(name='`;top        `', value='Global Trivia Leaderboard', inline=True)
+    embed.add_field(name='`;points     `', value='List your points         ', inline=True)
+    embed.add_field(name='`;servertop  `', value='Server Trivia Leaderboard', inline=True)
+    embed.add_field(name='`;invite     `', value='Invite Link              ', inline=True)
 
     await ctx.send(embed=embed)
 
