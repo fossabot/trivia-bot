@@ -19,7 +19,7 @@ import sys
 import os
 import json
 
-TOKEN = "NzE1MDQ3NTA0MTI2ODA0MDAw.Xs6j4w.0TIwlNqumsfuPyCE2qoJSSCDLWo"
+TOKEN = input("Token Please:")
 
 client = commands.Bot(command_prefix=';')
 
@@ -241,16 +241,12 @@ async def botservers(ctx):
 @client.command(brief="About the bot!", aliases=['About'], pass_context='True')
 async def about(ctx):
     evanid = '<@247594208779567105>'
-    rishiid = '<@677343881351659570>'
-    johanid = '<@692652688407527474>'
     r = random.randint(0, 255)
     g = random.randint(0, 255)
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Credits")
     embed.add_field(name='Bot Commands', value=evanid, inline=False)
-    embed.add_field(name='Special Help (Database)', value=rishiid, inline=False)
-    embed.add_field(name='Special Help (Hosting)', value=johanid, inline=False)
     await ctx.send(embed=embed)
 
 @client.command(brief="Invite Link", aliases=['link'], pass_context='True')
@@ -293,4 +289,3 @@ async def on_ready():
 
 
 client.run(TOKEN)
-
