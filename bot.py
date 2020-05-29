@@ -19,7 +19,7 @@ import sys
 import os
 import json
 
-TOKEN = input("Token Please:")
+TOKEN = "NzE1MDQ3NTA0MTI2ODA0MDAw.Xs6j4w.0TIwlNqumsfuPyCE2qoJSSCDLWo"
 
 client = commands.Bot(command_prefix=';')
 
