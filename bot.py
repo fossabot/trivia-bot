@@ -58,22 +58,30 @@ async def trivia(ctx):
             if answer == 1:
                 message = "Correct!"
                 data[str(uid)] += 1
+                message = await ctx.send(message)
+                await message.add_reaction("✅")
             elif answer == 2:
                 message = "Incorrect :( The correct answer was true!"
                 data[str(uid)] -= 1
+                message = await ctx.send(message)
+                await message.add_reaction("❌")
             else:
                 message = "Sorry but I couldnt understand what you said. Make sure to type 1 or 2"
         elif a == "False":
             if answer == 1:
                 message = "Incorrect :( The correct answer was false!"
                 data[str(uid)] -= 1
+                message = await ctx.send(message)
+                await message.add_reaction("❌")
             elif answer == 2:
                 message = "Correct!"
                 data[str(uid)] += 1
+                message = await ctx.send(message)
+                await message.add_reaction("✅")
             else:
                 message = "Sorry but I couldnt understand what you said. Make sure to type 1 or 2"
 
-        await ctx.send(message)
+        
         with open('data.txt', 'w') as outfile:
             json.dump(data, outfile)
 
@@ -227,7 +235,7 @@ async def vote(ctx):
     
 @client.command(pass_context=True)
 async def botservers(ctx):
-    await ctx.send("I'm in " + str(len(client.guilds)) + " servers") 
+    await ctx.send("I'm in " + str(len(client.guilds)) + " servers! (Goal 75)") 
     
 
 @client.command(brief="About the bot!", aliases=['About'], pass_context='True')
@@ -285,3 +293,4 @@ async def on_ready():
 
 
 client.run(TOKEN)
+
