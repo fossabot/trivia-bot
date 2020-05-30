@@ -207,7 +207,7 @@ async def points(ctx):
         try:
             print(data[str(uid)])
         except KeyError:
-            data[uid] = 0
+            data[str(uid)] = 0
         current_points = data[str(uid)]
     embed = discord.Embed(
         title='Your Points',
