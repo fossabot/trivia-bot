@@ -238,7 +238,7 @@ async def botservers(ctx):
     await ctx.send("I'm in " + str(len(client.guilds)) + " servers! (Goal 75)") 
     
 
-@client.command(brief="About the bot!", aliases=['About'], pass_context='True')
+@client.command(brief="Credits!", aliases=['credits'], pass_context='True')
 async def about(ctx):
     evanid = '<@247594208779567105>'
     r = random.randint(0, 255)
@@ -268,14 +268,13 @@ async def help(ctx):
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Triva Bot Command List")
-    embed.add_field(name='`;about      `', value='About!                   ', inline=True)
     embed.add_field(name='`;vote       `', value='Vote for Trivia Bot!     ', inline=True)
     embed.add_field(name='`;trivia     `', value='Play Trivia!             ', inline=True)
     embed.add_field(name='`;top        `', value='Global Trivia Leaderboard', inline=True)
     embed.add_field(name='`;points     `', value='List your points         ', inline=True)
     embed.add_field(name='`;servertop  `', value='Server Trivia Leaderboard', inline=True)
     embed.add_field(name='`;invite     `', value='Invite Link              ', inline=True)
-
+    embed.add_field(name='`;credits    `', value='Credits!                ', inline=True)
     await ctx.send(embed=embed)
 
 
