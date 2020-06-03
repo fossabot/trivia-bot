@@ -253,13 +253,22 @@ async def botservers(ctx):
 
 @client.command(brief="Credits!", aliases=['credits'], pass_context='True')
 async def about(ctx):
-    evanid = '<@247594208779567105>'
+    devs = ['247594208779567105', '692652688407527474']
     r = random.randint(0, 255)
     g = random.randint(0, 255)
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Credits")
-    embed.add_field(name='Bot Commands', value=evanid, inline=False)
+    gld = ctx.guild
+    msg = ''
+    names = []
+    for userid in devs:
+        user = client.get_user(int(userid))
+        if gld.get_member(int(userid)) == None:
+            names.append(str(user))
+        else:
+            names.append("<@{}>".format(userid))
+    embed.add_field(name='Developers', value=" and ".join(names), inline=False)
     await ctx.send(embed=embed)
 
 @client.command(brief="Invite Link", aliases=['link'], pass_context='True')
