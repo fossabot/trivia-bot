@@ -262,7 +262,7 @@ async def about(ctx):
     msg = ''
     names = []
     for userid in devs:
-        user = await client.get_user(int(userid))
+        user = client.get_user(int(userid))
         if gld.get_member(userid) == None:
             names.append(str(user))
         else:
