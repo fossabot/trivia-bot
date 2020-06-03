@@ -259,15 +259,16 @@ async def about(ctx):
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Credits")
+    gld = ctx.guild
     msg = ''
     names = []
     for userid in devs:
         user = client.get_user(int(userid))
-        if gld.get_member(userid) == None:
+        if gld.get_member(int(userid)) == None:
             names.append(str(user))
         else:
             names.append("<@{}>".format(userid))
-    embed.add_field(name='Developers', value=names.join(" and "), inline=False)
+    embed.add_field(name='Developers', value=" and ".join(names), inline=False)
     await ctx.send(embed=embed)
 
 @client.command(brief="Invite Link", aliases=['link'], pass_context='True')
