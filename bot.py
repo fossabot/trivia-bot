@@ -131,9 +131,12 @@ async def globalleaderboard(ctx):
             color=discord.Colour.from_rgb(r, g, b),
         )
         data = str(data)
-        firstmessage = "<@" + str(firstuserid) + "> with " + str(firstpoints) + " points!"
-        secondmessage = "<@" + str(seconduserid) + "> with " + str(secondpoints) + " points!"
-        thirdmessage = "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
+        user1 = client.get_user(firstuserid)
+        user2 = client.get_user(seconduserid)
+        user3 = client.get_user(thirduserid)
+        firstmessage = "{0} with {1} points".format(str(firstpoints), str(user1))
+        secondmessage = "{0} with {1} points".format(str(secondpoints), str(user2))
+        secondmessage = "{0} with {1} points".format(str(thirdpoints), str(user3))
         embed.add_field(name='1st Place', value=firstmessage)
         embed.add_field(name='2nd Place', value=secondmessage)
         embed.add_field(name='3rd Place', value=thirdmessage)
