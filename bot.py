@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import smtplib
 import discord
 from operator import itemgetter
@@ -18,8 +19,12 @@ from discord.utils import get
 import sys
 import os
 import json
-
-TOKEN = "NzE1MDQ3NTA0MTI2ODA0MDAw.Xs6j4w.0TIwlNqumsfuPyCE2qoJSSCDLWo"
+userspecific = True
+yesemoji = '👍'
+noemoji = '👎'
+TOKEN = os.getenv('bottoken')
+if TOKEN == None:
+    TOKEN = input("Token Please:")
 
 client = commands.Bot(command_prefix=';')
 
@@ -27,13 +32,17 @@ def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 
 
-async def get_input_of_type(func, ctx):
-    while True:
-        try:
-            msg = await client.wait_for('message', check=check(ctx))
-            return func(msg.content)
-        except ValueError:
-            continue
+async def get_reaction_answer(msg, author, ctx):
+    def checkreaction(reaction, user):
+        return (user.id == author or not userspecific) and reaction.message.id == msg.id and str(reaction.emoji) in [yesemoji, noemoji]
+    await msg.add_reaction(yesemoji)
+    await msg.add_reaction(noemoji)
+    try:
+        reaction, user = await client.wait_for('reaction_add', timeout=20.0, check=checkreaction)
+    except asyncio.TimeoutError:
+        await msg.clear_reactions()
+        await msg.edit(content="This question has expired! Sorry ☹️")
+    return [yesemoji, noemoji].index(str(reaction.emoji)) + 1
 
 
 @client.command()
@@ -44,42 +53,43 @@ async def trivia(ctx):
         q = urllib.parse.unquote(loads(r)['results'][0]['question'])
         a = urllib.parse.unquote(loads(r)['results'][0]['correct_answer'])
         b = q + a
-        html_text = 'YOUR QUESTION IS: ' + str(q)
-        html_text = html_text + " To respond, type 1 (true) or 2 (false) in this chat."
-        await ctx.send(html_text)
-        answer = await get_input_of_type(int, ctx)
+        qembed=discord.Embed(title="YOUR QUESTION", description="Use the below reactions to answer this true/false question.", color=0xff0000)
+        qembed.add_field(name="Question:", value=str(q), inline=False)
+        qembed.add_field(name=yesemoji, value="For true", inline=True)
+        qembed.add_field(name=noemoji, value="For false", inline=True)
+        msg = await ctx.send(embed=qembed)
+        answer = await get_reaction_answer(msg, ctx.message.author.id, ctx)
         uid = ctx.message.author.id
         try:
-            if data[str(uid)] == 1:
-                print()
+            data[str(uid)]
         except KeyError:
             data[str(uid)] = 1
         if a == "True":
             if answer == 1:
                 message = "Correct!"
                 data[str(uid)] += 1
-                message = await ctx.send(message)
-                await message.add_reaction("✅")
+                await msg.clear_reactions()
+                message = await msg.edit(content=message, suppress=True)
+                await msg.add_reaction("✅")
             elif answer == 2:
-                message = "Incorrect :( The correct answer was true!"
+                message = "Incorrect ☹ The correct answer was true!"
                 data[str(uid)] -= 1
-                message = await ctx.send(message)
-                await message.add_reaction("❌")
-            else:
-                message = "Sorry but I couldnt understand what you said. Make sure to type 1 or 2"
+                await msg.clear_reactions()
+                message = await msg.edit(content=message, suppress=True)
+                await msg.add_reaction("❌")
         elif a == "False":
             if answer == 1:
-                message = "Incorrect :( The correct answer was false!"
+                message = "Incorrect ☹ The correct answer was false!"
                 data[str(uid)] -= 1
-                message = await ctx.send(message)
-                await message.add_reaction("❌")
+                await msg.clear_reactions()
+                message = await msg.edit(content=message, suppress=True)
+                await msg.add_reaction("❌")
             elif answer == 2:
                 message = "Correct!"
                 data[str(uid)] += 1
-                message = await ctx.send(message)
-                await message.add_reaction("✅")
-            else:
-                message = "Sorry but I couldnt understand what you said. Make sure to type 1 or 2"
+                await msg.clear_reactions()
+                message = await msg.edit(content=message, suppress=True)
+                await msg.add_reaction("✅")
 
         
         with open('data.txt', 'w') as outfile:
@@ -99,27 +109,27 @@ async def globalleaderboard(ctx):
         datalist = data.items()
         sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
         try:
-            firstuserid = sorteddata[0][0]
+            firstuserid = int(sorteddata[0][0])
         except:
             firstuserid = "null"
         try:
-            seconduserid = sorteddata[1][0]
+            seconduserid = int(sorteddata[1][0])
         except:
             seconduserid = "null"
         try:
-            thirduserid = sorteddata[2][0]
+            thirduserid = int(sorteddata[2][0])
         except:
             thirduserid = "null"
         try:
-            firstpoints = data[firstuserid]
+            firstpoints = data[str(firstuserid)]
         except:
             firstpoints = "null"
         try:
-            secondpoints = data[seconduserid]
+            secondpoints = data[str(seconduserid)]
         except:
             secondpoints = "null"
         try:
-            thirdpoints = data[thirduserid]
+            thirdpoints = data[str(thirduserid)]
         except:
             thirdpoints = "null"
         r = random.randint(0, 255)
@@ -131,9 +141,12 @@ async def globalleaderboard(ctx):
             color=discord.Colour.from_rgb(r, g, b),
         )
         data = str(data)
-        firstmessage = "<@" + str(firstuserid) + "> with " + str(firstpoints) + " points!"
-        secondmessage = "<@" + str(seconduserid) + "> with " + str(secondpoints) + " points!"
-        thirdmessage = "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
+        user1 = client.get_user(firstuserid)
+        user2 = client.get_user(seconduserid)
+        user3 = client.get_user(thirduserid)
+        firstmessage = "{0} with {1} points".format(str(user1),str(firstpoints))
+        secondmessage = "{0} with {1} points".format(str(user2),str(secondpoints))
+        thirdmessage = "{0} with {1} points".format(str(user3),str(thirdpoints))
         embed.add_field(name='1st Place', value=firstmessage)
         embed.add_field(name='2nd Place', value=secondmessage)
         embed.add_field(name='3rd Place', value=thirdmessage)
@@ -207,7 +220,7 @@ async def points(ctx):
         try:
             print(data[str(uid)])
         except KeyError:
-            data[uid] = 0
+            data[str(uid)] = 0
         current_points = data[str(uid)]
     embed = discord.Embed(
         title='Your Points',
@@ -238,15 +251,24 @@ async def botservers(ctx):
     await ctx.send("I'm in " + str(len(client.guilds)) + " servers! (Goal 75)") 
     
 
-@client.command(brief="About the bot!", aliases=['About'], pass_context='True')
+@client.command(brief="Credits!", aliases=['credits'], pass_context='True')
 async def about(ctx):
-    evanid = '<@247594208779567105>'
+    devs = ['247594208779567105', '692652688407527474']
     r = random.randint(0, 255)
     g = random.randint(0, 255)
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Credits")
-    embed.add_field(name='Bot Commands', value=evanid, inline=False)
+    gld = ctx.guild
+    msg = ''
+    names = []
+    for userid in devs:
+        user = client.get_user(int(userid))
+        if gld.get_member(int(userid)) == None:
+            names.append(str(user))
+        else:
+            names.append("<@{}>".format(userid))
+    embed.add_field(name='Developers', value=" and ".join(names), inline=False)
     await ctx.send(embed=embed)
 
 @client.command(brief="Invite Link", aliases=['link'], pass_context='True')
@@ -268,14 +290,13 @@ async def help(ctx):
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Triva Bot Command List")
-    embed.add_field(name='`;about      `', value='About!                   ', inline=True)
     embed.add_field(name='`;vote       `', value='Vote for Trivia Bot!     ', inline=True)
     embed.add_field(name='`;trivia     `', value='Play Trivia!             ', inline=True)
     embed.add_field(name='`;top        `', value='Global Trivia Leaderboard', inline=True)
     embed.add_field(name='`;points     `', value='List your points         ', inline=True)
     embed.add_field(name='`;servertop  `', value='Server Trivia Leaderboard', inline=True)
     embed.add_field(name='`;invite     `', value='Invite Link              ', inline=True)
-
+    embed.add_field(name='`;credits    `', value='Credits!                ', inline=True)
     await ctx.send(embed=embed)
 
 
