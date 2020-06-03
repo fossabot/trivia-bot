@@ -41,7 +41,7 @@ async def get_reaction_answer(msg, author, ctx):
         reaction, user = await client.wait_for('reaction_add', timeout=20.0, check=checkreaction)
     except asyncio.TimeoutError:
         await msg.clear_reactions()
-        await msg.edit(content="This question has expired!")
+        await msg.edit(content="This question has expired! Sorry ☹️")
     return [yesemoji, noemoji].index(str(reaction.emoji)) + 1
 
 
