@@ -5,4 +5,4 @@ A easy to use true or false trivia bot for discord the includes global leaderboa
 
 ![Personal Points](https://github.com/gubareve/trivia-bot/blob/master/images/Screen%20Shot%202020-05-27%20at%2012.34.46%20PM.png)
 
-![A sample question](https://github.com/gubareve/trivia-bot/blob/master/images/Screen%20Shot%202020-05-27%20at%2012.35.06%20PM.png)
+![A sample question](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-06-03%20at%203.22.51%20PM.png)
