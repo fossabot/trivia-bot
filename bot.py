@@ -26,7 +26,7 @@ TOKEN = os.getenv('bottoken')
 if TOKEN == None:
     TOKEN = input("Token Please:")
 
-client = commands.Bot(command_prefix='-')
+client = commands.Bot(command_prefix=';')
 
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
