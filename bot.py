@@ -76,7 +76,7 @@ async def trivia(ctx):
                 qembed.add_field(name="The Question Was:", value=str(q), inline=False)
                 qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
                 qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-                qembed.add_field(name="You got 1 point! Nice Job!", inline=False)
+                qembed.add_field(name="Points",value="You got 1 point! Nice Job!", inline=False)
                 message = await msg.edit(embed=qembed, suppress=True)
                 await msg.add_reaction("✅")
             elif answer == 2:
@@ -86,7 +86,7 @@ async def trivia(ctx):
                 qembed.add_field(name="The Question Was:", value=str(q), inline=False)
                 qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
                 qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-                qembed.add_field(name="You lost 1 point! Sorry :(", inline=False)
+                qembed.add_field(name="Points",value="You lost 1 point! Sorry :(", inline=False)
                 message = await msg.edit(embed=qembed, suppress=True)
                 await msg.add_reaction("❌")
         elif a == "False":
@@ -97,7 +97,7 @@ async def trivia(ctx):
                 qembed.add_field(name="The Question Was:", value=str(q), inline=False)
                 qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
                 qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-                qembed.add_field(name="You lost 1 point! Sorry :(", inline=False)
+                qembed.add_field(name="Points",value="You lost 1 point! Sorry :(", inline=False)
                 message = await msg.edit(embed=qembed, suppress=True)
                 await msg.add_reaction("❌")
             elif answer == 2:
@@ -107,7 +107,7 @@ async def trivia(ctx):
                 qembed.add_field(name="The Question Was:", value=str(q), inline=False)
                 qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
                 qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-                qembed.add_field(name="You got 1 point! Nice Job!", inline=False)
+                qembed.add_field(name="Points",value="You got 1 point! Nice Job!", inline=False)
                 message = await msg.edit(embed=qembed, suppress=True)
                 await msg.add_reaction("✅")
 
