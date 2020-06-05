@@ -65,9 +65,9 @@ async def trivia(ctx):
         except KeyError:
             data[str(uid)] = 1
         if answer == 1:
-            textanswer = "True"
+            textanswer = yesemoji
         else:
-            tetxanswer = "False"
+            tetxanswer = noemoji
         if a == "True":
             if answer == 1:
                 data[str(uid)] += 1
@@ -77,7 +77,7 @@ async def trivia(ctx):
                 qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
                 qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
                 qembed.add_field(name="Points",value="You got 1 point! Nice Job!", inline=False)
-                message = await msg.edit(embed=qembed, suppress=True)
+                message = await msg.edit(embed=qembed)
                 await msg.add_reaction("✅")
             elif answer == 2:
                 data[str(uid)] -= 1
@@ -87,7 +87,7 @@ async def trivia(ctx):
                 qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
                 qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
                 qembed.add_field(name="Points",value="You lost 1 point! Sorry :(", inline=False)
-                message = await msg.edit(embed=qembed, suppress=True)
+                message = await msg.edit(embed=qembed)
                 await msg.add_reaction("❌")
         elif a == "False":
             if answer == 1:
@@ -98,7 +98,7 @@ async def trivia(ctx):
                 qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
                 qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
                 qembed.add_field(name="Points",value="You lost 1 point! Sorry :(", inline=False)
-                message = await msg.edit(embed=qembed, suppress=True)
+                message = await msg.edit(embed=qembed)
                 await msg.add_reaction("❌")
             elif answer == 2:
                 data[str(uid)] += 1
@@ -108,7 +108,7 @@ async def trivia(ctx):
                 qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
                 qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
                 qembed.add_field(name="Points",value="You got 1 point! Nice Job!", inline=False)
-                message = await msg.edit(embed=qembed, suppress=True)
+                message = await msg.edit(embed=qembed)
                 await msg.add_reaction("✅")
 
 
