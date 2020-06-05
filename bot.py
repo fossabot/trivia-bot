@@ -67,7 +67,7 @@ async def trivia(ctx):
         if answer == 1:
             textanswer = yesemoji
         else:
-            tetxanswer = noemoji
+            textanswer = noemoji
         if a == "True":
             if answer == 1:
                 data[str(uid)] += 1
