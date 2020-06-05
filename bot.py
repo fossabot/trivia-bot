@@ -64,34 +64,54 @@ async def trivia(ctx):
             data[str(uid)]
         except KeyError:
             data[str(uid)] = 1
+        if answer == 1:
+            textanswer = "True"
+        else:
+            tetxanswer = "False"
         if a == "True":
             if answer == 1:
-                message = "Correct!"
                 data[str(uid)] += 1
                 await msg.clear_reactions()
-                message = await msg.edit(content=message, suppress=True)
+                qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
+                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+                qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
+                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+                qembed.add_field(name="You got 1 point! Nice Job!", inline=False)
+                message = await msg.edit(embed=qembed, suppress=True)
                 await msg.add_reaction("✅")
             elif answer == 2:
-                message = "Incorrect ☹ The correct answer was true!"
                 data[str(uid)] -= 1
                 await msg.clear_reactions()
-                message = await msg.edit(content=message, suppress=True)
+                qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
+                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+                qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
+                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+                qembed.add_field(name="You lost 1 point! Sorry :(", inline=False)
+                message = await msg.edit(embed=qembed, suppress=True)
                 await msg.add_reaction("❌")
         elif a == "False":
             if answer == 1:
-                message = "Incorrect ☹ The correct answer was false!"
                 data[str(uid)] -= 1
                 await msg.clear_reactions()
-                message = await msg.edit(content=message, suppress=True)
+                qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
+                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+                qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
+                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+                qembed.add_field(name="You lost 1 point! Sorry :(", inline=False)
+                message = await msg.edit(embed=qembed, suppress=True)
                 await msg.add_reaction("❌")
             elif answer == 2:
-                message = "Correct!"
                 data[str(uid)] += 1
                 await msg.clear_reactions()
-                message = await msg.edit(content=message, suppress=True)
+                qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
+                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+                qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
+                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+                qembed.add_field(name="You got 1 point! Nice Job!", inline=False)
+                message = await msg.edit(embed=qembed, suppress=True)
                 await msg.add_reaction("✅")
 
-        
+
         with open('data.txt', 'w') as outfile:
             json.dump(data, outfile)
 
@@ -100,8 +120,8 @@ async def triviadebug(ctx):
     with open('data.txt') as json_file:
         data = json.load(json_file)
         datalist = data.items()
-        await ctx.send(str(data))        
-           
+        await ctx.send(str(data))
+
 @client.command(aliases=['top'])
 async def globalleaderboard(ctx):
     with open('data.txt') as json_file:
@@ -207,7 +227,7 @@ async def serverleaderboard(ctx):
         embed.add_field(name='2nd Place', value=secondmessage)
         embed.add_field(name='3rd Place', value=thirdmessage)
         await ctx.send(embed=embed)
-        
+
 @client.command()
 async def points(ctx):
     r = random.randint(0, 255)
@@ -245,11 +265,11 @@ async def vote(ctx):
     embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png')
     embed.add_field(name='DBL', value='https://discordbotlist.com/bots/trivia-bot/upvote')
     await ctx.send(embed=embed)
-    
+
 @client.command(pass_context=True)
 async def botservers(ctx):
-    await ctx.send("I'm in " + str(len(client.guilds)) + " servers! (Goal 75)") 
-    
+    await ctx.send("I'm in " + str(len(client.guilds)) + " servers! (Goal 75)")
+
 
 @client.command(brief="Credits!", aliases=['credits'], pass_context='True')
 async def about(ctx):
