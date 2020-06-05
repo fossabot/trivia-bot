@@ -63,7 +63,7 @@ async def trivia(ctx):
         try:
             data[str(uid)]
         except KeyError:
-            data[str(uid)] = 1
+            data[str(uid)] = 0
         if answer == 1:
             textanswer = yesemoji
         else:
