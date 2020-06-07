@@ -12,10 +12,6 @@ from discord import Game
 from json import loads
 from discord.ext.commands import Bot
 from discord.ext import commands
-from discord.ext.commands import has_permissions, MissingPermissions
-from discord.ext.commands import has_permissions, CheckFailure
-from discord.utils import get
-from discord.utils import get
 import sys
 import os
 import json
@@ -46,10 +42,21 @@ async def get_reaction_answer(msg, author, ctx):
 
 
 @client.command()
-async def trivia(ctx):
+async def trivia(ctx, category=None):
     with open('data.txt') as json_file:
         data = json.load(json_file)
-        r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986").text
+        if category == None:
+            r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986").text
+            lesspoints = False
+        else:
+            listofdata = {"general":"9","books":"10","film":"11","music":"12","musicals":"13","tv":"14","gaming":"15","boardgames":"16","science":"17","computers":"18","math":"19","myths":"20","sports":"21","geography":"22","history":"23","politics":"24","art":"25","people":"26","animals":"27","cars":"28","comics":"29","gadgets":"30","anime":"31","cartoons":"32"}
+            try: categorynumber = listofdata[str(category)]
+            except KeyError():
+                r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986").text
+                lesspoints = False
+            else:
+                r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="+categorynumber).text
+                lesspoints = True
         q = urllib.parse.unquote(loads(r)['results'][0]['question'])
         a = urllib.parse.unquote(loads(r)['results'][0]['correct_answer'])
         b = q + a
@@ -68,15 +75,21 @@ async def trivia(ctx):
             textanswer = yesemoji
         else:
             textanswer = noemoji
+        if lesspoints:
+            pointstogive = 1
+            message = " (Chose a category)"
+        else:
+            pointstogive = 2
+            message = " (Didn't chose a category)"
         if a == "True":
             if answer == 1:
-                data[str(uid)] += 1
+                data[str(uid)] += pointstogive
                 await msg.clear_reactions()
                 qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
                 qembed.add_field(name="The Question Was:", value=str(q), inline=False)
                 qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
                 qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-                qembed.add_field(name="Points",value="You got 1 point! Nice Job!", inline=False)
+                qembed.add_field(name="Points",value="You got "+str(pointstogive)+" point(s)! Nice Job!"+message, inline=False)
                 message = await msg.edit(embed=qembed)
                 await msg.add_reaction("✅")
             elif answer == 2:
@@ -101,13 +114,13 @@ async def trivia(ctx):
                 message = await msg.edit(embed=qembed)
                 await msg.add_reaction("❌")
             elif answer == 2:
-                data[str(uid)] += 1
+                data[str(uid)] += pointstogive
                 await msg.clear_reactions()
                 qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
                 qembed.add_field(name="The Question Was:", value=str(q), inline=False)
                 qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
                 qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-                qembed.add_field(name="Points",value="You got 1 point! Nice Job!", inline=False)
+                qembed.add_field(name="Points",value="You got "+str(pointstogive)+" point(s)! Nice Job!"+message, inline=False)
                 message = await msg.edit(embed=qembed)
                 await msg.add_reaction("✅")
 
@@ -316,10 +329,23 @@ async def help(ctx):
     embed.add_field(name='`;points     `', value='List your points         ', inline=True)
     embed.add_field(name='`;servertop  `', value='Server Trivia Leaderboard', inline=True)
     embed.add_field(name='`;invite     `', value='Invite Link              ', inline=True)
-    embed.add_field(name='`;credits    `', value='Credits!                ', inline=True)
+    embed.add_field(name='`;credits    `', value='Credits!                 ', inline=True)
+    embed.add_field(name='`;categories `', value='List avalible categories!', inline=True)
     await ctx.send(embed=embed)
 
-
+@client.command(pass_context=True)
+async def categories(ctx):
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+    embed.set_author(name="List of Categories")
+    categories = ["general","books","film","music","musicals","tv","gaming","boardgames","science","computers","math","myths","sports","geography","history","politics","art","people","animals","cars","comics","gadgets","anime","cartoons"]
+    for category in categories:
+        embed.add_field(name=category, value='`;trivia ' + category + '`', inline=True)
+    await ctx.send(embed=embed)
+    
+    
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Activity(name=';help || Discord Trivia', type=3))
