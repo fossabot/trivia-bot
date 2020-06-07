@@ -348,9 +348,9 @@ async def categories(ctx):
         embed.add_field(name=category, value='`;trivia ' + category + '`', inline=True)
     await ctx.send(embed=embed)
 
-@client.command(pass_context=True):
+@client.command(pass_context=True)
 async def ping(ctx):
-	ping = random.randint(20,30)
+	ping = random.randint(10,30)
 	embed=discord.Embed(title=None, description='Ping: {}'.format(str(ping)), color=0x2874A6)
 	await client.say(embed=embed)
 
