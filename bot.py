@@ -382,7 +382,7 @@ async def info(ctx, user: discord.Member=None):
 
 @client.command(pass_context=True)
 async def servers(ctx):
-    if ctx.message.user.id == "247594208779567105":
+    if ctx.message.author.id == "247594208779567105":
         ctx.send('Servers connected to:')
         for server in client.guilds:
             await ctx.send(server.name)
