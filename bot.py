@@ -75,7 +75,7 @@ async def trivia(ctx, category):
             textanswer = yesemoji
         else:
             textanswer = noemoji
-        if Lesspoints:
+        if lesspoints:
             pointstogive = 1
             message = " (Chose a category)"
         else:
