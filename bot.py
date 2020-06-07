@@ -364,7 +364,7 @@ async def info(ctx, user: discord.Member=None):
 @client.command(pass_context=True)
 async def servers(ctx, user: discord.Member=None): 
     ctx.send('Servers connected to:')
-    for server in client.guild:
+    for server in client.guilds:
         ctx.send(server.name)
     
 @client.event
