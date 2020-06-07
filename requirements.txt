@@ -5,5 +5,4 @@ asyncio==3.4.3
 aiohttp==3.6.2
 typing==3.7.4.1
 future==0.18.2
-logging==0.4.9.6
 dblpy==0.3.4
