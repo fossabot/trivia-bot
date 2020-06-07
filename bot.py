@@ -16,6 +16,8 @@ from discord.ext import commands
 import sys
 import time
 import os
+import dbl
+import logging
 import json
 userspecific = True
 yesemoji = '👍'
@@ -29,6 +31,41 @@ client = commands.Bot(command_prefix=';')
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 
+class TopGG(commands.Cog):
+    """Handles interactions with the top.gg API"""
+
+    def __init__(self, bot):
+        self.bot = bot
+        self.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxNTA0NzUwNDEyNjgwNDAwMCIsImJvdCI6dHJ1ZSwiaWF0IjoxNTkxNTU2NjE0fQ.sUltJ4J2qg1-YsMjdn_hQXBBhO72xL3Y6QIeAkmStt0
+' # set this to your DBL token
+        self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='password', webhook_port=5000)
+        self.update_stats.start() # Your linter may say this is wrong, but your linter is wrong
+
+    def cog_unload(self):
+        self.update_stats.cancel() # Your linter may say this is wrong too, but again your linter is wrong
+
+    # The decorator below will work only on discord.py 1.1.0+
+    # In case your discord.py version is below that, you can use self.bot.loop.create_task(self.update_stats())
+
+    @tasks.loop(minutes=30.0)
+    async def update_stats(self):
+        """This function runs every 30 minutes to automatically update your server count"""
+        logger.info('Attempting to post server count')
+        try:
+            await self.dblpy.post_guild_count()
+            logger.info('Posted server count ({})'.format(self.dblpy.guild_count()))
+        except Exception as e:
+            logger.exception('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
+
+    @commands.Cog.listener()
+    async def on_dbl_vote(self, data):
+        logger.info('Received an upvote')
+        print(data)
+
+def setup(bot):
+    global logger
+    logger = logging.getLogger('bot')
+    bot.add_cog(TopGG(bot))
 
 async def get_reaction_answer(msg, author, ctx):
     def checkreaction(reaction, user):
