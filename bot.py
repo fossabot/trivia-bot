@@ -46,19 +46,36 @@ async def get_reaction_answer(msg, author, ctx):
 @client.command()
 async def trivia(ctx, category=None):
     with open('data.txt') as json_file:
+        global triviatoken
         data = json.load(json_file)
         if category == None:
-            r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986").text
+            r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
             lesspoints = False
         else:
             listofdata = {"general":"9","books":"10","film":"11","music":"12","musicals":"13","tv":"14","gaming":"15","boardgames":"16","science":"17","computers":"18","math":"19","myths":"20","sports":"21","geography":"22","history":"23","politics":"24","art":"25","people":"26","animals":"27","cars":"28","comics":"29","gadgets":"30","anime":"31","cartoons":"32"}
             try: categorynumber = listofdata[str(category)]
             except KeyError():
-                r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986").text
+                r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
                 lesspoints = False
             else:
-                r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="+categorynumber).text
+                r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="+categorynumber+"&token="+str(triviatoken)).text
                 lesspoints = True
+        rc = loads(r)["response_code"]
+        if rc != 0:
+            n = requests.get("https://opentdb.com/api_token.php?command=request").text
+            triviatoken = urllib.parse.unquote(loads(n)['token'])
+            if category == None:
+                r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
+                lesspoints = False
+            else:
+                listofdata = {"general":"9","books":"10","film":"11","music":"12","musicals":"13","tv":"14","gaming":"15","boardgames":"16","science":"17","computers":"18","math":"19","myths":"20","sports":"21","geography":"22","history":"23","politics":"24","art":"25","people":"26","animals":"27","cars":"28","comics":"29","gadgets":"30","anime":"31","cartoons":"32"}
+                try: categorynumber = listofdata[str(category)]
+                except KeyError():
+                    r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
+                    lesspoints = False
+                else:
+                    r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="+categorynumber+"&token="+str(triviatoken)).text
+                    lesspoints = True
         q = urllib.parse.unquote(loads(r)['results'][0]['question'])
         a = urllib.parse.unquote(loads(r)['results'][0]['correct_answer'])
         b = q + a
@@ -309,12 +326,14 @@ async def about(ctx):
 @client.command(brief="Invite Link", aliases=['link'], pass_context='True')
 async def invite(ctx):
     link = 'https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify'
+    serverlink = 'https://discord.gg/JwrrR5t'
     r = random.randint(0, 255)
     g = random.randint(0, 255)
     b = random.randint(0, 255)
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Invite Link")
-    embed.add_field(name='Discord', value=link, inline=False)
+    embed.add_field(name='Bot', value=link, inline=False)
+    embed.add_field(name='Support Server', value=serverlink, inline=False)
     await ctx.send(embed=embed)
 
 @client.remove_command("help")
@@ -362,11 +381,12 @@ async def info(ctx, user: discord.Member=None):
         await ctx.send("The user's name is: {}".format(user.name) + "\nThe user's ID is: {}".format(user.id) + "\nThe user's current status is: {}".format(user.status) + "\nThe user's highest role is: {}".format(user.top_role) + "\nThe user joined at: {}".format(user.joined_at))
 
 @client.command(pass_context=True)
-async def servers(ctx, user: discord.Member=None): 
-    ctx.send('Servers connected to:')
-    for server in client.guilds:
-        await ctx.send(server.name)
-    
+async def servers(ctx, user: discord.Member=None):
+    if user.id == "247594208779567105":
+        ctx.send('Servers connected to:')
+        for server in client.guilds:
+            await ctx.send(server.name)
+
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Activity(name=';help || Discord Trivia', type=3))
@@ -374,6 +394,8 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
-
-
+    n = requests.get("https://opentdb.com/api_token.php?command=request").text
+    global triviatoken
+    triviatoken = urllib.parse.unquote(loads(n)['token'])
+    print(triviatoken)
 client.run(TOKEN)
