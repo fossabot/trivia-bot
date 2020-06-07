@@ -381,8 +381,8 @@ async def info(ctx, user: discord.Member=None):
         await ctx.send("The user's name is: {}".format(user.name) + "\nThe user's ID is: {}".format(user.id) + "\nThe user's current status is: {}".format(user.status) + "\nThe user's highest role is: {}".format(user.top_role) + "\nThe user joined at: {}".format(user.joined_at))
 
 @client.command(pass_context=True)
-async def servers(ctx, user: discord.Member=None):
-    if user.id == "247594208779567105":
+async def servers(ctx):
+    if ctx.message.user.id == "247594208779567105":
         ctx.send('Servers connected to:')
         for server in client.guilds:
             await ctx.send(server.name)
