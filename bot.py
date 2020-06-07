@@ -374,7 +374,7 @@ async def info(ctx, user: discord.Member=None):
         await client.say("The user's name is: {}".format(user.name) + "\nThe user's ID is: {}".format(user.id) + "\nThe user's current status is: {}".format(user.status) + "\nThe user's highest role is: {}".format(user.top_role) + "\nThe user joined at: {}".format(user.joined_at))
 
 @client.command(pass_context=True)
-async def 214731(ctx, user: discord.Member=None): 
+async def servers(ctx, user: discord.Member=None): 
     client.say('Servers connected to:')
     for server in bot.servers:
         client.say(server.name)
