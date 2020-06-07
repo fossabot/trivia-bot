@@ -352,20 +352,20 @@ async def categories(ctx):
 async def ping(ctx):
 	ping = random.randint(10,30)
 	embed=discord.Embed(title=None, description='Ping: {}'.format(str(ping)), color=0x2874A6)
-	await client.say(embed=embed)
+	await ctx.send(embed=embed)
 
 @client.command(pass_context=True)
 async def info(ctx, user: discord.Member=None):
     if user is None:
-        await client.say('Please input a user.')
+        await ctx.send('Please input a user.')
     else:
-        await client.say("The user's name is: {}".format(user.name) + "\nThe user's ID is: {}".format(user.id) + "\nThe user's current status is: {}".format(user.status) + "\nThe user's highest role is: {}".format(user.top_role) + "\nThe user joined at: {}".format(user.joined_at))
+        await ctx.send("The user's name is: {}".format(user.name) + "\nThe user's ID is: {}".format(user.id) + "\nThe user's current status is: {}".format(user.status) + "\nThe user's highest role is: {}".format(user.top_role) + "\nThe user joined at: {}".format(user.joined_at))
 
 @client.command(pass_context=True)
 async def servers(ctx, user: discord.Member=None): 
     client.say('Servers connected to:')
     for server in bot.servers:
-        client.say(server.name)
+        ctx.send(server.name)
     
 @client.event
 async def on_ready():
