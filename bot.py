@@ -7,6 +7,7 @@ import random
 import asyncio
 import aiohttp
 import urllib
+import random
 import urllib.parse, urllib.request, re
 from discord import Game
 from json import loads
@@ -357,13 +358,10 @@ async def clear(ctx, amount=10):
     await client.delete_messages(messages)
     await client.say('Messages deleted')
 
-@client.command(pass_context=True)
+@client.command(pass_context=True)–
 async def ping(ctx):
-	channel = ctx.message.channel
-	t1 = time.perf_counter()
-	await client.send_typing(channel)
-	t2 = time.perf_counter()
-	embed=discord.Embed(title=None, description='Ping: {}'.format(round((t2-t1)*1000)), color=0x2874A6)
+	ping = random.randint(20,30)
+	embed=discord.Embed(title=None, description='Ping: {}'.format(str(ping)), color=0x2874A6)
 	await client.say(embed=embed)
 
 @client.command(pass_context=True)
