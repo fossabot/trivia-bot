@@ -348,17 +348,7 @@ async def categories(ctx):
         embed.add_field(name=category, value='`;trivia ' + category + '`', inline=True)
     await ctx.send(embed=embed)
 
-
-@client.command(pass_context=True)
-async def clear(ctx, amount=10):
-    channel = ctx.message.channel
-    messages = []
-    async for message in client.logs_from(channel, limit=int(amount)):
-        messages.append(message)
-    await client.delete_messages(messages)
-    await client.say('Messages deleted')
-
-@client.command(pass_context=True)–
+@client.command(pass_context=True):
 async def ping(ctx):
 	ping = random.randint(20,30)
 	embed=discord.Embed(title=None, description='Ping: {}'.format(str(ping)), color=0x2874A6)
