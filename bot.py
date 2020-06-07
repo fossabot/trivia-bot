@@ -12,10 +12,6 @@ from discord import Game
 from json import loads
 from discord.ext.commands import Bot
 from discord.ext import commands
-from discord.ext.commands import has_permissions, MissingPermissions
-from discord.ext.commands import has_permissions, CheckFailure
-from discord.utils import get
-from discord.utils import get
 import sys
 import os
 import json
@@ -46,17 +42,21 @@ async def get_reaction_answer(msg, author, ctx):
 
 
 @client.command()
-async def trivia(ctx, category):
+async def trivia(ctx, category=None):
     with open('data.txt') as json_file:
         data = json.load(json_file)
         if category == None:
             r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986").text
             lesspoints = False
         else:
-            listofdata = {"general" = "9","books" = "10","film" = "11","music" = "12","musicals" = "13","tv" = "14","gaming" = "15","boardgames" = "16","science" = "17","computers" = "18","math" = "19","myths" = "20","sports" = "21","geography" = "22","history" = "23","politics" = "24","art" = "25","people" = "26","animals" = "27","cars" = "28","comics" = "29","gadgets" = "30","anime" = "31","cartoons" = "32"}
-            categorynumber = listofdata[str(category)]
-            r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="+categorynumber).text
-            lesspoints = True
+            listofdata = {"general":"9","books":"10","film":"11","music":"12","musicals":"13","tv":"14","gaming":"15","boardgames":"16","science":"17","computers":"18","math":"19","myths":"20","sports":"21","geography":"22","history":"23","politics":"24","art":"25","people":"26","animals":"27","cars":"28","comics":"29","gadgets":"30","anime":"31","cartoons":"32"}
+            try: categorynumber = listofdata[str(category)]
+            except KeyError():
+                r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986").text
+                lesspoints = False
+            else:
+                r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="+categorynumber).text
+                lesspoints = True
         q = urllib.parse.unquote(loads(r)['results'][0]['question'])
         a = urllib.parse.unquote(loads(r)['results'][0]['correct_answer'])
         b = q + a
@@ -341,8 +341,8 @@ async def categories(ctx):
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="List of Categories")
     categories = ["general","books","film","music","musicals","tv","gaming","boardgames","science","computers","math","myths","sports","geography","history","politics","art","people","animals","cars","comics","gadgets","anime","cartoons"]
-    for category in catagories:
-        embed.add_field(name=category, value='`;trivia + 'catagory'`', inline=True)
+    for category in categories:
+        embed.add_field(name=category, value='`;trivia ' + category + '`', inline=True)
     await ctx.send(embed=embed)
     
     
