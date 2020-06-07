@@ -13,6 +13,7 @@ from json import loads
 from discord.ext.commands import Bot
 from discord.ext import commands
 import sys
+import time
 import os
 import json
 userspecific = True
@@ -331,6 +332,7 @@ async def help(ctx):
     embed.add_field(name='`;invite     `', value='Invite Link              ', inline=True)
     embed.add_field(name='`;credits    `', value='Credits!                 ', inline=True)
     embed.add_field(name='`;categories `', value='List avalible categories!', inline=True)
+    embed.add_field(name='`;ping       `', value='Displays Ping            ', inline=True)
     await ctx.send(embed=embed)
 
 @client.command(pass_context=True)
@@ -344,7 +346,38 @@ async def categories(ctx):
     for category in categories:
         embed.add_field(name=category, value='`;trivia ' + category + '`', inline=True)
     await ctx.send(embed=embed)
-    
+
+
+@client.command(pass_context=True)
+async def clear(ctx, amount=10):
+    channel = ctx.message.channel
+    messages = []
+    async for message in client.logs_from(channel, limit=int(amount)):
+        messages.append(message)
+    await client.delete_messages(messages)
+    await client.say('Messages deleted')
+
+@client.command(pass_context=True)
+async def ping(ctx):
+	channel = ctx.message.channel
+	t1 = time.perf_counter()
+	await client.send_typing(channel)
+	t2 = time.perf_counter()
+	embed=discord.Embed(title=None, description='Ping: {}'.format(round((t2-t1)*1000)), color=0x2874A6)
+	await client.say(embed=embed)
+
+@client.command(pass_context=True)
+async def info(ctx, user: discord.Member=None):
+    if user is None:
+        await client.say('Please input a user.')
+    else:
+        await client.say("The user's name is: {}".format(user.name) + "\nThe user's ID is: {}".format(user.id) + "\nThe user's current status is: {}".format(user.status) + "\nThe user's highest role is: {}".format(user.top_role) + "\nThe user joined at: {}".format(user.joined_at))
+
+@client.command(pass_context=True)
+async def 214731(ctx, user: discord.Member=None): 
+    client.say('Servers connected to:')
+    for server in bot.servers:
+        client.say(server.name)
     
 @client.event
 async def on_ready():
