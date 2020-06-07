@@ -363,7 +363,7 @@ async def info(ctx, user: discord.Member=None):
 
 @client.command(pass_context=True)
 async def servers(ctx, user: discord.Member=None): 
-    client.say('Servers connected to:')
+    ctx.send('Servers connected to:')
     for server in bot.servers:
         ctx.send(server.name)
     
