@@ -36,8 +36,7 @@ class TopGG(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxNTA0NzUwNDEyNjgwNDAwMCIsImJvdCI6dHJ1ZSwiaWF0IjoxNTkxNTU2NjE0fQ.sUltJ4J2qg1-YsMjdn_hQXBBhO72xL3Y6QIeAkmStt0
-' # set this to your DBL token
+        self.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjcxNTA0NzUwNDEyNjgwNDAwMCIsImJvdCI6dHJ1ZSwiaWF0IjoxNTkxNTU2NjE0fQ.sUltJ4J2qg1-YsMjdn_hQXBBhO72xL3Y6QIeAkmStt0' # set this to your DBL token
         self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='password', webhook_port=5000)
         self.update_stats.start() # Your linter may say this is wrong, but your linter is wrong
 
