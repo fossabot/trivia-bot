@@ -47,7 +47,7 @@ NOTE: these only work for admins.
 ## Authors:
 
 * **Gubareve** - Main Coder
-* **Wickedtree** - Assistant Coder
+* **Wickedtree** - Assistant Coder / Tester
 
 ## Images:
 
