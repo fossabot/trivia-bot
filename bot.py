@@ -325,8 +325,8 @@ async def about(ctx):
 
 @client.command(brief="Invite Link", aliases=['link'], pass_context='True')
 async def invite(ctx):
-    link = 'https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify'
-    serverlink = 'https://discord.gg/JwrrR5t'
+    link = '[Invite Link](https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify)'
+    serverlink = '[Server Link](https://discord.gg/JwrrR5)'
     r = random.randint(0, 255)
     g = random.randint(0, 255)
     b = random.randint(0, 255)
@@ -334,6 +334,17 @@ async def invite(ctx):
     embed.set_author(name="Invite Link")
     embed.add_field(name='Bot', value=link, inline=False)
     embed.add_field(name='Support Server', value=serverlink, inline=False)
+    await ctx.send(embed=embed)
+	
+@client.command(brief="Invite Link", aliases=['question'], pass_context='True')
+async def feedback(ctx):
+    link = '[Feedback Link (We will reply to every message.)](https://github.com/gubareve/trivia-bot/issues/new/choose)'
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+    embed.set_author(name="Feedback Link")
+    embed.add_field(name='Link', value=link, inline=False)
     await ctx.send(embed=embed)
 
 @client.remove_command("help")
@@ -353,6 +364,7 @@ async def help(ctx):
     embed.add_field(name='`;credits    `', value='Credits!                 ', inline=True)
     embed.add_field(name='`;categories `', value='List avalible categories!', inline=True)
     embed.add_field(name='`;ping       `', value='Displays Ping            ', inline=True)
+    embed.add_field(name='`;feedback   `', value='Shows Feedback Link!     ', inline=True)
     await ctx.send(embed=embed)
 
 @client.command(pass_context=True)
