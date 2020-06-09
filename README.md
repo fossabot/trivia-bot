@@ -51,8 +51,8 @@ NOTE: these only work for admins.
 
 ## Images:
 
+![A sample question](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-06-08%20at%209.06.00%20PM.png)
+
 ![Global Leaderboards](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-05-27%20at%2012.34.32%20PM.png)
 
 ![Personal Points](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-05-27%20at%2012.34.46%20PM.png)
-
-![A sample question](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-06-03%20at%203.22.51%20PM.png)
