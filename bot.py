@@ -15,6 +15,7 @@ from discord.ext.commands import Bot
 from discord.ext import commands
 import sys
 import time
+import redis
 import os
 import json
 userspecific = True
@@ -23,6 +24,12 @@ noemoji = '👎'
 TOKEN = os.getenv('bottoken')
 if TOKEN == None:
     TOKEN = input("Token Please:")
+
+redisurl = os.getenv('REDIS_URL')
+if redisurl = None:
+    redisurl = input('Please enter the REDIS URL:')
+
+triviadb = redis.from_url(redisurl)
 
 client = commands.Bot(command_prefix=';')
 
@@ -42,12 +49,60 @@ async def get_reaction_answer(msg, author, ctx):
         await msg.edit(content="This question has expired! Sorry ☹️")
     return [yesemoji, noemoji].index(str(reaction.emoji)) + 1
 
+def tbpoints(statement, key, amount):
+    if statement == "get":
+        userid = key
+        try:
+            points = int(triviadb.hgetall("data")[userid.encode('ascii')])
+        except:
+            points = 0
+        return points
+    if statement == "give":
+        userid = key
+        bytedb = triviadb.hgetall("data")
+        stringdb = {}
+        for key in bytedb.keys():
+            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+        try:
+            stringdb[userid] += int(amount)
+        except:
+            stringdb[userid] = 1
+        triviadb.hmset("data", stringdb)
+    if statement == "set":
+        userid = key
+        bytedb = triviadb.hgetall("data")
+        stringdb = {}
+        for key in bytedb.keys():
+            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+
+        stringdb[userid] = int(amount)
+        triviadb.hmset("data", stringdb)
+    if statement == "data":
+        bytedb = triviadb.hgetall("data")
+        stringdb = {}
+        for key in bytedb.keys():
+            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+        return stringdb
 
 @client.command()
 async def trivia(ctx, category=None):
-    with open('data.txt') as json_file:
-        global triviatoken
-        data = json.load(json_file)
+    global triviatoken
+    if category == None:
+        r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
+        lesspoints = False
+    else:
+        listofdata = {"general":"9","books":"10","film":"11","music":"12","musicals":"13","tv":"14","gaming":"15","boardgames":"16","science":"17","computers":"18","math":"19","myths":"20","sports":"21","geography":"22","history":"23","politics":"24","art":"25","people":"26","animals":"27","cars":"28","comics":"29","gadgets":"30","anime":"31","cartoons":"32"}
+        try: categorynumber = listofdata[str(category)]
+        except KeyError():
+            r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
+            lesspoints = False
+        else:
+            r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="+categorynumber+"&token="+str(triviatoken)).text
+            lesspoints = True
+    rc = loads(r)["response_code"]
+    if rc != 0:
+        n = requests.get("https://opentdb.com/api_token.php?command=request").text
+        triviatoken = urllib.parse.unquote(loads(n)['token'])
         if category == None:
             r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
             lesspoints = False
@@ -60,205 +115,178 @@ async def trivia(ctx, category=None):
             else:
                 r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="+categorynumber+"&token="+str(triviatoken)).text
                 lesspoints = True
-        rc = loads(r)["response_code"]
-        if rc != 0:
-            n = requests.get("https://opentdb.com/api_token.php?command=request").text
-            triviatoken = urllib.parse.unquote(loads(n)['token'])
-            if category == None:
-                r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
-                lesspoints = False
-            else:
-                listofdata = {"general":"9","books":"10","film":"11","music":"12","musicals":"13","tv":"14","gaming":"15","boardgames":"16","science":"17","computers":"18","math":"19","myths":"20","sports":"21","geography":"22","history":"23","politics":"24","art":"25","people":"26","animals":"27","cars":"28","comics":"29","gadgets":"30","anime":"31","cartoons":"32"}
-                try: categorynumber = listofdata[str(category)]
-                except KeyError():
-                    r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
-                    lesspoints = False
-                else:
-                    r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="+categorynumber+"&token="+str(triviatoken)).text
-                    lesspoints = True
-        q = urllib.parse.unquote(loads(r)['results'][0]['question'])
-        a = urllib.parse.unquote(loads(r)['results'][0]['correct_answer'])
-        b = q + a
-        qembed=discord.Embed(title="YOUR QUESTION", description="Use the below reactions to answer this true/false question.", color=0xff0000)
-        qembed.add_field(name="Question:", value=str(q), inline=False)
-        qembed.add_field(name=yesemoji, value="For true", inline=True)
-        qembed.add_field(name=noemoji, value="For false", inline=True)
-        msg = await ctx.send(embed=qembed)
-        answer = await get_reaction_answer(msg, ctx.message.author.id, ctx)
-        uid = ctx.message.author.id
-        try:
-            data[str(uid)]
-        except KeyError:
-            data[str(uid)] = 0
+    q = urllib.parse.unquote(loads(r)['results'][0]['question'])
+    a = urllib.parse.unquote(loads(r)['results'][0]['correct_answer'])
+    b = q + a
+    qembed=discord.Embed(title="YOUR QUESTION", description="Use the below reactions to answer this true/false question.", color=0xff0000)
+    qembed.add_field(name="Question:", value=str(q), inline=False)
+    qembed.add_field(name=yesemoji, value="For true", inline=True)
+    qembed.add_field(name=noemoji, value="For false", inline=True)
+    msg = await ctx.send(embed=qembed)
+    answer = await get_reaction_answer(msg, ctx.message.author.id, ctx)
+    uid = ctx.message.author.id
+    if answer == 1:
+        textanswer = yesemoji
+    else:
+        textanswer = noemoji
+    if lesspoints:
+        pointstogive = 1
+        message = " (Chose a category)"
+    else:
+        pointstogive = 2
+        message = " (Didn't chose a category)"
+    if a == "True":
         if answer == 1:
-            textanswer = yesemoji
-        else:
-            textanswer = noemoji
-        if lesspoints:
-            pointstogive = 1
-            message = " (Chose a category)"
-        else:
-            pointstogive = 2
-            message = " (Didn't chose a category)"
-        if a == "True":
-            if answer == 1:
-                data[str(uid)] += pointstogive
-                await msg.clear_reactions()
-                qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
-                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
-                qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
-                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-                qembed.add_field(name="Points",value="You got "+str(pointstogive)+" point(s)! Nice Job!"+message, inline=False)
-                message = await msg.edit(embed=qembed)
-                await msg.add_reaction("✅")
-            elif answer == 2:
-                data[str(uid)] -= 1
-                await msg.clear_reactions()
-                qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
-                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
-                qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
-                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-                qembed.add_field(name="Points",value="You lost 1 point! Sorry :(", inline=False)
-                message = await msg.edit(embed=qembed)
-                await msg.add_reaction("❌")
-        elif a == "False":
-            if answer == 1:
-                data[str(uid)] -= 1
-                await msg.clear_reactions()
-                qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
-                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
-                qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
-                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-                qembed.add_field(name="Points",value="You lost 1 point! Sorry :(", inline=False)
-                message = await msg.edit(embed=qembed)
-                await msg.add_reaction("❌")
-            elif answer == 2:
-                data[str(uid)] += pointstogive
-                await msg.clear_reactions()
-                qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
-                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
-                qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
-                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-                qembed.add_field(name="Points",value="You got "+str(pointstogive)+" point(s)! Nice Job!"+message, inline=False)
-                message = await msg.edit(embed=qembed)
-                await msg.add_reaction("✅")
-
-
-        with open('data.txt', 'w') as outfile:
-            json.dump(data, outfile)
+            tbpoints("give", str(uid), pointstogive)
+            await msg.clear_reactions()
+            qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
+            qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+            qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
+            qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+            qembed.add_field(name="Points",value="You got "+str(pointstogive)+" point(s)! Nice Job!"+message, inline=False)
+            message = await msg.edit(embed=qembed)
+            await msg.add_reaction("✅")
+        elif answer == 2:
+            tbpoints("give", str(uid), -1)
+            await msg.clear_reactions()
+            qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
+            qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+            qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
+            qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+            qembed.add_field(name="Points",value="You lost 1 point! Sorry :(", inline=False)
+            message = await msg.edit(embed=qembed)
+            await msg.add_reaction("❌")
+    elif a == "False":
+        if answer == 1:
+            tbpoints("give", str(uid), -1)
+            await msg.clear_reactions()
+            qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
+            qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+            qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
+            qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+            qembed.add_field(name="Points",value="You lost 1 point! Sorry :(", inline=False)
+            message = await msg.edit(embed=qembed)
+            await msg.add_reaction("❌")
+        elif answer == 2:
+            tbpoints("give", str(uid), pointstogive)
+            await msg.clear_reactions()
+            qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
+            qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+            qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
+            qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+            qembed.add_field(name="Points",value="You got "+str(pointstogive)+" point(s)! Nice Job!"+message, inline=False)
+            message = await msg.edit(embed=qembed)
+            await msg.add_reaction("✅")
 
 @client.command(aliases=['debug'])
 async def triviadebug(ctx):
-    with open('data.txt') as json_file:
-        data = json.load(json_file)
-        datalist = data.items()
-        await ctx.send(str(data))
+    data = tbdata("data",0,0)
+    datalist = data.items()
+    await ctx.send(str(data))
 
 @client.command(aliases=['top'])
 async def globalleaderboard(ctx):
-    with open('data.txt') as json_file:
-        data = json.load(json_file)
-        datalist = data.items()
-        sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
-        try:
-            firstuserid = int(sorteddata[0][0])
-        except:
-            firstuserid = "null"
-        try:
-            seconduserid = int(sorteddata[1][0])
-        except:
-            seconduserid = "null"
-        try:
-            thirduserid = int(sorteddata[2][0])
-        except:
-            thirduserid = "null"
-        try:
-            firstpoints = data[str(firstuserid)]
-        except:
-            firstpoints = "null"
-        try:
-            secondpoints = data[str(seconduserid)]
-        except:
-            secondpoints = "null"
-        try:
-            thirdpoints = data[str(thirduserid)]
-        except:
-            thirdpoints = "null"
-        r = random.randint(0, 255)
-        g = random.randint(0, 255)
-        b = random.randint(0, 255)
-        embed = discord.Embed(
-            title='Leaderboard',
-            description='Top Globally',
-            color=discord.Colour.from_rgb(r, g, b),
-        )
-        data = str(data)
-        user1 = client.get_user(firstuserid)
-        user2 = client.get_user(seconduserid)
-        user3 = client.get_user(thirduserid)
-        firstmessage = "{0} with {1} points".format(str(user1),str(firstpoints))
-        secondmessage = "{0} with {1} points".format(str(user2),str(secondpoints))
-        thirdmessage = "{0} with {1} points".format(str(user3),str(thirdpoints))
-        embed.add_field(name='1st Place', value=firstmessage)
-        embed.add_field(name='2nd Place', value=secondmessage)
-        embed.add_field(name='3rd Place', value=thirdmessage)
-        await ctx.send(embed=embed)
+    data = tbdata("data",0,0)
+    datalist = data.items()
+    sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
+    try:
+        firstuserid = int(sorteddata[0][0])
+    except:
+        firstuserid = "null"
+    try:
+        seconduserid = int(sorteddata[1][0])
+    except:
+        seconduserid = "null"
+    try:
+        thirduserid = int(sorteddata[2][0])
+    except:
+        thirduserid = "null"
+    try:
+        firstpoints = data[str(firstuserid)]
+    except:
+        firstpoints = "null"
+    try:
+        secondpoints = data[str(seconduserid)]
+    except:
+        secondpoints = "null"
+    try:
+        thirdpoints = data[str(thirduserid)]
+    except:
+        thirdpoints = "null"
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    embed = discord.Embed(
+        title='Leaderboard',
+        description='Top Globally',
+        color=discord.Colour.from_rgb(r, g, b),
+    )
+    data = str(data)
+    user1 = client.get_user(firstuserid)
+    user2 = client.get_user(seconduserid)
+    user3 = client.get_user(thirduserid)
+    firstmessage = "{0} with {1} points".format(str(user1),str(firstpoints))
+    secondmessage = "{0} with {1} points".format(str(user2),str(secondpoints))
+    thirdmessage = "{0} with {1} points".format(str(user3),str(thirdpoints))
+    embed.add_field(name='1st Place', value=firstmessage)
+    embed.add_field(name='2nd Place', value=secondmessage)
+    embed.add_field(name='3rd Place', value=thirdmessage)
+    await ctx.send(embed=embed)
 
 
 @client.command(aliases=['servertop'])
 async def serverleaderboard(ctx):
-    with open('data.txt') as json_file:
-        server_members=[]
-        first_found=False
-        second_found=False
-        third_found=False
-        data = json.load(json_file)
-        datalist = data.items()
-        sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
-        for id in ctx.guild.members:
-            id = id.id
-            server_members.append(str(id))
-        server_members = sorted(server_members, key=lambda x:data.get(x,0), reverse=True)
-        try:
-            firstuserid = server_members[0]
-        except:
-            firstuserid = "null"
-        try:
-            seconduserid = server_members[1]
-        except:
-            seconduserid = "null"
-        try:
-            thirduserid = server_members[2]
-        except:
-            thirduserid = "null"
-        try:
-            firstpoints = data[firstuserid]
-        except:
-            firstpoints = "null"
-        try:
-            secondpoints = data[seconduserid]
-        except:
-            secondpoints = "null"
-        try:
-            thirdpoints = data[thirduserid]
-        except:
-            thirdpoints = "null"
-        r = random.randint(0, 255)
-        g = random.randint(0, 255)
-        b = random.randint(0, 255)
-        embed = discord.Embed(
-            title='Leaderboard',
-            description='Top in this Server',
-            color=discord.Colour.from_rgb(r, g, b),
-        )
-        data = str(data)
-        firstmessage = "<@" + str(firstuserid) + "> with " + str(firstpoints) + " points!"
-        secondmessage = "<@" + str(seconduserid) + "> with " + str(secondpoints) + " points!"
-        thirdmessage = "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
-        embed.add_field(name='1st Place', value=firstmessage)
-        embed.add_field(name='2nd Place', value=secondmessage)
-        embed.add_field(name='3rd Place', value=thirdmessage)
-        await ctx.send(embed=embed)
+    data = tbdata("data",0,0)
+    server_members=[]
+    first_found=False
+    second_found=False
+    third_found=False
+    datalist = data.items()
+    sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
+    for id in ctx.guild.members:
+        id = id.id
+        server_members.append(str(id))
+    server_members = sorted(server_members, key=lambda x:data.get(x,0), reverse=True)
+    try:
+        firstuserid = server_members[0]
+    except:
+        firstuserid = "null"
+    try:
+        seconduserid = server_members[1]
+    except:
+        seconduserid = "null"
+    try:
+        thirduserid = server_members[2]
+    except:
+        thirduserid = "null"
+    try:
+        firstpoints = data[firstuserid]
+    except:
+        firstpoints = "null"
+    try:
+        secondpoints = data[seconduserid]
+    except:
+        secondpoints = "null"
+    try:
+        thirdpoints = data[thirduserid]
+    except:
+        thirdpoints = "null"
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    embed = discord.Embed(
+        title='Leaderboard',
+        description='Top in this Server',
+        color=discord.Colour.from_rgb(r, g, b),
+    )
+    data = str(data)
+    firstmessage = "<@" + str(firstuserid) + "> with " + str(firstpoints) + " points!"
+    secondmessage = "<@" + str(seconduserid) + "> with " + str(secondpoints) + " points!"
+    thirdmessage = "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
+    embed.add_field(name='1st Place', value=firstmessage)
+    embed.add_field(name='2nd Place', value=secondmessage)
+    embed.add_field(name='3rd Place', value=thirdmessage)
+    await ctx.send(embed=embed)
 
 @client.command()
 async def points(ctx):
@@ -267,13 +295,7 @@ async def points(ctx):
     b = random.randint(0, 255)
     uid = ctx.message.author.id
     username = "<@"+str(uid)+">"
-    with open('data.txt') as json_file:
-        data = json.load(json_file)
-        try:
-            print(data[str(uid)])
-        except KeyError:
-            data[str(uid)] = 0
-        current_points = data[str(uid)]
+    current_points = tbdata("get",str(uid),0)
     embed = discord.Embed(
         title='Your Points',
         description='The amount of points you have.',
@@ -335,7 +357,7 @@ async def invite(ctx):
     embed.add_field(name='Bot', value=link, inline=False)
     embed.add_field(name='Support Server', value=serverlink, inline=False)
     await ctx.send(embed=embed)
-	
+
 @client.command(brief="Invite Link", aliases=['question'], pass_context='True')
 async def feedback(ctx):
     link = '[Feedback Link (We will reply to every message.)](https://github.com/gubareve/trivia-bot/issues/new/choose)'
