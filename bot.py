@@ -26,7 +26,7 @@ if TOKEN == None:
     TOKEN = input("Token Please:")
 
 redisurl = os.getenv('REDIS_URL')
-if redisurl = None:
+if redisurl == None:
     redisurl = input('Please enter the REDIS URL:')
 
 triviadb = redis.from_url(redisurl)
@@ -180,13 +180,13 @@ async def trivia(ctx, category=None):
 
 @client.command(aliases=['debug'])
 async def triviadebug(ctx):
-    data = tbdata("data",0,0)
+    data = tbpoints("data",0,0)
     datalist = data.items()
     await ctx.send(str(data))
 
 @client.command(aliases=['top'])
 async def globalleaderboard(ctx):
-    data = tbdata("data",0,0)
+    data = tbpoints("data",0,0)
     datalist = data.items()
     sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
     try:
@@ -236,7 +236,7 @@ async def globalleaderboard(ctx):
 
 @client.command(aliases=['servertop'])
 async def serverleaderboard(ctx):
-    data = tbdata("data",0,0)
+    data = tbpoints("data",0,0)
     server_members=[]
     first_found=False
     second_found=False
@@ -295,7 +295,7 @@ async def points(ctx):
     b = random.randint(0, 255)
     uid = ctx.message.author.id
     username = "<@"+str(uid)+">"
-    current_points = tbdata("get",str(uid),0)
+    current_points = tbpoints("get",str(uid),0)
     embed = discord.Embed(
         title='Your Points',
         description='The amount of points you have.',
