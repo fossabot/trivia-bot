@@ -66,7 +66,7 @@ def tbpoints(statement, key, amount):
         try:
             stringdb[userid] += int(amount)
         except:
-            stringdb[userid] = 1
+            stringdb[userid] = int(amount)
         triviadb.hmset("data", stringdb)
     if statement == "set":
         userid = key
