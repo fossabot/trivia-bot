@@ -60,4 +60,4 @@ NOTE: these only work for admins.
 
 ## Copyright
 
-(c) 2020 KD7T with help from Wicked Tree Development
+(c) 2020 [KD7T Enterprises](https://github.com/gubareve) with help from [WickedTree Development](https://github.com/wickedtree)
