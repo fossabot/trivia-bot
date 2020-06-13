@@ -11,8 +11,9 @@ A easy to use true or false trivia bot for discord the includes global leaderboa
 ## Getting Started:
 
 * You will need all the packages in requirements.txt. You can do this by ```pip install -r requirements.txt```.
-* Get a discord token.
-* Type python3 bot.py
+* Get a discord token. Get the token ready for input. (If you want the token to be inputed automatically, put the token in the env var ```bottoken```)
+* Setup a [REDIS](https://redislabs.com/) database with a key ```data``` with value ```"{}"```. Get the URL ready for imput. (If you want the URL to be inputed automatically, put the URL in the env var ```REDIS_URL```)
+* Type ```python3 bot.py```
 
 ## Commands:
 
@@ -35,7 +36,7 @@ NOTE: ignore the [ ] that just shows what should be there when entering the comm
 NOTE: these only work for admins.
 
 ```
-;triviadebug - This is echos the contents of data.txt
+;triviadebug - This is echos the contents of data.txt (actually everyone can use it but its useless)
 ;servers - This lists the servers the bot is in.
 ```
 
@@ -57,8 +58,6 @@ NOTE: these only work for admins.
 
 ![Personal Points](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-05-27%20at%2012.34.46%20PM.png)
 
-## Maps:
+## Copyright
 
-![Map 1](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/diagram%20(1).svg)
-![Map 2](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/diagram%20(2).svg)
-![Map 3](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/diagram%20(3).svg)
+(c) 2020 KD7T with help from Wicked Tree Development
