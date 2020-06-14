@@ -31,9 +31,19 @@ NOTE: ignore the [ ] that just shows what should be there when entering the comm
 ;ping - Shows ping
 ```
 
+## Admin Panel:
+
+Admins have access to the admin panel:
+
+![Admin Panel](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-06-13%20at%207.34.35%20PM.png)
+
+Note: The file name is ```admin.py```
+
+Also Note: To access the admin panel the REDIS URL and the token must be provided.
+
 ## Admin Commands:
 
-NOTE: these only work for admins.
+NOTE: these only work for admins (Everyone with the manage bot permission).
 
 ```
 ;triviadebug - This is echos the contents of data.txt (actually everyone can use it but its useless)
