@@ -11,7 +11,7 @@ import random
 import urllib.parse, urllib.request, re
 from discord import Game
 from json import loads
-from discord.ext.commands import Bot
+from discord.ext.commands import Bot, has_permissions, MissingPermissions
 from discord.ext import commands
 import sys
 import time
