@@ -32,27 +32,9 @@ redisurl = os.getenv('REDIS_URL')
 if redisurl == None:
     redisurl = input('Please enter the REDIS URL:')
 
-dbl_token = os.getenv('DBL_TOKEN')
-if dbl_token == None:
-    dbl_token = input('Please enter the DBL TOKEN:')
-
 triviadb = redis.from_url(redisurl)
 
 client = commands.Bot(command_prefix=';')
-
-class TopGG(commands.Cog):
-    """Handles interactions with the top.gg API"""
-
-    def __init__(self, bot):
-        self.bot = bot
-        self.token = dbl_token # set this to your DBL token
-        self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True) # Autopost will post your guild count every 30 minutes
-
-    async def on_guild_post():
-        print("Server count posted successfully")
-
-def setup(bot):
-    bot.add_cog(TopGG(bot))
 
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
@@ -460,7 +442,6 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
-    setup(client)
     n = requests.get("https://opentdb.com/api_token.php?command=request").text
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)['token'])
