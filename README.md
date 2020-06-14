@@ -36,7 +36,7 @@ NOTE: ignore the [ ] that just shows what should be there when entering the comm
 
 Admins have access to the admin panel:
 
-![Admin Panel](v)
+![Admin Panel](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-06-13%20at%207.55.01%20PM.png)
 
 Note: The file name is ```admin.py```
 
