@@ -130,7 +130,8 @@ def main():
     print("Options:")
     print("(1) Set User Points")
     print("(2) Give User Points")
-    print("(3) Exit")
+    print("(3) Get User Points")
+    print("(4) Exit")
     while True:
         choice = int(input(">>  "))
         if choice == 1:
@@ -142,6 +143,9 @@ def main():
             tbpoints("give", userid, input("Amount:\n"))
             print("Success. The Operation Has Been Completed")
         if choice == 3:
+            userid = str(input("User ID:\n"))
+            print("The User Has " + str(tbpoints("get", userid, 0)) + " Points")
+        if choice == 4:
             sys.exit()
         print()
 
