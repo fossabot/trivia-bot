@@ -414,7 +414,7 @@ async def clear_error(ctx, error):
 	
 @client.command(pass_context=True)
 async def ping(ctx):
-	ping = random.randint(10,30)
+	ping = round(client.latency * 1000)
 	embed=discord.Embed(title=None, description='Ping: {}'.format(str(ping)), color=0x2874A6)
 	await ctx.send(embed=embed)
 
