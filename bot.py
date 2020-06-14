@@ -401,6 +401,17 @@ async def categories(ctx):
         embed.add_field(name=category, value='`;trivia ' + category + '`', inline=True)
     await ctx.send(embed=embed)
 
+@client.command(aliases=["Clear"], brief='Clear Messages')
+@has_permissions(manage_messages=True)
+async def clear(ctx, amount):
+    amount = int(amount) + 1
+    await ctx.channel.purge(limit=amount)
+
+@clear.error
+async def clear_error(ctx, error):
+    if isinstance(error, MissingPermissions):
+        await ctx.send('Sorry, you do not have permissions to clear messages!')
+	
 @client.command(pass_context=True)
 async def ping(ctx):
 	ping = random.randint(10,30)
