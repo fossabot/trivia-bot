@@ -12,12 +12,13 @@ import urllib.parse, urllib.request, re
 from discord import Game
 from json import loads
 from discord.ext.commands import Bot, has_permissions, MissingPermissions
-from discord.ext import commands
+from discord.ext import commands, tasks
 import sys
 import time
 import redis
 import os
 import json
+import dbl
 userspecific = True
 yesemoji = '👍'
 noemoji = '👎'
@@ -32,6 +33,36 @@ if redisurl == None:
 triviadb = redis.from_url(redisurl)
 
 client = commands.Bot(command_prefix=';')
+
+class TopGG(commands.Cog):
+    """Handles interactions with the top.gg API"""
+
+    def __init__(self, bot):
+        self.bot = bot
+        self.token = 'dbl_token' # set this to your DBL token
+        self.dblpy = dbl.DBLClient(self.bot, self.token)
+        self.update_stats.start() # Your linter may say this is wrong, but your linter is wrong
+
+    def cog_unload(self):
+        self.update_stats.cancel() # Your linter may say this is wrong too, but again your linter is wrong
+
+    # The decorator below will work only on discord.py 1.1.0+
+    # In case your discord.py version is below that, you can use self.bot.loop.create_task(self.update_stats())
+
+    @tasks.loop(minutes=30.0)
+    async def update_stats(self):
+        """This function runs every 30 minutes to automatically update your server count"""
+        logger.info('Attempting to post server count')
+        try:
+            await self.dblpy.post_guild_count()
+            logger.info('Posted server count ({})'.format(self.dblpy.guild_count()))
+        except Exception as e:
+            logger.exception('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
+
+def setup(bot):
+    global logger
+    logger = logging.getLogger('bot')
+    bot.add_cog(TopGG(bot))
 
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
@@ -411,7 +442,7 @@ async def clear(ctx, amount):
 async def clear_error(ctx, error):
     if isinstance(error, MissingPermissions):
         await ctx.send('Sorry, you do not have permissions to clear messages!')
-	
+
 @client.command(pass_context=True)
 async def ping(ctx):
 	ping = round(client.latency * 1000)
@@ -439,6 +470,7 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
+    setup(bot)
     n = requests.get("https://opentdb.com/api_token.php?command=request").text
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)['token'])

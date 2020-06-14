@@ -6,3 +6,4 @@ aiohttp==3.6.2
 typing==3.7.4.1
 future==0.18.2
 redis==3.5.3
+dblpy==0.3.4
