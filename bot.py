@@ -19,7 +19,7 @@ import redis
 import os
 import json
 import dbl
-import logging
+
 userspecific = True
 yesemoji = '👍'
 noemoji = '👎'
