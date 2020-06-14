@@ -46,28 +46,12 @@ class TopGG(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.token = dbl_token # set this to your DBL token
-        self.dblpy = dbl.DBLClient(self.bot, self.token)
-        self.update_stats.start() # Your linter may say this is wrong, but your linter is wrong
+        self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True) # Autopost will post your guild count every 30 minutes
 
-    def cog_unload(self):
-        self.update_stats.cancel() # Your linter may say this is wrong too, but again your linter is wrong
-
-    # The decorator below will work only on discord.py 1.1.0+
-    # In case your discord.py version is below that, you can use self.bot.loop.create_task(self.update_stats())
-
-    @tasks.loop(minutes=30.0)
-    async def update_stats(self):
-        """This function runs every 30 minutes to automatically update your server count"""
-        logger.info('Attempting to post server count')
-        try:
-            await self.dblpy.post_guild_count()
-            logger.info('Posted server count ({})'.format(self.dblpy.guild_count()))
-        except Exception as e:
-            logger.exception('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
+    async def on_guild_post():
+        print("Server count posted successfully")
 
 def setup(bot):
-    global logger
-    logger = logging.getLogger('bot')
     bot.add_cog(TopGG(bot))
 
 def check(ctx):
