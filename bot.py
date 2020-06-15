@@ -460,7 +460,7 @@ async def servers(ctx):
 @client.command(pass_context=True)
 async def setplaying(ctx, message=None):
     if str(ctx.message.author.id) == "247594208779567105":
-        if message = None:
+        if message == None:
             await ctx.send("Nothing Provided")
         else:
             await client.change_presence(activity=discord.Activity(name=message, type=1))
