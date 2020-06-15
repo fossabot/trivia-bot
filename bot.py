@@ -465,11 +465,6 @@ async def servers(ctx):
         for server in client.guilds:
             await ctx.send(server.name)
 
-def setup(bot):
-    global logger
-    logger = logging.getLogger('bot')
-    client.add_cog(TopGG(bot))
-
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Activity(name=';help || Discord Trivia', type=3))
@@ -481,5 +476,5 @@ async def on_ready():
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)['token'])
     print(triviatoken)
-    setup(client)
+    client.add_cog(TopGG(client))
 client.run(TOKEN)
