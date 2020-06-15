@@ -469,4 +469,6 @@ async def on_ready():
     triviatoken = urllib.parse.unquote(loads(n)['token'])
     print(triviatoken)
 
+bot.load_extension("cogs.topgg")
+
 client.run(TOKEN)
