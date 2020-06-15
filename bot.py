@@ -60,7 +60,10 @@ async def get_reaction_answer(msg, author, q, a, ctx):
     try:
         reaction, user = await client.wait_for('reaction_add', timeout=20.0, check=checkreaction)
     except asyncio.TimeoutError:
-        await msg.clear_reactions()
+        try:
+            await msg.clear_reactions()
+        except:
+            thisisfornothing = 1
         tbpoints("give", author, -1)
         qembed=discord.Embed(title="Answered Problem", description="This problem has expired", color=0xff0000)
         qembed.add_field(name="The Question Was:", value=str(q), inline=False)
@@ -170,7 +173,10 @@ async def trivia(ctx, category=None):
     if a == "True":
         if answer == 1:
             tbpoints("give", str(uid), pointstogive)
-            await msg.clear_reactions()
+            try:
+                await msg.clear_reactions()
+            except:
+                hahalols = 1
             qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
             qembed.add_field(name="The Question Was:", value=str(q), inline=False)
             qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
@@ -180,7 +186,10 @@ async def trivia(ctx, category=None):
             await msg.add_reaction("✅")
         elif answer == 2:
             tbpoints("give", str(uid), -1)
-            await msg.clear_reactions()
+            try:
+                await msg.clear_reactions()
+            except:
+                chatgoesboom = 12
             qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
             qembed.add_field(name="The Question Was:", value=str(q), inline=False)
             qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
@@ -191,7 +200,10 @@ async def trivia(ctx, category=None):
     elif a == "False":
         if answer == 1:
             tbpoints("give", str(uid), -1)
-            await msg.clear_reactions()
+            try:
+                await msg.clear_reactions()
+            except:
+                waitwhat = 9
             qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
             qembed.add_field(name="The Question Was:", value=str(q), inline=False)
             qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
@@ -201,7 +213,10 @@ async def trivia(ctx, category=None):
             await msg.add_reaction("❌")
         elif answer == 2:
             tbpoints("give", str(uid), pointstogive)
-            await msg.clear_reactions()
+            try:
+                await msg.clear_reactions()
+            except:
+                finaloneyay = 1993
             qembed=discord.Embed(title="Answered Problem", description="This problem has already been answered", color=0xff0000)
             qembed.add_field(name="The Question Was:", value=str(q), inline=False)
             qembed.add_field(name="The Submitted Answer Was", value=textanswer, inline=False)
