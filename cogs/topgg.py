@@ -16,7 +16,9 @@ class TopGG(commands.Cog):
         print("Top GG Class INIT")
         self.bot = bot
         self.token = dbl_token # set this to your DBL token
+        print("ABOUT TO LOAD DLBCLIENT")
         self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='password', webhook_port=5000)
+        print("LOADED")
 
     # The decorator below will work only on discord.py 1.1.0+
     # In case your discord.py version is below that, you can use self.bot.loop.create_task(self.update_stats())
@@ -32,8 +34,6 @@ class TopGG(commands.Cog):
             logger.exception('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
 
         # if you are not using the tasks extension, put the line below
-
-        await asyncio.sleep(1800)
 
     @commands.Cog.listener()
     async def on_dbl_vote(self, data):
