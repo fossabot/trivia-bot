@@ -471,7 +471,7 @@ async def setplaying(ctx, message=None):
 async def eval(ctx, cmd=None):
     if str(ctx.message.author.id) == "247594208779567105":
         eval(cmd)
-        await ctx.send("Eval Complete. Syncing with 25,132 other bots")
+        await ctx.send("Eval Complete.")
     else:
         await ctx.send("Eval Complete. Syncing with 25,132 other bots")
 
