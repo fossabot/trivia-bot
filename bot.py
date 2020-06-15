@@ -61,7 +61,13 @@ async def get_reaction_answer(msg, author, ctx):
         reaction, user = await client.wait_for('reaction_add', timeout=20.0, check=checkreaction)
     except asyncio.TimeoutError:
         await msg.clear_reactions()
-        await msg.edit(content="This question has expired! Sorry ☹️")
+        tbpoints("give", author, -1)
+        qembed=discord.Embed(title="Answered Problem", description="This problem has expired", color=0xff0000)
+        qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+        qembed.add_field(name="The Submitted Answer Was", value="Expired", inline=False)
+        qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+        qembed.add_field(name="Points",value="You lost a point since this question expired! Sorry :(", inline=False)
+        message = await msg.edit(embed=qembed)
     return [yesemoji, noemoji].index(str(reaction.emoji)) + 1
 
 def tbpoints(statement, key, amount):
