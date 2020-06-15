@@ -98,7 +98,7 @@ def tbpoints(statement, key, amount):
         stringdb = {}
         for key in bytedb.keys():
             stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
-        stringdb[userid] -= int(amount)
+        stringdb[str(userid)] -= int(amount)
         triviadb.hmset("data", stringdb)
     if statement == "set":
         userid = key
