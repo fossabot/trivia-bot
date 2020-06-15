@@ -154,7 +154,8 @@ async def trivia(ctx, category=None):
     qembed.add_field(name="Question:", value=str(q), inline=False)
     qembed.add_field(name=yesemoji, value="For true", inline=True)
     qembed.add_field(name=noemoji, value="For false", inline=True)
-    if not checkvote(ctx.message.author.id):
+    diduservote = checkvote(ctx.message.author.id)
+    if not diduservote:
         qembed.add_field(name="Notice:", value="Want to get 2x Points? Vote for us using ;vote", inline=False)
     msg = await ctx.send(embed=qembed)
     answer = await get_reaction_answer(msg, ctx.message.author.id, q, a, ctx)
@@ -163,19 +164,19 @@ async def trivia(ctx, category=None):
         textanswer = yesemoji
     else:
         textanswer = noemoji
-    if checkvote(ctx.message.author.id):
+    if diduservote:
         multiplier = 2
     else:
         multiplier = 1
     if lesspoints:
         pointstogive = 1 * multiplier
         message = " (Chose a category)"
-        if checkvote(ctx.message.author.id):
+        if diduservote:
             message = " (Chose a category and voted)"
     else:
         pointstogive = 2 * multiplier
         message = " (Didn't chose a category)"
-        if checkvote(ctx.message.author.id):
+        if diduservote:
             message = " (Didn't chose a category and voted)"
 
     if a == "True":
