@@ -517,7 +517,10 @@ async def run(ctx, cmd=None):
 @client.command(pass_context=True)
 async def version(ctx, cmd=None):
     try:
+        link = "https://github.com/gubareve/trivia-bot/tree/" + str(HEROKU_SLUG_COMMIT)
+        link = '[SRC]('+link+')'
         embed=discord.Embed(title=None, description='Release: master/{}'.format(str(HEROKU_SLUG_COMMIT)), color=0xd75b45)
+        embed.add_field(name='`SOURCE`', value=link, inline=False)
         embed.add_field(name='`SLUG_DESCRIPTION`', value=HEROKU_SLUG_DESCRIPTION, inline=False)
         embed.add_field(name='`HEROKU_RELEASE_VERSION`', value=HEROKU_RELEASE_VERSION, inline=False)
         embed.add_field(name='`HEROKU_RELEASE_CREATED_AT`', value=HEROKU_RELEASE_CREATED_AT, inline=False)
