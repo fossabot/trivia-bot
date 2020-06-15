@@ -45,6 +45,7 @@ def check(ctx):
 
 def checkvote(userid):
     voteurl = requests.get("https://top.gg/api/bots/715047504126804000/check?userId="+str(userid)).text
+    print(voteurl)
     voted = int(loads(voteurl)["voted"])
     if voted == 1:
         return True
