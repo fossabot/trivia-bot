@@ -443,6 +443,7 @@ async def help(ctx):
     embed.add_field(name='`;categories `', value='List avalible categories!', inline=True)
     embed.add_field(name='`;ping       `', value='Displays Ping            ', inline=True)
     embed.add_field(name='`;feedback   `', value='Shows Feedback Link!     ', inline=True)
+    embed.add_field(name='`;version    `', value='Shows current version    ', inline=True)
     await ctx.send(embed=embed)
 
 @client.command(pass_context=True)
@@ -513,8 +514,8 @@ async def version(ctx, cmd=None):
         embed=discord.Embed(title=None, description='Version ID: Master/{}'.format(str(versionid)), color=0x2874A6)
         await ctx.send(embed=embed)
     except subprocess.CalledProcessError as e:
-        await(e.returncode, e.output)
-    await ctx.send(embed=embed)
+        await ctx.send(e.returncode)
+        await ctx.send(e.output)
 
 @client.event
 async def on_ready():
