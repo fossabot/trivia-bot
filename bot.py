@@ -56,28 +56,6 @@ async def get_reaction_answer(msg, author, ctx):
         await msg.edit(content="This question has expired! Sorry ☹️")
     return [yesemoji, noemoji].index(str(reaction.emoji)) + 1
 
-def setuptopgg(client):
-
-    dblpy = dbl.DBLClient(client, dbl_token, webhook_path='/dblwebhook', webhook_auth='password', webhook_port=5000)
-
-    # The decorator below will work only on discord.py 1.1.0+
-    # In case your discord.py version is below that, you can use self.bot.loop.create_task(self.update_stats())
-
-    @tasks.loop(minutes=30.0)
-    async def update_stats():
-        """This function runs every 30 minutes to automatically update your server count"""
-        logger.info('Attempting to post server count')
-        try:
-            await dblpy.post_guild_count()
-            print('Posted server count ({})'.format(dblpy.guild_count()))
-        except Exception as e:
-            print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
-
-    @commands.Cog.listener()
-    async def on_dbl_vote(data):
-        logger.info('Received an upvote')
-        print(data)
-
 def tbpoints(statement, key, amount):
     if statement == "get":
         userid = key
@@ -472,5 +450,4 @@ async def on_ready():
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)['token'])
     print(triviatoken)
-    setuptopgg(client)
 client.run(TOKEN)
