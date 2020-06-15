@@ -53,7 +53,6 @@ NOTE: these only work for admins (Everyone with the manage bot permission).
 
 ## TO DO:
 
-* Give points for votes
 * Allow commands to work in dms
 
 ## Authors:
