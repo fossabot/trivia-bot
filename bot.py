@@ -64,7 +64,7 @@ async def get_reaction_answer(msg, author, q, a, ctx):
             await msg.clear_reactions()
         except:
             thisisfornothing = 1
-        tbpoints("take", author, -1)
+        tbpoints("take", author, 1)
         qembed=discord.Embed(title="Answered Problem", description="This problem has expired", color=0xff0000)
         qembed.add_field(name="The Question Was:", value=str(q), inline=False)
         qembed.add_field(name="The Submitted Answer Was", value="Expired", inline=False)
