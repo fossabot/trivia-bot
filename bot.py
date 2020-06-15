@@ -20,7 +20,6 @@ import os
 import json
 import dbl
 import logging
-import socket
 
 userspecific = True
 yesemoji = '👍'
@@ -41,18 +40,16 @@ triviadb = redis.from_url(redisurl)
 
 client = commands.Bot(command_prefix=';')
 
-def get_Host_name_IP():
-    try:
-        host_name = socket.gethostname()
-        host_ip = socket.gethostbyname(host_name)
-        print("Hostname :  ",host_name)
-        print("IP : ",host_ip)
-    except:
-        print("Unable to get Hostname and IP")
-
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 
+def checkvote(userid):
+    voteurl = requests.get("https://top.gg/api/bots/715047504126804000/check?userId="+str(userid)).text
+    voted = int(loads(voteurl)["voted"])
+    if voted == 1:
+        return True
+    else:
+        return False
 
 async def get_reaction_answer(msg, author, ctx):
     def checkreaction(reaction, user):
@@ -139,6 +136,8 @@ async def trivia(ctx, category=None):
     qembed.add_field(name="Question:", value=str(q), inline=False)
     qembed.add_field(name=yesemoji, value="For true", inline=True)
     qembed.add_field(name=noemoji, value="For false", inline=True)
+    if not checkvote(ctx.message.author.id):
+        qembed.add_field(name="Want to get 2x Points? Vote for us using ;vote", value="For false", inline=False)
     msg = await ctx.send(embed=qembed)
     answer = await get_reaction_answer(msg, ctx.message.author.id, ctx)
     uid = ctx.message.author.id
@@ -146,12 +145,21 @@ async def trivia(ctx, category=None):
         textanswer = yesemoji
     else:
         textanswer = noemoji
-    if lesspoints:
-        pointstogive = 1
-        message = " (Chose a category)"
+    if checkvote(ctx.message.author.id):
+        multiplier = 2
     else:
-        pointstogive = 2
+        multiplier = 1
+    if lesspoints:
+        pointstogive = 1 * multiplier
+        message = " (Chose a category)"
+        if checkvote(ctx.message.author.id):
+            message = " (Chose a category and voted)"
+    else:
+        pointstogive = 2 * multiplier
         message = " (Didn't chose a category)"
+        if checkvote(ctx.message.author.id):
+            message = " (Didn't chose a category and voted)"
+
     if a == "True":
         if answer == 1:
             tbpoints("give", str(uid), pointstogive)
@@ -329,12 +337,11 @@ async def vote(ctx):
     b = random.randint(0, 255)
     embed = discord.Embed(
         title='Vote for Trivia Bot',
-        description='Vote for Trivia Bot',
+        description='Voting for Trivia Bot grants you a 2x multiplier for 12 hours!',
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.add_field(name='top.gg', value='https://top.gg/bot/715047504126804000/vote')
     embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png')
-    embed.add_field(name='DBL', value='https://discordbotlist.com/bots/trivia-bot/upvote')
     await ctx.send(embed=embed)
 
 @client.command(pass_context=True)
@@ -460,11 +467,5 @@ async def on_ready():
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)['token'])
     print(triviatoken)
-
-get_Host_name_IP()
-
-print("Calling TOPGG CLASS")
-client.load_extension("cogs.topgg")
-print("TOP GG CLASS CALLED")
 
 client.run(TOKEN)
