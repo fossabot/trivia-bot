@@ -268,9 +268,9 @@ async def globalleaderboard(ctx):
         thirdpoints = data[str(thirduserid)]
     except:
         thirdpoints = "null"
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+    r = 215
+    g = 91
+    b = 69
     embed = discord.Embed(
         title='Leaderboard',
         description='Top Globally',
@@ -326,9 +326,9 @@ async def serverleaderboard(ctx):
         thirdpoints = data[thirduserid]
     except:
         thirdpoints = "null"
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+    r = 215
+    g = 91
+    b = 69
     embed = discord.Embed(
         title='Leaderboard',
         description='Top in this Server',
@@ -345,9 +345,9 @@ async def serverleaderboard(ctx):
 
 @client.command()
 async def points(ctx):
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+    r = 215
+    g = 91
+    b = 69
     uid = ctx.message.author.id
     username = "<@"+str(uid)+">"
     current_points = tbpoints("get",str(uid),0)
@@ -362,9 +362,9 @@ async def points(ctx):
 
 @client.command()
 async def vote(ctx):
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+    r = 215
+    g = 91
+    b = 69
     embed = discord.Embed(
         title='Vote for Trivia Bot',
         description='Voting for Trivia Bot grants you a 2x points multiplier for 12 hours! (Please wait 5 minutes after voting)',
@@ -382,9 +382,9 @@ async def botservers(ctx):
 @client.command(brief="Credits!", aliases=['credits'], pass_context='True')
 async def about(ctx):
     devs = ['247594208779567105', '692652688407527474']
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+    r = 215
+    g = 91
+    b = 69
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Credits")
     gld = ctx.guild
@@ -403,9 +403,9 @@ async def about(ctx):
 async def invite(ctx):
     link = '[Invite Link](https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify)'
     serverlink = '[Server Link](https://discord.gg/JwrrR5)'
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+    r = 215
+    g = 91
+    b = 69
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Invite Link")
     embed.add_field(name='Bot', value=link, inline=False)
@@ -415,9 +415,9 @@ async def invite(ctx):
 @client.command(brief="Invite Link", aliases=['question'], pass_context='True')
 async def feedback(ctx):
     link = '[Feedback Link (We will reply to every message.)](https://github.com/gubareve/trivia-bot/issues/new/choose)'
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+    r = 215
+    g = 91
+    b = 69
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Feedback Link")
     embed.add_field(name='Link', value=link, inline=False)
@@ -426,9 +426,9 @@ async def feedback(ctx):
 @client.remove_command("help")
 @client.command(pass_context=True)
 async def help(ctx):
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+    r = 215
+    g = 91
+    b = 69
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Triva Bot Command List")
     embed.add_field(name='`;vote       `', value='Vote for Trivia Bot!     ', inline=True)
@@ -445,9 +445,9 @@ async def help(ctx):
 
 @client.command(pass_context=True)
 async def categories(ctx):
-    r = random.randint(0, 255)
-    g = random.randint(0, 255)
-    b = random.randint(0, 255)
+    r = 215
+    g = 91
+    b = 69
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="List of Categories")
     categories = ["general","books","film","music","musicals","tv","gaming","boardgames","science","computers","math","myths","sports","geography","history","politics","art","people","animals","cars","comics","gadgets","anime","cartoons"]
