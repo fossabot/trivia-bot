@@ -42,7 +42,11 @@ HEROKU_SLUG_DESCRIPTION = os.getenv('HEROKU_SLUG_DESCRIPTION')
 
 triviadb = redis.from_url(redisurl)
 
-client = commands.Bot(command_prefix=';')
+prefix = dbl_token = os.getenv('prefix')
+
+if prefix == None:
+    prefix = ";"
+client = commands.Bot(command_prefix=prefix)
 
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
