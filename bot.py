@@ -338,7 +338,7 @@ async def vote(ctx):
     b = random.randint(0, 255)
     embed = discord.Embed(
         title='Vote for Trivia Bot',
-        description='Voting for Trivia Bot grants you a 2x multiplier for 12 hours!',
+        description='Voting for Trivia Bot grants you a 2x multiplier for 12 hours! (Please wait 5 minutes after voting)',
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.add_field(name='top.gg', value='https://top.gg/bot/715047504126804000/vote')
