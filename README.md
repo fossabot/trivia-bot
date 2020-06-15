@@ -55,7 +55,7 @@ NOTE: these only work for admins (Everyone with the manage bot permission).
 
 ## TO DO:
 
-* Allow commands to work in dms
+* Point Streaks
 
 ## Authors:
 
