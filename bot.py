@@ -501,7 +501,7 @@ async def setplaying(ctx, message=None):
 
 @client.command(pass_context=True)
 async def run(ctx, cmd=None):
-    if str(ctx.message.aut  hor.id) == "247594208779567105":
+    if str(ctx.message.author.id) == "247594208779567105":
         eval(cmd)
         await ctx.send("Eval Complete.")
     else:
