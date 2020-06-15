@@ -13,6 +13,7 @@ class TopGG(commands.Cog):
     """Handles interactions with the top.gg API"""
 
     def __init__(self, bot):
+        print("Top GG Class INIT")
         self.bot = bot
         self.token = dbl_token # set this to your DBL token
         self.dblpy = dbl.DBLClient(self.bot, self.token, webhook_path='/dblwebhook', webhook_auth='password', webhook_port=5000)

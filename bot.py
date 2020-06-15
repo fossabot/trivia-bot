@@ -451,6 +451,8 @@ async def on_ready():
     triviatoken = urllib.parse.unquote(loads(n)['token'])
     print(triviatoken)
 
+print("Calling TOPGG CLASS")
 client.load_extension("cogs.topgg")
+print("TOP GG CLASS CALLED")
 
 client.run(TOKEN)
