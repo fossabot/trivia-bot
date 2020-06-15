@@ -452,7 +452,7 @@ async def on_ready():
     print(triviatoken)
 
 print("Calling TOPGG CLASS")
-client.load_extension("cogs.topgg")
+await client.load_extension("cogs.topgg")
 print("TOP GG CLASS CALLED")
 
 client.run(TOKEN)
