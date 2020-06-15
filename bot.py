@@ -509,8 +509,8 @@ async def run(ctx, cmd=None):
 @client.command(pass_context=True)
 async def version(ctx, cmd=None):
     versionid = subprocess.check_output(["git", "describe", "head", "--tags"]).strip().decode('ascii')
-	embed=discord.Embed(title=None, description='Version ID: {}'.format(str(versionid)), color=0x2874A6)
-	await ctx.send(embed=embed)
+    embed=discord.Embed(title=None, description='Version ID: {}'.format(str(versionid)), color=0x2874A6)
+    await ctx.send(embed=embed)
 
 @client.event
 async def on_ready():
