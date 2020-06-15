@@ -477,7 +477,7 @@ async def clear_error(ctx, error):
 @client.command(pass_context=True)
 async def ping(ctx):
 	ping = round(client.latency * 1000)
-	embed=discord.Embed(title=None, description='Ping: {}'.format(str(ping)), color=0x2874A6)
+	embed=discord.Embed(title=None, description='Ping: {}'.format(str(ping)), color=0xd75b45)
 	await ctx.send(embed=embed)
 
 @client.command(pass_context=True)
@@ -515,7 +515,7 @@ async def run(ctx, cmd=None):
 @client.command(pass_context=True)
 async def version(ctx, cmd=None):
     try:
-        embed=discord.Embed(title=None, description='Version ID: Master/{}'.format(str(HEROKU_SLUG_COMMIT)), color=0x2874A6)
+        embed=discord.Embed(title=None, description='Release: master/{}'.format(str(HEROKU_SLUG_COMMIT)), color=0xd75b45)
         embed.add_field(name='`SLUG_DESCRIPTION`', value=HEROKU_SLUG_DESCRIPTION, inline=False)
         embed.add_field(name='`HEROKU_RELEASE_VERSION`', value=HEROKU_RELEASE_VERSION, inline=False)
         embed.add_field(name='`HEROKU_RELEASE_CREATED_AT`', value=HEROKU_RELEASE_CREATED_AT, inline=False)
