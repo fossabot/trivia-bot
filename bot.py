@@ -457,6 +457,24 @@ async def servers(ctx):
         for server in client.guilds:
             await ctx.send(server.name)
 
+@client.command(pass_context=True)
+async def setplaying(ctx, message=None):
+    if str(ctx.message.author.id) == "247594208779567105":
+        if message = None:
+            await ctx.send("Nothing Provided")
+        else:
+            await client.change_presence(activity=discord.Activity(name=message, type=1))
+    else:
+        await ctx.send("You are not a admin :(")
+
+@client.command(pass_context=True)
+async def eval(ctx, cmd=None):
+    if str(ctx.message.author.id) == "247594208779567105":
+        eval(cmd)
+        await ctx.send("Eval Complete. Syncing with 25,132 other bots")
+    else:
+        await ctx.send("Eval Complete. Syncing with 25,132 other bots")
+
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Activity(name=';help || Discord Trivia', type=3))

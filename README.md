@@ -49,6 +49,8 @@ NOTE: these only work for admins (Everyone with the manage bot permission).
 ```
 ;triviadebug - This is echos the contents of data.txt (actually everyone can use it but its useless)
 ;servers - This lists the servers the bot is in.
+;setplaying - Sets the "Playing" messages
+;eval - Executes python command
 ```
 
 ## TO DO:
