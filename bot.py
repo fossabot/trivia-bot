@@ -20,6 +20,7 @@ import os
 import json
 import dbl
 import logging
+import socket
 
 userspecific = True
 yesemoji = '👍'
@@ -39,6 +40,15 @@ if dbl_token == None:
 triviadb = redis.from_url(redisurl)
 
 client = commands.Bot(command_prefix=';')
+
+def get_Host_name_IP():
+    try:
+        host_name = socket.gethostname()
+        host_ip = socket.gethostbyname(host_name)
+        print("Hostname :  ",host_name)
+        print("IP : ",host_ip)
+    except:
+        print("Unable to get Hostname and IP")
 
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
@@ -450,6 +460,8 @@ async def on_ready():
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)['token'])
     print(triviatoken)
+
+get_Host_name_IP()
 
 print("Calling TOPGG CLASS")
 client.load_extension("cogs.topgg")
