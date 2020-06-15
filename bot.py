@@ -44,8 +44,8 @@ def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 
 def checkvote(userid):
-    voteurl = requests.get("https://top.gg/api/bots/715047504126804000/check?userId="+str(userid)).text
-    print(voteurl)
+    headers = {'Authorization': dbl_token}
+    voteurl = requests.get("https://top.gg/api/bots/715047504126804000/check?userId="+str(userid), headers = headers).text
     voted = int(loads(voteurl)["voted"])
     if voted == 1:
         return True
