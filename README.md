@@ -30,6 +30,7 @@ NOTE: ignore the [ ] that just shows what should be there when entering the comm
 ;invite - Pastes invite link
 ;credits - Shows credits
 ;ping - Shows ping
+;version - Shows version info (Heroku Only)
 ```
 
 ## Admin Panel:

@@ -26,6 +26,7 @@ If applicable, add screenshots to help explain your problem.
 **Info (please complete the following information):**
  - Server: [e.g. DM's, Help Server]
  - Device: [e.g. Phone]
+ - Screenshot of ;version:
 
 **Additional context**
 Add any other context about the problem here.
