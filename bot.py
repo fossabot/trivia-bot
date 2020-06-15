@@ -34,8 +34,6 @@ if redisurl == None:
     redisurl = input('Please enter the REDIS URL:')
 
 dbl_token = os.getenv('DBL_TOKEN')
-if dbl_token == None:
-    dbl_token = input('Please enter the REDIS URL:')
 
 HEROKU_RELEASE_CREATED_AT = os.getenv('HEROKU_RELEASE_CREATED_AT')
 HEROKU_RELEASE_VERSION = os.getenv('HEROKU_RELEASE_VERSION')
@@ -536,6 +534,8 @@ async def on_ready():
     triviatoken = urllib.parse.unquote(loads(n)['token'])
     print(triviatoken)
 
-client.load_extension("cogs.topgg")
-
+try:
+    client.load_extension("cogs.topgg")
+except:
+    print("Top.gg Loading Failed")
 client.run(TOKEN)
