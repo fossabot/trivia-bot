@@ -37,6 +37,8 @@ dbl_token = os.getenv('DBL_TOKEN')
 if dbl_token == None:
     dbl_token = input('Please enter the REDIS URL:')
 
+source_version = os.getenv('SOURCE_VERSION')
+
 triviadb = redis.from_url(redisurl)
 
 client = commands.Bot(command_prefix=';')
@@ -510,8 +512,7 @@ async def run(ctx, cmd=None):
 @client.command(pass_context=True)
 async def version(ctx, cmd=None):
     try:
-        versionid = subprocess.check_output(["git", "describe", "head", "--tags"]).strip().decode('ascii')
-        embed=discord.Embed(title=None, description='Version ID: Master/{}'.format(str(versionid)), color=0x2874A6)
+        embed=discord.Embed(title=None, description='Version ID: Master/{}'.format(str(source_version)), color=0x2874A6)
         await ctx.send(embed=embed)
     except subprocess.CalledProcessError as e:
         await ctx.send(e.returncode)
