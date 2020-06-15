@@ -481,5 +481,4 @@ async def on_ready():
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)['token'])
     print(triviatoken)
-    setup(client)
 client.run(TOKEN)
