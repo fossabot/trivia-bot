@@ -37,7 +37,7 @@ dbl_token = os.getenv('DBL_TOKEN')
 if dbl_token == None:
     dbl_token = input('Please enter the REDIS URL:')
 
-source_version = os.getenv('SOURCE_VERSION')
+source_version = os.getenv('CODEBUILD_RESOLVED_SOURCE_VERSION')
 
 triviadb = redis.from_url(redisurl)
 
