@@ -52,7 +52,7 @@ def checkvote(userid):
     else:
         return False
 
-async def get_reaction_answer(msg, author, ctx):
+async def get_reaction_answer(msg, author, ctx, q, a):
     def checkreaction(reaction, user):
         return (user.id == author or not userspecific) and reaction.message.id == msg.id and str(reaction.emoji) in [yesemoji, noemoji]
     await msg.add_reaction(yesemoji)
@@ -146,7 +146,7 @@ async def trivia(ctx, category=None):
     if not checkvote(ctx.message.author.id):
         qembed.add_field(name="Notice:", value="Want to get 2x Points? Vote for us using ;vote", inline=False)
     msg = await ctx.send(embed=qembed)
-    answer = await get_reaction_answer(msg, ctx.message.author.id, ctx)
+    answer = await get_reaction_answer(msg, ctx.message.author.id, q, a, ctx)
     uid = ctx.message.author.id
     if answer == 1:
         textanswer = yesemoji
