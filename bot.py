@@ -37,7 +37,10 @@ dbl_token = os.getenv('DBL_TOKEN')
 if dbl_token == None:
     dbl_token = input('Please enter the REDIS URL:')
 
-source_version = os.getenv('CODEBUILD_RESOLVED_SOURCE_VERSION')
+HEROKU_RELEASE_CREATED_AT = os.getenv('HEROKU_RELEASE_CREATED_AT')
+HEROKU_RELEASE_VERSION = os.getenv('HEROKU_RELEASE_VERSION')
+HEROKU_SLUG_COMMIT = os.getenv('HEROKU_SLUG_COMMIT')
+HEROKU_SLUG_DESCRIPTION = os.getenv('HEROKU_SLUG_DESCRIPTION')
 
 triviadb = redis.from_url(redisurl)
 
@@ -512,7 +515,10 @@ async def run(ctx, cmd=None):
 @client.command(pass_context=True)
 async def version(ctx, cmd=None):
     try:
-        embed=discord.Embed(title=None, description='Version ID: Master/{}'.format(str(source_version)), color=0x2874A6)
+        embed=discord.Embed(title=None, description='Version ID: Master/{}'.format(str(HEROKU_SLUG_COMMIT)), color=0x2874A6)
+        embed.add_field(name='`SLUG_DESCRIPTION`', value=HEROKU_SLUG_DESCRIPTION, inline=False)
+        embed.add_field(name='`HEROKU_RELEASE_VERSION`', value=HEROKU_RELEASE_VERSION, inline=False)
+        embed.add_field(name='`HEROKU_RELEASE_CREATED_AT`', value=HEROKU_RELEASE_CREATED_AT, inline=False)
         await ctx.send(embed=embed)
     except subprocess.CalledProcessError as e:
         await ctx.send(e.returncode)
