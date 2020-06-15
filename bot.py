@@ -52,7 +52,7 @@ def checkvote(userid):
     else:
         return False
 
-async def get_reaction_answer(msg, author, ctx, q, a):
+async def get_reaction_answer(msg, author, q, a, ctx):
     def checkreaction(reaction, user):
         return (user.id == author or not userspecific) and reaction.message.id == msg.id and str(reaction.emoji) in [yesemoji, noemoji]
     await msg.add_reaction(yesemoji)
