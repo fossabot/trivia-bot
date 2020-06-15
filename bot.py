@@ -82,11 +82,6 @@ class TopGG(commands.Cog):
         logger.info('Received an upvote')
         print(data)
 
-def setup(bot):
-    global logger
-    logger = logging.getLogger('bot')
-    bot.add_cog(TopGG(bot))
-
 def tbpoints(statement, key, amount):
     if statement == "get":
         userid = key
@@ -481,4 +476,5 @@ async def on_ready():
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)['token'])
     print(triviatoken)
+    client.add_cog(TopGG(client))
 client.run(TOKEN)
