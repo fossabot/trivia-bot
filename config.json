@@ -5,7 +5,6 @@
 	},
 	"points_without_category": 2,
 	"points_with_category": 1,
-	"vote_multiplier": 2,
 	"discord_token" : "put_your_token_here",
 	"redis_url" : "put_your_redis_url_here"
 }
