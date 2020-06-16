@@ -42,7 +42,7 @@ HEROKU_SLUG_DESCRIPTION = os.getenv('HEROKU_SLUG_DESCRIPTION')
 
 triviadb = redis.from_url(redisurl)
 
-prefix = dbl_token = os.getenv('prefix')
+prefix = os.getenv('prefix')
 
 if prefix == None:
     prefix = ";"
