@@ -1,6 +1,6 @@
 # Trivia Bot
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2020)
@@ -72,6 +72,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="http://kd7t.com"><img src="https://avatars3.githubusercontent.com/u/24500411?v=4" width="100px;" alt=""/><br /><sub><b>Evan Gubarev</b></sub></a><br /><a href="#design-gubareve" title="Design">🎨</a> <a href="#ideas-gubareve" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-gubareve" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/WickedTree"><img src="https://avatars0.githubusercontent.com/u/50127946?v=4" width="100px;" alt=""/><br /><sub><b>WickedTree Development</b></sub></a><br /><a href="#design-WickedTree" title="Design">🎨</a> <a href="https://github.com/gubareve/trivia-bot/commits?author=WickedTree" title="Code">💻</a></td>
   </tr>
 </table>
 
