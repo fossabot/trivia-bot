@@ -89,7 +89,7 @@ def tbpoints(statement, key, amount):
     if statement == "get":
         userid = key
         try:
-            points = int(triviadb.hgetall("data")[userid.encode('ascii')])
+            points = float(triviadb.hgetall("data")[userid.encode('ascii')])
         except:
             points = 0
         return points
@@ -98,34 +98,34 @@ def tbpoints(statement, key, amount):
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
         try:
-            stringdb[userid] += int(amount)
+            stringdb[userid] += float(amount)
         except:
-            stringdb[userid] = int(amount)
+            stringdb[userid] = float(amount)
         triviadb.hmset("data", stringdb)
     if statement == "take":
         userid = key
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
-        stringdb[str(userid)] -= int(amount)
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
+        stringdb[str(userid)] -= float(amount)
         triviadb.hmset("data", stringdb)
     if statement == "set":
         userid = key
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
 
-        stringdb[userid] = int(amount)
+        stringdb[userid] = float(amount)
         triviadb.hmset("data", stringdb)
     if statement == "data":
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
         return stringdb
 
 @client.event
@@ -183,9 +183,12 @@ async def trivia(ctx, category=None):
     qembed.add_field(name="Question:", value=str(q), inline=False)
     qembed.add_field(name=yesemoji, value="For true", inline=True)
     qembed.add_field(name=noemoji, value="For false", inline=True)
-    diduservote = checkvote(ctx.message.author.id)
+    try:
+        diduservote = checkvote(ctx.message.author.id)
+    except:
+        diduservote = False
     if not diduservote:
-        qembed.add_field(name="Notice:", value="Want to get 2x Points? Vote for us using ;vote", inline=False)
+        qembed.add_field(name="Notice:", value="Want to get 1.5 times the amount of points? Vote for us using ;vote", inline=False)
     msg = await ctx.send(embed=qembed)
     answer = await get_reaction_answer(msg, ctx.message.author.id, q, a, ctx)
     uid = ctx.message.author.id
@@ -194,19 +197,19 @@ async def trivia(ctx, category=None):
     else:
         textanswer = noemoji
     if diduservote:
-        multiplier = 2
+        multiplier = 1.5
     else:
         multiplier = 1
     if lesspoints:
         pointstogive = 1 * multiplier
-        message = " (Chose a category)"
+        message = ""
         if diduservote:
-            message = " (Chose a category and voted)"
+            message = " (Voted)"
     else:
-        pointstogive = 2 * multiplier
-        message = " (Didn't chose a category)"
+        pointstogive = 1 * multiplier
+        message = ""
         if diduservote:
-            message = " (Didn't chose a category and voted)"
+            message = " (Voted)"
 
     if a == "True":
         if answer == 1:
@@ -397,7 +400,7 @@ async def vote(ctx):
     b = 69
     embed = discord.Embed(
         title='Vote for Trivia Bot',
-        description='Voting for Trivia Bot grants you a 2x points multiplier for 12 hours! (Please wait 5 minutes after voting)',
+        description='Voting for Trivia Bot grants you a 1.5x points multiplier for 12 hours! (Please wait 5 minutes after voting)',
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.add_field(name='top.gg', value='https://top.gg/bot/715047504126804000/vote')
