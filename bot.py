@@ -194,7 +194,7 @@ async def trivia(ctx, category=None):
     else:
         textanswer = noemoji
     if diduservote:
-        multiplier = 2
+        multiplier = 1.5
     else:
         multiplier = 1
     if lesspoints:
@@ -397,7 +397,7 @@ async def vote(ctx):
     b = 69
     embed = discord.Embed(
         title='Vote for Trivia Bot',
-        description='Voting for Trivia Bot grants you a 2x points multiplier for 12 hours! (Please wait 5 minutes after voting)',
+        description='Voting for Trivia Bot grants you a 1.5x points multiplier for 12 hours! (Please wait 5 minutes after voting)',
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.add_field(name='top.gg', value='https://top.gg/bot/715047504126804000/vote')
