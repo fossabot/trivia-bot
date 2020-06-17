@@ -535,6 +535,8 @@ async def run(ctx, cmd=None):
     else:
         await ctx.send("Eval Complete. Syncing with 25,132 other bots")
 
+async def on_command_error(self, ctx, error):
+
 @client.command(pass_context=True)
 async def version(ctx, cmd=None):
     try:
@@ -566,4 +568,9 @@ try:
     client.load_extension("cogs.topgg")
 except:
     print("Top.gg Loading Failed")
+
+try:
+    client.load_extension("cogs.errors")
+except:
+    print("Error Cog Loading Failed")
 client.run(TOKEN)
