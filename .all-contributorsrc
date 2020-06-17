@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "gubareve",
+      "name": "Evan Gubarev",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/24500411?v=4",
+      "profile": "http://kd7t.com",
+      "contributions": [
+        "design",
+        "ideas",
+        "infra"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "trivia-bot",
+  "projectOwner": "gubareve",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
