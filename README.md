@@ -1,6 +1,6 @@
 # Trivia Bot
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2020)
@@ -62,23 +62,6 @@ NOTE: these only work for admins (Everyone with the manage bot permission).
 
 * Point Streaks
 
-## Authors:
-
-* **Gubareve** - Main Coder
-* **Wickedtree** - Assistant Coder / Tester
-
-## Images:
-
-![A sample question](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-06-08%20at%209.06.00%20PM.png)
-
-![Global Leaderboards](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-05-27%20at%2012.34.32%20PM.png)
-
-![Personal Points](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-05-27%20at%2012.34.46%20PM.png)
-
-## Copyright
-
-(c) 2020 [KD7T Enterprises](https://github.com/gubareve) with help from [WickedTree Development](https://github.com/wickedtree)
-
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -97,3 +80,15 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## Images:
+
+![A sample question](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-06-08%20at%209.06.00%20PM.png)
+
+![Global Leaderboards](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-05-27%20at%2012.34.32%20PM.png)
+
+![Personal Points](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-05-27%20at%2012.34.46%20PM.png)
+
+## Copyright
+
+(c) 2020 [KD7T Enterprises](https://github.com/gubareve)

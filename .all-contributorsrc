@@ -11,9 +11,20 @@
       "avatar_url": "https://avatars3.githubusercontent.com/u/24500411?v=4",
       "profile": "http://kd7t.com",
       "contributions": [
+        "code",
         "design",
         "ideas",
         "infra",
+        "code"
+      ]
+    },
+    {
+      "login": "WickedTree",
+      "name": "WickedTree Development",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/50127946?v=4",
+      "profile": "https://github.com/WickedTree",
+      "contributions": [
+        "design",
         "code"
       ]
     }
