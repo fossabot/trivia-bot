@@ -1,11 +1,14 @@
 # Trivia Bot
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2020)
 [![Discord Bots](https://top.gg/api/widget/status/715047504126804000.svg)](https://top.gg/bot/715047504126804000)
 [![Discord Bots](https://top.gg/api/widget/upvotes/715047504126804000.svg)](https://top.gg/bot/715047504126804000)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-6f42c1.svg)](http://makeapullrequest.com)
 
-## [Invite Link:](https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify)
+## [Invite Link:](https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify)  
 
 A easy to use true or false trivia bot for discord the includes a global leaderboard, categories, server leaderboards, and a infinite amount of control. You can copy this bot if you keep the credit command.
 
@@ -59,10 +62,25 @@ NOTE: these only work for admins (Everyone with the manage bot permission).
 
 * Point Streaks
 
-## Authors:
+## Contributors ✨
 
-* **Gubareve** - Main Coder
-* **Wickedtree** - Assistant Coder / Tester
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://kd7t.com"><img src="https://avatars3.githubusercontent.com/u/24500411?v=4" width="100px;" alt=""/><br /><sub><b>Evan Gubarev</b></sub></a><br /><a href="https://github.com/gubareve/trivia-bot/commits?author=gubareve" title="Code">💻</a> <a href="#design-gubareve" title="Design">🎨</a> <a href="#ideas-gubareve" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-gubareve" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/WickedTree"><img src="https://avatars0.githubusercontent.com/u/50127946?v=4" width="100px;" alt=""/><br /><sub><b>WickedTree Development</b></sub></a><br /><a href="#design-WickedTree" title="Design">🎨</a> <a href="https://github.com/gubareve/trivia-bot/commits?author=WickedTree" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 ## Images:
 
@@ -74,4 +92,4 @@ NOTE: these only work for admins (Everyone with the manage bot permission).
 
 ## Copyright
 
-(c) 2020 [KD7T Enterprises](https://github.com/gubareve) with help from [WickedTree Development](https://github.com/wickedtree)
+(c) 2020 [KD7T Enterprises](https://github.com/gubareve)
