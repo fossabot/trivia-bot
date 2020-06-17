@@ -146,7 +146,7 @@ async def on_guild_join(guild):
         await channel.send('New Server! Now in ' + str(len(client.guilds)) + ' servers!')
 
 @client.command()
-async def trivia(ctx, category=None):
+async def (ctx, category=None):
     global triviatoken
     if category == None:
         r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
@@ -202,14 +202,14 @@ async def trivia(ctx, category=None):
         multiplier = 1
     if lesspoints:
         pointstogive = 1 * multiplier
-        message = " (Chose a category)"
+        message = ""
         if diduservote:
-            message = " (Chose a category and voted)"
+            message = " (Voted)"
     else:
-        pointstogive = 2 * multiplier
-        message = " (Didn't chose a category)"
+        pointstogive = 1 * multiplier
+        message = ""
         if diduservote:
-            message = " (Didn't chose a category and voted)"
+            message = " (Voted)"
 
     if a == "True":
         if answer == 1:
