@@ -131,7 +131,8 @@ def main():
     print("(1) Set User Points")
     print("(2) Give User Points")
     print("(3) Get User Points")
-    print("(4) Exit")
+    print("(4) Debug")
+    print("(5) Exit")
     while True:
         choice = float(input(">>  "))
         if choice == 1:
@@ -146,7 +147,12 @@ def main():
             userid = str(input("User ID:\n"))
             print("The User Has " + str(tbpoints("get", userid, 0)) + " Points")
         if choice == 4:
+            data = tbpoints("data",0,0)
+            datalist = data.items()
+            print(str(data))
+        if choice == 5:
             sys.exit()
+
         print()
 
 
