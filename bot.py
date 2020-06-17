@@ -559,6 +559,7 @@ async def status_task():
 
 @client.event
 async def on_ready():
+    # await client.change_presence(activity=discord.Activity(name=';help || Discord Trivia', type=3))
     client.loop.create_task(status_task())
     print('Logged in as')
     print(client.user.name)
