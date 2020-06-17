@@ -89,7 +89,7 @@ def tbpoints(statement, key, amount):
     if statement == "get":
         userid = key
         try:
-            points = int(triviadb.hgetall("data")[userid.encode('ascii')])
+            points = float(triviadb.hgetall("data")[userid.encode('ascii')])
         except:
             points = 0
         return points
@@ -98,34 +98,34 @@ def tbpoints(statement, key, amount):
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
         try:
-            stringdb[userid] += int(amount)
+            stringdb[userid] += float(amount)
         except:
-            stringdb[userid] = int(amount)
+            stringdb[userid] = float(amount)
         triviadb.hmset("data", stringdb)
     if statement == "take":
         userid = key
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
-        stringdb[str(userid)] -= int(amount)
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
+        stringdb[str(userid)] -= float(amount)
         triviadb.hmset("data", stringdb)
     if statement == "set":
         userid = key
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
 
-        stringdb[userid] = int(amount)
+        stringdb[userid] = float(amount)
         triviadb.hmset("data", stringdb)
     if statement == "data":
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
         return stringdb
 
 @client.event
