@@ -88,7 +88,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://kd7t.com"><img src="https://avatars3.githubusercontent.com/u/24500411?v=4" width="100px;" alt=""/><br /><sub><b>Evan Gubarev</b></sub></a><br /><a href="#design-gubareve" title="Design">🎨</a> <a href="#ideas-gubareve" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-gubareve" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="http://kd7t.com"><img src="https://avatars3.githubusercontent.com/u/24500411?v=4" width="100px;" alt=""/><br /><sub><b>Evan Gubarev</b></sub></a><br /><a href="#design-gubareve" title="Design">🎨</a> <a href="#ideas-gubareve" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-gubareve" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/gubareve/trivia-bot/commits?author=gubareve" title="Code">💻</a></td>
   </tr>
 </table>
 
