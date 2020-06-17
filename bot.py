@@ -146,7 +146,7 @@ async def on_guild_join(guild):
         await channel.send('New Server! Now in ' + str(len(client.guilds)) + ' servers!')
 
 @client.command()
-async def (ctx, category=None):
+async def trivia(ctx, category=None):
     global triviatoken
     if category == None:
         r = requests.get("https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="+str(triviatoken)).text
