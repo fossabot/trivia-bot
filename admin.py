@@ -105,7 +105,7 @@ def main():
     try:
         fourthpoints = data[str(fourthuserid)]
     except:
-        fourtpoints = "null"
+        fourthpoints = "null"
     try:
         fifthpoints = data[str(fifthuserid)]
     except:
