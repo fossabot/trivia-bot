@@ -188,7 +188,7 @@ async def trivia(ctx, category=None):
     except:
         diduservote = False
     if not diduservote:
-        qembed.add_field(name="Notice:", value="Want to get 2x Points? Vote for us using ;vote", inline=False)
+        qembed.add_field(name="Notice:", value="Want to get 1.5 times the amount of points? Vote for us using ;vote", inline=False)
     msg = await ctx.send(embed=qembed)
     answer = await get_reaction_answer(msg, ctx.message.author.id, q, a, ctx)
     uid = ctx.message.author.id
