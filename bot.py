@@ -167,10 +167,8 @@ async def on_guild_join(guild):
             url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
         )
         await general.send(embed=embed)
-        channel = client.get_channel(722605186245197874)
-        await channel.send(
-            "New Server! Now in " + str(len(client.guilds)) + " servers!"
-        )
+    channel = client.get_channel(722605186245197874)
+    await channel.send("New Server! Now in " + str(len(client.guilds)) + " servers!")
 
 
 @client.command()
