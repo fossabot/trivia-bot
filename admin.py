@@ -35,7 +35,7 @@ def tbpoints(statement, key, amount):
     if statement == "get":
         userid = key
         try:
-            points = int(triviadb.hgetall("data")[userid.encode('ascii')])
+            points = float(triviadb.hgetall("data")[userid.encode('ascii')])
         except:
             points = 0
         return points
@@ -44,26 +44,26 @@ def tbpoints(statement, key, amount):
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
         try:
-            stringdb[userid] += int(amount)
+            stringdb[userid] += float(amount)
         except:
-            stringdb[userid] = int(amount)
+            stringdb[userid] = float(amount)
         triviadb.hmset("data", stringdb)
     if statement == "set":
         userid = key
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
 
-        stringdb[userid] = int(amount)
+        stringdb[userid] = float(amount)
         triviadb.hmset("data", stringdb)
     if statement == "data":
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
+            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
         return stringdb
 
 def main():
@@ -71,23 +71,23 @@ def main():
     datalist = data.items()
     sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
     try:
-        firstuserid = int(sorteddata[0][0])
+        firstuserid = float(sorteddata[0][0])
     except:
         firstuserid = "null"
     try:
-        seconduserid = int(sorteddata[1][0])
+        seconduserid = float(sorteddata[1][0])
     except:
         seconduserid = "null"
     try:
-        thirduserid = int(sorteddata[2][0])
+        thirduserid = float(sorteddata[2][0])
     except:
         thirduserid = "null"
     try:
-        fourthuserid = int(sorteddata[3][0])
+        fourthuserid = float(sorteddata[3][0])
     except:
         fourthuserid = "null"
     try:
-        fifthuserid = int(sorteddata[4][0])
+        fifthuserid = float(sorteddata[4][0])
     except:
         fifthuserid = "null"
     try:
@@ -133,7 +133,7 @@ def main():
     print("(3) Get User Points")
     print("(4) Exit")
     while True:
-        choice = int(input(">>  "))
+        choice = float(input(">>  "))
         if choice == 1:
             userid = str(input("User ID:\n"))
             tbpoints("set", userid, input("Amount:\n"))
