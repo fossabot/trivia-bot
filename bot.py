@@ -552,7 +552,8 @@ async def version(ctx, cmd=None):
 
 @client.event
 async def on_ready():
-    await client.change_presence(activity=discord.Activity(name=';help || Discord Trivia', type=3))
+    # await client.change_presence(activity=discord.Activity(name=';help || Discord Trivia', type=3))
+    await client.change_presence(activity=discord.Streaming(name=';help || Discord Trivia', url="https://www.twitch.tv/mrbeoat6000"))
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
