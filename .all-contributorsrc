@@ -15,6 +15,16 @@
         "ideas",
         "infra"
       ]
+    },
+    {
+      "login": "WickedTree",
+      "name": "WickedTree Development",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/50127946?v=4",
+      "profile": "https://github.com/WickedTree",
+      "contributions": [
+        "design",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
