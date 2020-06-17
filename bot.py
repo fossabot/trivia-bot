@@ -183,7 +183,10 @@ async def trivia(ctx, category=None):
     qembed.add_field(name="Question:", value=str(q), inline=False)
     qembed.add_field(name=yesemoji, value="For true", inline=True)
     qembed.add_field(name=noemoji, value="For false", inline=True)
-    diduservote = checkvote(ctx.message.author.id)
+    try:
+        diduservote = checkvote(ctx.message.author.id)
+    except:
+        diduservote = False
     if not diduservote:
         qembed.add_field(name="Notice:", value="Want to get 2x Points? Vote for us using ;vote", inline=False)
     msg = await ctx.send(embed=qembed)
