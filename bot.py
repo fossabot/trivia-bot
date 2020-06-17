@@ -13,6 +13,7 @@ from discord import Game
 from json import loads
 from discord.ext.commands import Bot, has_permissions, MissingPermissions
 from discord.ext import commands, tasks
+from discord.utils import find
 import sys
 import time
 import redis
@@ -126,6 +127,23 @@ def tbpoints(statement, key, amount):
         for key in bytedb.keys():
             stringdb[key.decode('ascii')] = int(bytedb[key].decode('ascii'))
         return stringdb
+
+@client.event
+async def on_guild_join(guild):
+    general = find(lambda x: x.name == 'general',  guild.text_channels)
+    if general and general.permissions_for(guild.me).send_messages:
+        r = 215
+        g = 91
+        b = 69
+        embed = discord.Embed(
+            title='Thank you for adding Trivia Bot!',
+            description='Please do ;help for info and ;trivia to start playing!',
+            color=discord.Colour.from_rgb(r, g, b),
+        )
+        embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png')
+        await general.send(embed=embed)
+        channel = client.get_channel(722605186245197874)
+        await channel.send('New Server! Now in ' + str(len(client.guilds)) + ' servers!')
 
 @client.command()
 async def trivia(ctx, category=None):
@@ -390,7 +408,7 @@ async def vote(ctx):
 async def botservers(ctx):
     await ctx.send("I'm in " + str(len(client.guilds)) + " servers! (Goal 75)")
 
-
+"NOTCIE: TO COMPLY WITH GPL3, THE CREDITS SECTION MUST NOT BE REMOVED"
 @client.command(brief="Credits!", aliases=['credits'], pass_context='True')
 async def about(ctx):
     devs = ['247594208779567105', '692652688407527474']
@@ -408,7 +426,7 @@ async def about(ctx):
             names.append(str(user))
         else:
             names.append("<@{}>".format(userid))
-    embed.add_field(name='Developers', value=" and ".join(names), inline=False)
+    embed.add_field(name='Originally Coded by', value=" and ".join(names), inline=False)
     await ctx.send(embed=embed)
 
 @client.command(brief="Invite Link", aliases=['link'], pass_context='True')
