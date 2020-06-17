@@ -18,24 +18,25 @@ import redis
 import os
 import json
 
-TOKEN = os.getenv('bottoken')
+TOKEN = os.getenv("bottoken")
 if TOKEN == None:
     TOKEN = input("Other Bot Token Please:")
 
-redisurl = os.getenv('REDIS_URL')
+redisurl = os.getenv("REDIS_URL")
 
 if redisurl == None:
-    redisurl = input('Please enter the REDIS URL:')
+    redisurl = input("Please enter the REDIS URL:")
 
 triviadb = redis.from_url(redisurl)
 
-client = commands.Bot(command_prefix='jjsfjdif')
+client = commands.Bot(command_prefix="jjsfjdif")
+
 
 def tbpoints(statement, key, amount):
     if statement == "get":
         userid = key
         try:
-            points = float(triviadb.hgetall("data")[userid.encode('ascii')])
+            points = float(triviadb.hgetall("data")[userid.encode("ascii")])
         except:
             points = 0
         return points
@@ -44,7 +45,7 @@ def tbpoints(statement, key, amount):
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
+            stringdb[key.decode("ascii")] = float(bytedb[key].decode("ascii"))
         try:
             stringdb[userid] += float(amount)
         except:
@@ -55,7 +56,7 @@ def tbpoints(statement, key, amount):
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
+            stringdb[key.decode("ascii")] = float(bytedb[key].decode("ascii"))
 
         stringdb[userid] = float(amount)
         triviadb.hmset("data", stringdb)
@@ -63,13 +64,14 @@ def tbpoints(statement, key, amount):
         bytedb = triviadb.hgetall("data")
         stringdb = {}
         for key in bytedb.keys():
-            stringdb[key.decode('ascii')] = float(bytedb[key].decode('ascii'))
+            stringdb[key.decode("ascii")] = float(bytedb[key].decode("ascii"))
         return stringdb
 
+
 def main():
-    data = tbpoints("data",0,0)
+    data = tbpoints("data", 0, 0)
     datalist = data.items()
-    sorteddata = sorted(datalist,key=itemgetter(1),reverse=True)
+    sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
     try:
         firstuserid = float(sorteddata[0][0])
     except:
@@ -116,11 +118,21 @@ def main():
     user3 = client.get_user(thirduserid)
     user4 = client.get_user(fourthuserid)
     user5 = client.get_user(fifthuserid)
-    firstmessage = "{0} with {1} points ({2})".format(str(user1),str(firstpoints),str(firstuserid))
-    secondmessage = "{0} with {1} points ({2})".format(str(user2),str(secondpoints),str(seconduserid))
-    thirdmessage = "{0} with {1} points ({2})".format(str(user3),str(thirdpoints), str(thirduserid))
-    fourthmessage = "{0} with {1} points ({2})".format(str(user4),str(fourthpoints), str(fourthuserid))
-    fifthmessage = "{0} with {1} points ({2})".format(str(user5),str(fifthpoints), str(fifthuserid))
+    firstmessage = "{0} with {1} points ({2})".format(
+        str(user1), str(firstpoints), str(firstuserid)
+    )
+    secondmessage = "{0} with {1} points ({2})".format(
+        str(user2), str(secondpoints), str(seconduserid)
+    )
+    thirdmessage = "{0} with {1} points ({2})".format(
+        str(user3), str(thirdpoints), str(thirduserid)
+    )
+    fourthmessage = "{0} with {1} points ({2})".format(
+        str(user4), str(fourthpoints), str(fourthuserid)
+    )
+    fifthmessage = "{0} with {1} points ({2})".format(
+        str(user5), str(fifthpoints), str(fifthuserid)
+    )
     print(firstmessage)
     print(secondmessage)
     print(thirdmessage)
@@ -147,7 +159,7 @@ def main():
             userid = str(input("User ID:\n"))
             print("The User Has " + str(tbpoints("get", userid, 0)) + " Points")
         if choice == 4:
-            data = tbpoints("data",0,0)
+            data = tbpoints("data", 0, 0)
             datalist = data.items()
             print(str(data))
         if choice == 5:
@@ -158,9 +170,11 @@ def main():
 
 @client.event
 async def on_ready():
-    print('Logged in as')
+    print("Logged in as")
     print(client.user.name)
     print(client.user.id)
-    print('------')
+    print("------")
     main()
+
+
 client.run(TOKEN)
