@@ -550,10 +550,16 @@ async def version(ctx, cmd=None):
         await ctx.send(e.returncode)
         await ctx.send(e.output)
 
+async def status_task():
+    while True:
+        await client.change_presence(activity=discord.Streaming(name=';help || Discord Trivia', url="https://www.twitch.tv/mrbeoat6000"))
+        await asyncio.sleep(50)
+        await client.change_presence(activity=discord.Streaming(name=';trivia || Play Trivia!', url="https://www.twitch.tv/mrbeoat6000"))
+        await asyncio.sleep(50)
+
 @client.event
 async def on_ready():
-    # await client.change_presence(activity=discord.Activity(name=';help || Discord Trivia', type=3))
-    await client.change_presence(activity=discord.Streaming(name=';help || Discord Trivia', url="https://www.twitch.tv/mrbeoat6000"))
+    client.loop.create_task(status_task())
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
