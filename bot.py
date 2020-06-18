@@ -217,7 +217,7 @@ async def on_guild_join(guild):
 @client.command()
 async def trivia(ctx, category=None):
     if random.randint(1, 3) > 1:
-        await multi(ctx, category)
+        await multichoice(ctx, category)
     else:
         await truefalse(ctx, category)
 @client.command(aliases=["tf"])
@@ -773,7 +773,10 @@ async def help(ctx):
         name="`;version    `", value="Shows current version    ", inline=True
     )
     embed.add_field(
-        name="`;multi      `", value="Multiple choice question ", inline=True
+        name="`;multichoice`", value="Multiple choice question ", inline=True
+    )
+    embed.add_field(
+        name="`;truefalse  `", value="True/False question      ", inline=True
     )
     await ctx.send(embed=embed)
 
