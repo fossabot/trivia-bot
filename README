@@ -27,6 +27,8 @@ NOTE: ignore the [ ] that just shows what should be there when entering the comm
 ```
 ;vote
 ;trivia [optional category] - Play trivia
+;multichoice [optional category] - Play multiple choice trivia
+;truefalse [optional category] - Play true/false trivia
 ;categories - Lists categories
 ;top - Lists top players
 ;points - Lists your points
