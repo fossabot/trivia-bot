@@ -214,9 +214,14 @@ async def on_guild_join(guild):
     channel = client.get_channel(722605186245197874)
     await channel.send("New Server! Now in " + str(len(client.guilds)) + " servers!")
 
-
 @client.command()
 async def trivia(ctx, category=None):
+    if random.randint(1, 3) > 1:
+        await multi(ctx, category)
+    else:
+        await truefalse(ctx, category)
+@client.command(aliases=["tf"])
+async def truefalse(ctx, category=None):
     global triviatoken
     if category == None:
         r = requests.get(
