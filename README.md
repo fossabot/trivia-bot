@@ -10,7 +10,7 @@
 
 ## [Invite Link:](https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify)  
 
-A easy to use true or false trivia bot for discord the includes a global leaderboard, categories, server leaderboards, and a infinite amount of control. You can copy this bot if you keep the credit command.
+A easy to use multiple choice and true/false trivia bot for discord the includes a global leaderboard, categories, server leaderboards, and a infinite amount of control. You can copy this bot if you keep the credit command.
 
 ## Getting Started:
 
@@ -27,6 +27,8 @@ NOTE: ignore the [ ] that just shows what should be there when entering the comm
 ```
 ;vote
 ;trivia [optional category] - Play trivia
+;multichoice [optional category] - Play multiple choice trivia
+;truefalse [optional category] - Play true/false trivia
 ;categories - Lists categories
 ;top - Lists top players
 ;points - Lists your points
@@ -83,6 +85,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 ## Images:
+
+![A multi question](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-06-18%20at%2012.38.47%20AM.png)
 
 ![A sample question](https://raw.githubusercontent.com/gubareve/trivia-bot/master/images/Screen%20Shot%202020-06-08%20at%209.06.00%20PM.png)
 
