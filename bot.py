@@ -891,7 +891,9 @@ async def buy(ctx, product=None):
                 embed.set_author(name="Store")
                 embed.add_field(
                     name="Notice",
-                    value="`Not enough points. Please do ;shop for info.`",
+                    value="`Not enough points. Please do ;shop for info.`"
+                    + str(prices[product])
+                    + str(userpoints),
                     inline=True,
                 )
         else:
