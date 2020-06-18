@@ -26,6 +26,34 @@ import subprocess
 userspecific = True
 yesemoji = "👍"
 noemoji = "👎"
+numberemojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣"]
+categories = {
+    "general": "9",
+    "books": "10",
+    "film": "11",
+    "music": "12",
+    "musicals": "13",
+    "tv": "14",
+    "gaming": "15",
+    "boardgames": "16",
+    "science": "17",
+    "computers": "18",
+    "math": "19",
+    "myths": "20",
+    "sports": "21",
+    "geography": "22",
+    "history": "23",
+    "politics": "24",
+    "art": "25",
+    "people": "26",
+    "animals": "27",
+    "cars": "28",
+    "comics": "29",
+    "gadgets": "30",
+    "anime": "31",
+    "cartoons": "32",
+}
+
 TOKEN = os.getenv("bottoken")
 if TOKEN == None:
     TOKEN = input("Token Please:")
@@ -69,6 +97,22 @@ def checkvote(userid):
     else:
         return False
 
+async def get_multi_reaction_answer(msg, author, ctx):
+    def checkreaction(reaction, user):
+        return (
+            (user.id == author.id or not userspecific)
+            and reaction.message.id == msg.id
+            and str(reaction.emoji) in numberemojis
+        )
+    for numreact in numberemojis:
+        await msg.add_reaction(numreact)
+    try:
+        reaction, user = await client.wait_for(
+            "reaction_add", timeout=20.0, check=checkreaction
+        )
+    except asyncio.TimeoutError:
+        return None
+    return numberemojis.index(str(reaction.emoji))
 
 async def get_reaction_answer(msg, author, q, a, ctx):
     def checkreaction(reaction, user):
@@ -170,9 +214,14 @@ async def on_guild_join(guild):
     channel = client.get_channel(722605186245197874)
     await channel.send("New Server! Now in " + str(len(client.guilds)) + " servers!")
 
-
 @client.command()
 async def trivia(ctx, category=None):
+    if random.randint(1, 3) > 1:
+        await multichoice(ctx, category)
+    else:
+        await truefalse(ctx, category)
+@client.command(aliases=["tf"])
+async def truefalse(ctx, category=None):
     global triviatoken
     if category == None:
         r = requests.get(
@@ -410,7 +459,82 @@ async def trivia(ctx, category=None):
             message = await msg.edit(embed=qembed)
             await msg.add_reaction("✅")
 
-
+@client.command(aliases=["multi", "multiplechoice", "multiple"])
+async def multichoice(ctx, category=None):
+    if not category in categories.keys():
+        r = requests.get("https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&token=" + str(triviatoken)).text
+    else:
+        r = requests.get("https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=" + str(categories[category]) + "&token=" + str(triviatoken)).text
+    r = json.loads(r)
+    q = urllib.parse.unquote(r["results"][0]["question"])
+    answers = [urllib.parse.unquote(r["results"][0]["correct_answer"])] + [urllib.parse.unquote(x) for x in r["results"][0]["incorrect_answers"]]
+    random.shuffle(answers)
+    correct = answers.index(urllib.parse.unquote(r["results"][0]["correct_answer"]))
+    uid = ctx.author.id
+    qembed = discord.Embed(
+        title="YOUR QUESTION FROM CATEGORY "+category.upper() if category in categories.keys() else "YOUR QUESTION",
+        description="Use the below reactions to answer this multiple choice question:\n" + q + "\n\n\n" + "\n\n".join([numberemojis[qnum] + " " + answers[qnum] for qnum in range(4)]),
+        color=0xFF0000,
+    )
+    msg = await ctx.send(embed=qembed)
+    answered = await get_multi_reaction_answer(msg, ctx.author, ctx)
+    if answered == None:
+        qembed = discord.Embed(
+            title="Answered Problem",
+            description="This problem has already been answered",
+            color=0xFF0000,
+        )
+        if category in categories.keys():
+            qembed.add_field(name="The Chosen Category Was:", value=str(category), inline=False)
+        qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+        qembed.add_field(
+            name="The Submitted Answer Was:", value="EXPIRED (you lost 1 point)", inline=False
+        )
+        qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
+        message = await msg.edit(embed=qembed)
+        qembed.add_field(
+            name="Points", value="You lost 1 point!", inline=False
+        )
+        tbpoints("give", str(uid), -1)
+    else:
+        try:
+            diduservote = checkvote(ctx.message.author.id)
+        except:
+            diduservote = False
+        pointstogive = 1 if category in categories.keys() else 2
+        if diduservote:
+            pointstogive += 1.5
+        await msg.clear_reactions()
+        if answered == correct:
+            await msg.add_reaction("✅")
+            tbpoints("give", str(uid), float(pointstogive))
+            pointchange = pointstogive
+        else:
+            await msg.add_reaction("❌")
+            tbpoints("give", str(uid), -0.5 if category in categories.keys() else -1.0)
+            pointchange = -0.5 if category in categories.keys() else -1.0
+        qembed = discord.Embed(
+            title="Answered Problem",
+            description="This problem has already been answered",
+            color=0xFF0000,
+        )
+        if category in categories.keys():
+            qembed.add_field(name="The Chosen Category Was:", value=str(category), inline=False)
+        qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+        qembed.add_field(
+            name="The Submitted Answer Was:", value=answers[answered], inline=False
+        )
+        qembed.add_field(
+            name="Points", value="You {0} {1} point{2}!".format("lost" if pointchange < 0 else "gained", str(abs(pointchange)).replace(".0", ""), "s" if abs(pointchange) > 1 else ""), inline=False
+        )
+        qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
+        if not diduservote:
+            qembed.add_field(
+                name="Tip:",
+                value="Want to get 1.5 times the amount of points? Vote for us using ;vote",
+                inline=False,
+            )
+        message = await msg.edit(embed=qembed)
 @client.command(aliases=["debug"])
 async def triviadebug(ctx):
     data = tbpoints("data", 0, 0)
@@ -655,6 +779,12 @@ async def help(ctx):
     )
     embed.add_field(
         name="`;version    `", value="Shows current version    ", inline=True
+    )
+    embed.add_field(
+        name="`;multichoice`", value="Multiple choice question ", inline=True
+    )
+    embed.add_field(
+        name="`;truefalse  `", value="True/False question      ", inline=True
     )
     await ctx.send(embed=embed)
 
