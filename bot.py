@@ -879,9 +879,7 @@ async def buy(ctx, product=None):
         products = ["1.5x", "viprole", "pog"]
         prices = {"1.5x": 2000, "viprole": 500, "pog": 500}
         if product in products:
-            userpoints = tbpoints("get", ctx.message.author.id, 0)
-            print("userpoints = " + str(userpoints))
-            print("price = " + str(prices[product]))
+            userpoints = str(tbpoints("get", ctx.message.author.id, 0))
             if userpoints >= prices[product]:
                 tbperms("give", ctx.message.author.id, product)
                 embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
@@ -893,9 +891,7 @@ async def buy(ctx, product=None):
                 embed.set_author(name="Store")
                 embed.add_field(
                     name="Notice",
-                    value="`Not enough points. Please do ;shop for info.`"
-                    + str(prices[product])
-                    + str(userpoints),
+                    value="`Not enough points. Please do ;shop for info.`",
                     inline=True,
                 )
         else:
