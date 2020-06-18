@@ -54,7 +54,7 @@ categories = {
     "cartoons": "32",
 }
 
-TOKEN = os.getenv("triviatoken")
+TOKEN = os.getenv("bottoken")
 if TOKEN == None:
     TOKEN = input("Token Please:")
 
