@@ -492,6 +492,9 @@ async def multichoice(ctx, category=None):
         )
         qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
         message = await msg.edit(embed=qembed)
+        qembed.add_field(
+            name="Points", value="You lost 1 point!", inline=False
+        )
         tbpoints("give", str(uid), -1)
     else:
         try:
@@ -505,9 +508,11 @@ async def multichoice(ctx, category=None):
         if answered == correct:
             await msg.add_reaction("✅")
             tbpoints("give", str(uid), float(pointstogive))
+            pointchange = pointstogive
         else:
             await msg.add_reaction("❌")
             tbpoints("give", str(uid), -0.5 if category in categories.keys() else -1.0)
+            pointchange = -0.5 if category in categories.keys() else -1.0
         qembed = discord.Embed(
             title="Answered Problem",
             description="This problem has already been answered",
@@ -518,6 +523,9 @@ async def multichoice(ctx, category=None):
         qembed.add_field(name="The Question Was:", value=str(q), inline=False)
         qembed.add_field(
             name="The Submitted Answer Was:", value=answers[answered], inline=False
+        )
+        qembed.add_field(
+            name="Points", value="You {0} {1} point{2}!".format("lost" if pointchange < 0 else "gained", str(abs(pointchange), "s" if abs(pointchange) > 1 else ""), inline=False
         )
         qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
         if not diduservote:
