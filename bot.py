@@ -465,6 +465,7 @@ async def multichoice(ctx, category=None):
     answers = [urllib.parse.unquote(r["results"][0]["correct_answer"])] + [urllib.parse.unquote(x) for x in r["results"][0]["incorrect_answers"]]
     random.shuffle(answers)
     correct = answers.index(urllib.parse.unquote(r["results"][0]["correct_answer"]))
+    uid = ctx.author.id
     qembed = discord.Embed(
         title="YOUR QUESTION FROM CATEGORY "+category.upper() if category in categories.keys() else "YOUR QUESTION",
         description="Use the below reactions to answer this multiple choice question:\n" + q + "\n\n\n" + "\n\n".join([numberemojis[qnum] + " " + answers[qnum] for qnum in range(4)]),
@@ -482,16 +483,26 @@ async def multichoice(ctx, category=None):
             qembed.add_field(name="The Chosen Category Was:", value=str(category), inline=False)
         qembed.add_field(name="The Question Was:", value=str(q), inline=False)
         qembed.add_field(
-            name="The Submitted Answer Was:", value="EXPIRED", inline=False
+            name="The Submitted Answer Was:", value="EXPIRED (you lost 1 point)", inline=False
         )
         qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
         message = await msg.edit(embed=qembed)
+        tbpoints("give", str(uid), -1)
     else:
+        try:
+            diduservote = checkvote(ctx.message.author.id)
+        except:
+            diduservote = False
+        pointstogive = 1 if category in categories.keys() else 2
+        if diduservote:
+            pointstogive *= 1.5
         await msg.clear_reactions()
         if answered == correct:
             await msg.add_reaction("✅")
+            tbpoints("give", str(uid), float(pointstogive))
         else:
             await msg.add_reaction("❌")
+            tbpoints("give", str(uid), -1.0 if category in categories.keys() else -2.0)
         qembed = discord.Embed(
             title="Answered Problem",
             description="This problem has already been answered",
@@ -504,6 +515,12 @@ async def multichoice(ctx, category=None):
             name="The Submitted Answer Was:", value=answers[answered], inline=False
         )
         qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
+        if not diduservote:
+            qembed.add_field(
+                name="Tip:",
+                value="Want to get 1.5 times the amount of points? Vote for us using ;vote",
+                inline=False,
+            )
         message = await msg.edit(embed=qembed)
 @client.command(aliases=["debug"])
 async def triviadebug(ctx):
