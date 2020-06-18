@@ -495,14 +495,14 @@ async def multichoice(ctx, category=None):
             diduservote = False
         pointstogive = 1 if category in categories.keys() else 2
         if diduservote:
-            pointstogive *= 1.5
+            pointstogive += 1.5
         await msg.clear_reactions()
         if answered == correct:
             await msg.add_reaction("✅")
             tbpoints("give", str(uid), float(pointstogive))
         else:
             await msg.add_reaction("❌")
-            tbpoints("give", str(uid), -1.0 if category in categories.keys() else -2.0)
+            tbpoints("give", str(uid), -0.5 if category in categories.keys() else -1.0)
         qembed = discord.Embed(
             title="Answered Problem",
             description="This problem has already been answered",
@@ -766,6 +766,9 @@ async def help(ctx):
     )
     embed.add_field(
         name="`;version    `", value="Shows current version    ", inline=True
+    )
+    embed.add_field(
+        name="`;multi      `", value="Multiple choice question ", inline=True
     )
     await ctx.send(embed=embed)
 
