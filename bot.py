@@ -770,40 +770,14 @@ async def help(ctx):
     await ctx.send(embed=embed)
 
 
-@client.command(pass_context=True)
-async def categories(ctx):
+@client.command(pass_context=True, name="categories")
+async def _categories(ctx):
     r = 215
     g = 91
     b = 69
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="List of Categories")
-    categories = [
-        "general",
-        "books",
-        "film",
-        "music",
-        "musicals",
-        "tv",
-        "gaming",
-        "boardgames",
-        "science",
-        "computers",
-        "math",
-        "myths",
-        "sports",
-        "geography",
-        "history",
-        "politics",
-        "art",
-        "people",
-        "animals",
-        "cars",
-        "comics",
-        "gadgets",
-        "anime",
-        "cartoons",
-    ]
-    for category in categories:
+    for category in categories.keys():
         embed.add_field(name=category, value="`;trivia " + category + "`", inline=True)
     await ctx.send(embed=embed)
 
