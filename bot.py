@@ -907,6 +907,9 @@ async def buy(ctx, product=None):
 
 @client.command(pass_context=True)
 async def givemevip(ctx, product=None):
+    r = 215
+    g = 91
+    b = 69
     if tbperms("check", ctx.message.author.id, "viprole"):
         viprole = ctx.guild.get_role(723304450957115495)
         await ctx.message.author.add_roles(viprole)
