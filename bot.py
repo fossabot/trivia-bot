@@ -879,7 +879,7 @@ async def buy(ctx, product=None):
         products = ["1.5x", "viprole", "pog"]
         prices = {"1.5x": 2000, "viprole": 500, "pog": 500}
         if product in products:
-            userpoints = str(tbpoints("get", ctx.message.author.id, 0))
+            userpoints = tbpoints("get", str(ctx.message.author.id), 0)
             if userpoints >= prices[product]:
                 tbperms("give", ctx.message.author.id, product)
                 embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
