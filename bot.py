@@ -525,7 +525,7 @@ async def multichoice(ctx, category=None):
             name="The Submitted Answer Was:", value=answers[answered], inline=False
         )
         qembed.add_field(
-            name="Points", value="You {0} {1} point{2}!".format("lost" if pointchange < 0 else "gained", str(abs(pointchange), "s" if abs(pointchange) > 1 else ""), inline=False
+            name="Points", value="You {0} {1} point{2}!".format("lost" if pointchange < 0 else "gained", str(abs(pointchange)), "s" if abs(pointchange) > 1 else ""), inline=False
         )
         qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
         if not diduservote:
