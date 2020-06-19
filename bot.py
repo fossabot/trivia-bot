@@ -53,7 +53,7 @@ categories = {
     "anime": "31",
     "cartoons": "32",
 }
-
+test = "0"
 TOKEN = os.getenv("bottoken")
 if TOKEN == None:
     TOKEN = input("Token Please:")
