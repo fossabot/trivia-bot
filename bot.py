@@ -232,7 +232,7 @@ async def on_guild_join(guild):
         await general.send(embed=embed)
     channel = client.get_channel(722605186245197874)
     embed = discord.Embed(
-        title="New Server! {} Owned by {}".format(guild.name, guild.owner.id),
+        title="New Server! {} Owned by <@{}>".format(guild.name, guild.owner.id),
         description="Now in " + str(len(client.guilds)) + " servers!",
         color=discord.Colour.from_rgb(r, g, b),
     )
