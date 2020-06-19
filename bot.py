@@ -856,7 +856,7 @@ async def shop(ctx):
     embed.set_author(name="Triva Bot Points Shop")
     embed.add_field(
         name="`;buy viprole       `",
-        value="Buy the vip role in the support sever! (250 points). Must do ;givemevip to active once purchased.",
+        value="Buy the vip role in the support sever! (250 points). Must do ;givemevip to activate once purchased.",
         inline=True,
     )
     await ctx.send(embed=embed)
