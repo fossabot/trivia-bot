@@ -73,23 +73,23 @@ def main():
     datalist = data.items()
     sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
     try:
-        firstuserid = float(sorteddata[0][0])
+        firstuserid = sorteddata[0][0]
     except:
         firstuserid = "null"
     try:
-        seconduserid = float(sorteddata[1][0])
+        seconduserid = sorteddata[1][0]
     except:
         seconduserid = "null"
     try:
-        thirduserid = float(sorteddata[2][0])
+        thirduserid = sorteddata[2][0]
     except:
         thirduserid = "null"
     try:
-        fourthuserid = float(sorteddata[3][0])
+        fourthuserid = sorteddata[3][0]
     except:
         fourthuserid = "null"
     try:
-        fifthuserid = float(sorteddata[4][0])
+        fifthuserid = sorteddata[4][0]
     except:
         fifthuserid = "null"
     try:
