@@ -856,7 +856,7 @@ async def shop(ctx):
     embed.set_author(name="Triva Bot Points Shop")
     embed.add_field(
         name="`;buy viprole       `",
-        value="Buy the vip role in the support sever! (500 points). Must do ;givemevip to active once purchased.",
+        value="Buy the vip role in the support sever! (250 points). Must do ;givemevip to active once purchased.",
         inline=True,
     )
     await ctx.send(embed=embed)
@@ -877,7 +877,7 @@ async def buy(ctx, product=None):
         )
     else:
         products = ["1.5x", "viprole", "pog"]
-        prices = {"1.5x": 2000, "viprole": 500, "pog": 500}
+        prices = {"1.5x": 2000, "viprole": 250, "pog": 500}
         if product in products:
             userpoints = tbpoints("get", str(ctx.message.author.id), 0)
             if userpoints >= prices[product]:
