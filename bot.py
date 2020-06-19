@@ -217,11 +217,11 @@ def tbperms(statement, user, key):
 
 @client.event
 async def on_guild_join(guild):
+    r = 215
+    g = 91
+    b = 69
     general = find(lambda x: x.name == "general", guild.text_channels)
     if general and general.permissions_for(guild.me).send_messages:
-        r = 215
-        g = 91
-        b = 69
         embed = discord.Embed(
             title="Thank you for adding Trivia Bot!",
             description="Please do ;help for info and ;trivia to start playing!",
@@ -232,7 +232,14 @@ async def on_guild_join(guild):
         )
         await general.send(embed=embed)
     channel = client.get_channel(722605186245197874)
-    await channel.send("New Server! Now in " + str(len(client.guilds)) + " servers!")
+    embed = discord.Embed(
+        title="New Server!",
+        description="Now in " + str(len(client.guilds)) + " servers!",
+        color=discord.Colour.from_rgb(r, g, b),
+    )
+    embed.set_thumbnail(
+        url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
+    )
 
 
 @client.command()
