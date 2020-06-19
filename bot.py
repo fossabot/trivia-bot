@@ -233,7 +233,7 @@ async def on_guild_join(guild):
     channel = client.get_channel(722605186245197874)
     embed = discord.Embed(
         title="New Server! Name: {} ".format(guild.name),
-        description="Now in " + str(len(client.guilds)) + " servers! New server owned by <@{}>".format(guild.owner.id),
+        description="Now in " + str(len(client.guilds)) + " servers! New server owned by <@{}> with {} members".format(guild.owner.id, len(guild.members)),
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.set_thumbnail(
@@ -984,7 +984,6 @@ async def ping(ctx):
     )
     await ctx.send(embed=embed)
 
-
 @client.command(pass_context=True)
 async def info(ctx, user: discord.Member = None):
     if user is None:
@@ -1001,7 +1000,8 @@ async def info(ctx, user: discord.Member = None):
 
 @client.command(pass_context=True)
 async def servers(ctx):
-    if str(ctx.message.author.id) == "247594208779567105":
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
         await ctx.send("Servers connected to:")
         for server in client.guilds:
             await ctx.send(server.name)
@@ -1009,7 +1009,8 @@ async def servers(ctx):
 
 @client.command(pass_context=True)
 async def setplaying(ctx, message=None):
-    if str(ctx.message.author.id) == "247594208779567105":
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
         if message == None:
             await ctx.send("Nothing Provided")
         else:
@@ -1022,7 +1023,8 @@ async def setplaying(ctx, message=None):
 
 @client.command(pass_context=True)
 async def run(ctx, cmd=None):
-    if str(ctx.message.author.id) == "247594208779567105":
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
         eval(cmd)
         await ctx.send("Eval Complete.")
     else:
