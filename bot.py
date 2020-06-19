@@ -240,6 +240,7 @@ async def on_guild_join(guild):
     embed.set_thumbnail(
         url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
     )
+    await channel.send(embed=embed)
 
 
 @client.command()
