@@ -97,6 +97,7 @@ def checkvote(userid):
     else:
         return False
 
+
 async def get_multi_reaction_answer(msg, author, ctx):
     def checkreaction(reaction, user):
         return (
@@ -104,6 +105,7 @@ async def get_multi_reaction_answer(msg, author, ctx):
             and reaction.message.id == msg.id
             and str(reaction.emoji) in numberemojis
         )
+
     for numreact in numberemojis:
         await msg.add_reaction(numreact)
     try:
@@ -113,6 +115,7 @@ async def get_multi_reaction_answer(msg, author, ctx):
     except asyncio.TimeoutError:
         return None
     return numberemojis.index(str(reaction.emoji))
+
 
 async def get_reaction_answer(msg, author, q, a, ctx):
     def checkreaction(reaction, user):
@@ -195,6 +198,23 @@ def tbpoints(statement, key, amount):
         return stringdb
 
 
+def tbperms(statement, user, key):
+    if statement == "check":
+        try:
+            bytedata = triviadb.hgetall(str(user) + "-" + str(key) + "-data")
+            data = {}
+            for key in bytedata.keys():
+                data[key.decode("ascii")] = bytedata[key].decode("ascii")
+            if data["1"] == "1":
+                return True
+            else:
+                return False
+        except:
+            return False
+    if statement == "give":
+        triviadb.hmset(str(user) + "-" + str(key) + "-data", {1: 1})
+
+
 @client.event
 async def on_guild_join(guild):
     general = find(lambda x: x.name == "general", guild.text_channels)
@@ -214,12 +234,15 @@ async def on_guild_join(guild):
     channel = client.get_channel(722605186245197874)
     await channel.send("New Server! Now in " + str(len(client.guilds)) + " servers!")
 
+
 @client.command()
 async def trivia(ctx, category=None):
     if random.randint(1, 3) > 1:
         await multichoice(ctx, category)
     else:
         await truefalse(ctx, category)
+
+
 @client.command(aliases=["tf"])
 async def truefalse(ctx, category=None):
     global triviatoken
@@ -459,21 +482,37 @@ async def truefalse(ctx, category=None):
             message = await msg.edit(embed=qembed)
             await msg.add_reaction("✅")
 
+
 @client.command(aliases=["multi", "multiplechoice", "multiple"])
 async def multichoice(ctx, category=None):
     if not category in categories.keys():
-        r = requests.get("https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&token=" + str(triviatoken)).text
+        r = requests.get(
+            "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&token="
+            + str(triviatoken)
+        ).text
     else:
-        r = requests.get("https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=" + str(categories[category]) + "&token=" + str(triviatoken)).text
+        r = requests.get(
+            "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category="
+            + str(categories[category])
+            + "&token="
+            + str(triviatoken)
+        ).text
     r = json.loads(r)
     q = urllib.parse.unquote(r["results"][0]["question"])
-    answers = [urllib.parse.unquote(r["results"][0]["correct_answer"])] + [urllib.parse.unquote(x) for x in r["results"][0]["incorrect_answers"]]
+    answers = [urllib.parse.unquote(r["results"][0]["correct_answer"])] + [
+        urllib.parse.unquote(x) for x in r["results"][0]["incorrect_answers"]
+    ]
     random.shuffle(answers)
     correct = answers.index(urllib.parse.unquote(r["results"][0]["correct_answer"]))
     uid = ctx.author.id
     qembed = discord.Embed(
-        title="YOUR QUESTION FROM CATEGORY "+category.upper() if category in categories.keys() else "YOUR QUESTION",
-        description="Use the below reactions to answer this multiple choice question:\n" + q + "\n\n\n" + "\n\n".join([numberemojis[qnum] + " " + answers[qnum] for qnum in range(4)]),
+        title="YOUR QUESTION FROM CATEGORY " + category.upper()
+        if category in categories.keys()
+        else "YOUR QUESTION",
+        description="Use the below reactions to answer this multiple choice question:\n"
+        + q
+        + "\n\n\n"
+        + "\n\n".join([numberemojis[qnum] + " " + answers[qnum] for qnum in range(4)]),
         color=0xFF0000,
     )
     msg = await ctx.send(embed=qembed)
@@ -485,16 +524,20 @@ async def multichoice(ctx, category=None):
             color=0xFF0000,
         )
         if category in categories.keys():
-            qembed.add_field(name="The Chosen Category Was:", value=str(category), inline=False)
+            qembed.add_field(
+                name="The Chosen Category Was:", value=str(category), inline=False
+            )
         qembed.add_field(name="The Question Was:", value=str(q), inline=False)
         qembed.add_field(
-            name="The Submitted Answer Was:", value="EXPIRED (you lost 1 point)", inline=False
+            name="The Submitted Answer Was:",
+            value="EXPIRED (you lost 1 point)",
+            inline=False,
         )
-        qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
-        message = await msg.edit(embed=qembed)
         qembed.add_field(
-            name="Points", value="You lost 1 point!", inline=False
+            name="The Correct Answer Was:", value=answers[correct], inline=False
         )
+        message = await msg.edit(embed=qembed)
+        qembed.add_field(name="Points", value="You lost 1 point!", inline=False)
         tbpoints("give", str(uid), -1)
     else:
         try:
@@ -519,15 +562,25 @@ async def multichoice(ctx, category=None):
             color=0xFF0000,
         )
         if category in categories.keys():
-            qembed.add_field(name="The Chosen Category Was:", value=str(category), inline=False)
+            qembed.add_field(
+                name="The Chosen Category Was:", value=str(category), inline=False
+            )
         qembed.add_field(name="The Question Was:", value=str(q), inline=False)
         qembed.add_field(
             name="The Submitted Answer Was:", value=answers[answered], inline=False
         )
         qembed.add_field(
-            name="Points", value="You {0} {1} point{2}!".format("lost" if pointchange < 0 else "gained", str(abs(pointchange)).replace(".0", ""), "s" if abs(pointchange) > 1 else ""), inline=False
+            name="Points",
+            value="You {0} {1} point{2}!".format(
+                "lost" if pointchange < 0 else "gained",
+                str(abs(pointchange)).replace(".0", ""),
+                "s" if abs(pointchange) > 1 else "",
+            ),
+            inline=False,
         )
-        qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
+        qembed.add_field(
+            name="The Correct Answer Was:", value=answers[correct], inline=False
+        )
         if not diduservote:
             qembed.add_field(
                 name="Tip:",
@@ -535,6 +588,8 @@ async def multichoice(ctx, category=None):
                 inline=False,
             )
         message = await msg.edit(embed=qembed)
+
+
 @client.command(aliases=["debug"])
 async def triviadebug(ctx):
     data = tbpoints("data", 0, 0)
@@ -786,6 +841,89 @@ async def help(ctx):
     embed.add_field(
         name="`;truefalse  `", value="True/False question      ", inline=True
     )
+    embed.add_field(
+        name="`;shop       `", value="Visit the trivia shop!   ", inline=True
+    )
+    await ctx.send(embed=embed)
+
+
+@client.command(pass_context=True)
+async def shop(ctx):
+    r = 215
+    g = 91
+    b = 69
+    embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+    embed.set_author(name="Triva Bot Points Shop")
+    embed.add_field(
+        name="`;buy viprole       `",
+        value="Buy the vip role in the support sever! (250 points). Must do ;givemevip to activate once purchased.",
+        inline=True,
+    )
+    await ctx.send(embed=embed)
+
+
+@client.command(pass_context=True)
+async def buy(ctx, product=None):
+    r = 215
+    g = 91
+    b = 69
+    if product == None:
+        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+        embed.set_author(name="Store")
+        embed.add_field(
+            name="Notice",
+            value="`You have not specified a item. Please do ;shop for info.`",
+            inline=True,
+        )
+    else:
+        products = ["1.5x", "viprole", "pog"]
+        prices = {"1.5x": 2000, "viprole": 250, "pog": 500}
+        if product in products:
+            userpoints = tbpoints("get", str(ctx.message.author.id), 0)
+            if userpoints >= prices[product]:
+                tbperms("give", ctx.message.author.id, product)
+                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                embed.set_author(name="Store")
+                embed.add_field(name="Notice", value="`Purchased!`", inline=True)
+                tbpoints("take", str(ctx.message.author.id), prices[product])
+            else:
+                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                embed.set_author(name="Store")
+                embed.add_field(
+                    name="Notice",
+                    value="`Not enough points. Please do ;shop for info.`",
+                    inline=True,
+                )
+        else:
+            embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+            embed.set_author(name="Store")
+            embed.add_field(
+                name="Notice",
+                value="`Incorrect item. Please do ;shop for info.`",
+                inline=True,
+            )
+    await ctx.send(embed=embed)
+
+
+@client.command(pass_context=True)
+async def givemevip(ctx, product=None):
+    r = 215
+    g = 91
+    b = 69
+    if tbperms("check", ctx.message.author.id, "viprole"):
+        viprole = ctx.guild.get_role(723304450957115495)
+        await ctx.message.author.add_roles(viprole)
+        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+        embed.set_author(name="VIP-ROLE")
+        embed.add_field(name="Notice", value="`Done, role granted`", inline=True)
+    else:
+        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+        embed.set_author(name="VIP-ROLE")
+        embed.add_field(
+            name="Notice",
+            value="`You do not have permission to do this. Buy this command using ;shop`",
+            inline=True,
+        )
     await ctx.send(embed=embed)
 
 
