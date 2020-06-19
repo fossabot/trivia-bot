@@ -870,6 +870,11 @@ async def shop(ctx):
         value="Buy the vip role in the support sever! (250 points). Must do ;givemevip to activate once purchased.",
         inline=True,
     )
+    embed.add_field(
+        name="`;buy 1.5x       `",
+        value="Buy a 1.5x point multiplier! (2000 points). Stacks multiplicatively with voting",
+        inline=True,
+    )
     await ctx.send(embed=embed)
 
 
