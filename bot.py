@@ -53,7 +53,6 @@ categories = {
     "anime": "31",
     "cartoons": "32",
 }
-
 TOKEN = os.getenv("bottoken")
 if TOKEN == None:
     TOKEN = input("Token Please:")
@@ -152,7 +151,7 @@ async def get_reaction_answer(msg, author, q, a, ctx):
         )
         message = await msg.edit(embed=qembed)
     return [yesemoji, noemoji].index(str(reaction.emoji)) + 1
-
+# returns correct emoji
 
 def tbpoints(statement, key, amount):
     if statement == "get":
@@ -388,13 +387,18 @@ async def truefalse(ctx, category=None):
         multiplier = 1.5
     else:
         multiplier = 1
+    if tbperms("check", ctx.message.author.id, "1.5x"):
+        mult2 = 1.5
+    else:
+        mult2 = 1
+
     if lesspoints:
-        pointstogive = 1 * multiplier
+        pointstogive = 1 * multiplier * mult2
         message = ""
         if diduservote:
             message = " (Voted)"
     else:
-        pointstogive = 1 * multiplier
+        pointstogive = 1 * multiplier * mult2
         message = ""
         if diduservote:
             message = " (Voted)"
@@ -554,7 +558,14 @@ async def multichoice(ctx, category=None):
             diduservote = False
         pointstogive = 1 if category in categories.keys() else 2
         if diduservote:
-            pointstogive += 1.5
+            mult = 1.5
+        else:
+            mult = 1
+        if tbperms("check", ctx.message.author.id, "1.5x"):
+            mult2 = 1.5
+        else:
+            mult2 = 1
+        pointstogive = pointstogive * mult * mult2
         await msg.clear_reactions()
         if answered == correct:
             await msg.add_reaction("✅")
@@ -757,7 +768,7 @@ async def botservers(ctx):
 
 @client.command(brief="Credits!", aliases=["credits"], pass_context="True")
 async def about(ctx):
-    devs = ["247594208779567105", "692652688407527474"]
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     r = 215
     g = 91
     b = 69
@@ -865,6 +876,11 @@ async def shop(ctx):
     embed.add_field(
         name="`;buy viprole       `",
         value="Buy the vip role in the support sever! (250 points). Must do ;givemevip to activate once purchased.",
+        inline=True,
+    )
+    embed.add_field(
+        name="`;buy 1.5x       `",
+        value="Buy a 1.5x point multiplier! (2000 points). Stacks multiplicatively with voting",
         inline=True,
     )
     await ctx.send(embed=embed)
