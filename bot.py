@@ -775,7 +775,7 @@ async def about(ctx):
             names.append(str(user))
         else:
             names.append("<@{}>".format(userid))
-    embed.add_field(name="Originally Coded by", value=" and ".join(names), inline=False)
+    embed.add_field(name="Originally Coded by", value=" , ".join(names), inline=False)
     await ctx.send(embed=embed)
 
 
