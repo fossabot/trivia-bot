@@ -53,7 +53,6 @@ categories = {
     "anime": "31",
     "cartoons": "32",
 }
-test = "0"
 TOKEN = os.getenv("bottoken")
 if TOKEN == None:
     TOKEN = input("Token Please:")
@@ -382,7 +381,8 @@ async def truefalse(ctx, category=None):
         multiplier = 1
     if tbperms("check", ctx.message.author.id, "1.5x"):
         mult2 = 1.5
-    else: mult2 = 1.5
+    else: 
+        mult2 = 1
 
     if lesspoints:
         pointstogive = 1 * multiplier * mult2
