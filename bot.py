@@ -151,7 +151,7 @@ async def get_reaction_answer(msg, author, q, a, ctx):
         )
         message = await msg.edit(embed=qembed)
     return [yesemoji, noemoji].index(str(reaction.emoji)) + 1
-
+# returns correct emoji
 
 def tbpoints(statement, key, amount):
     if statement == "get":
@@ -381,7 +381,7 @@ async def truefalse(ctx, category=None):
         multiplier = 1
     if tbperms("check", ctx.message.author.id, "1.5x"):
         mult2 = 1.5
-    else: 
+    else:
         mult2 = 1
 
     if lesspoints:
@@ -555,7 +555,7 @@ async def multichoice(ctx, category=None):
             mult = 1
         if tbperms("check", ctx.message.author.id, "1.5x"):
             mult2 = 1.5
-        else: 
+        else:
             mult2 = 1
         pointstogive = pointstogive * mult * mult2
         await msg.clear_reactions()
