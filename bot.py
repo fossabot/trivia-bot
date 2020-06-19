@@ -232,7 +232,7 @@ async def on_guild_join(guild):
         await general.send(embed=embed)
     channel = client.get_channel(722605186245197874)
     embed = discord.Embed(
-        title="New Server!",
+        title="New Server! {} Owned by {}".format(guild.name, guild.owner.id),
         description="Now in " + str(len(client.guilds)) + " servers!",
         color=discord.Colour.from_rgb(r, g, b),
     )
@@ -783,7 +783,7 @@ async def about(ctx):
             names.append(str(user))
         else:
             names.append("<@{}>".format(userid))
-    embed.add_field(name="Originally Coded by", value=" and ".join(names), inline=False)
+    embed.add_field(name="Originally Coded by", value=" , ".join(names), inline=False)
     await ctx.send(embed=embed)
 
 
