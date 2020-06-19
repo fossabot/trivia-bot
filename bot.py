@@ -984,26 +984,6 @@ async def ping(ctx):
     )
     await ctx.send(embed=embed)
 
-@client.command()
-@has_permissions(kick_members=True)
-async def kick(ctx, member : discord.member, * , reason=none):
-    await member.kick(reason=reason)
-
-@kick.error
-async def kick_error(ctx, error):
-    if isinstance(error, MissingPermissions):
-        await ctx.send("Sorry, you do not have permissions to kick users!")
-
-@client.command()
-@has_permissions(ban_members=True)
-async def ban(ctx, member : discord.member, * , reason=none):
-    await member.ban(reason=reason)
-
-@ban.error
- async def ban_error(ctx, error):
-     if isinstance(error, MissingPermissions):
-         await ctx.send("Sorry, you do not have permissions to ban users!")
-
 @client.command(pass_context=True)
 async def info(ctx, user: discord.Member = None):
     if user is None:
