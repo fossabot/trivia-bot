@@ -760,7 +760,11 @@ async def vote(ctx):
 
 @client.command(pass_context=True)
 async def botservers(ctx):
-    await ctx.send("I'm in " + str(len(client.guilds)) + " servers! (Goal 75)")
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
+        await ctx.send("I'm in " + str(len(client.guilds)) + " servers! (Goal 75)")
+    else:
+        await ctx.send("This command is admin-only")
 
 
 "NOTCIE: TO COMPLY WITH GPL3, THE CREDITS SECTION MUST NOT BE REMOVED"
