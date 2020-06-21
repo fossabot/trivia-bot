@@ -896,22 +896,22 @@ async def shop(ctx):
     )
     embed.add_field(
         name="`;buy pog       `",
-        value="Pog gif (25 points)",
+        value="Pog gif (;pog) (25 points)",
         inline=True,
     )
     embed.add_field(
         name="`;buy kappa       `",
-        value="Kappa gif for people who don't understand sarcasm (25 points)",
+        value="Kappa gif (;kappa) for people who don't understand sarcasm (25 points)",
         inline=True,
     )
     embed.add_field(
         name="`;buy lmao       `",
-        value="Laugh at people with this gif (25 points)",
+        value="Laugh (;lmao) at people with this gif (25 points)",
         inline=True,
     )
     embed.add_field(
         name="`;buy cmon       `",
-        value="That one kid with the bad pun (25 points)",
+        value="That one kid with the bad pun (;cmon) (25 points)",
         inline=True,
     )
     await ctx.send(embed=embed)
@@ -920,33 +920,33 @@ async def shop(ctx):
 async def kappa(ctx):
     if tbperms("check", ctx.message.author.id, "kappa"):
         embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724086311144783943/kappa.gif")
-        ctx.send(embed=embed)
+        await ctx.send(embed=embed)
     else:
-        ctx.send("Buy this gif in the shop!")
+        await ctx.send("Buy this gif in the shop!")
 
 @client.command()
 async def cmon(ctx):
     if tbperms("check", ctx.message.author.id, "cmon"):
         embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724131734131834930/cmon.gif")
-        ctx.send(embed=embed)
+        await ctx.send(embed=embed)
     else:
-        ctx.send("Buy this gif in the shop!")
+        await ctx.send("Buy this gif in the shop!")
 
 @client.command()
 async def pog(ctx):
     if tbperms("check", ctx.message.author.id, "pog"):
         embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724087526347767918/pog.gif")
-        ctx.send(embed=embed)
+        await ctx.send(embed=embed)
     else:
-        ctx.send("Buy this gif in the shop!")
+        await ctx.send("Buy this gif in the shop!")
 
 @client.command()
 async def lmao(ctx):
     if tbperms("check", ctx.message.author.id, "lmao"):
         embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724087324022931586/lmao.gif")
-        ctx.send(embed=embed)
+        await ctx.send(embed=embed)
     else:
-        ctx.send("Buy this gif in the shop!")
+        await ctx.send("Buy this gif in the shop!")
 
 
 @client.command(pass_context=True)
