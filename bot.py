@@ -242,7 +242,7 @@ async def on_guild_join(guild):
     await channel.send(embed=embed)
 
 @client.command()
-async def bottedservers(ctx)
+async def bottedservers(ctx):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
         for guild in client.guilds:
