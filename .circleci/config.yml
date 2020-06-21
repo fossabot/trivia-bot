@@ -10,8 +10,9 @@ jobs:
           command: |
             # pytest would be a dep in requirements.txt
             pip install -r requirements.txt
-            python -m pytest pytest.py
-          name: Test
+            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --ignore=F821,F632
+            flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --ignore=F821,F632
+          name: Lint
 orbs:
   python: circleci/python@0.1
 version: 2.1
