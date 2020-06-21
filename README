@@ -1,13 +1,13 @@
 # Trivia Bot
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2020)
 [![Discord Bots](https://top.gg/api/widget/status/715047504126804000.svg)](https://top.gg/bot/715047504126804000)
 [![Discord Bots](https://top.gg/api/widget/upvotes/715047504126804000.svg)](https://top.gg/bot/715047504126804000)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-6f42c1.svg)](http://makeapullrequest.com)
-
+![Syntax Check](https://github.com/gubareve/trivia-bot/workflows/Syntax%20Check/badge.svg)
+![CircleCi](https://circleci.com/gh/gubareve/trivia-bot.svg?style=svg)
+[![Build Status](https://dev.azure.com/evchik2007/com.kd7t.triviabot/_apis/build/status/gubareve.trivia-bot?branchName=master)](https://dev.azure.com/evchik2007/com.kd7t.triviabot/_build/latest?definitionId=1&branchName=master)
+  
 ## [Invite Link:](https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify)  
 
 A easy to use multiple choice and true/false trivia bot for discord the includes a global leaderboard, categories, server leaderboards, and a infinite amount of control. You can copy this bot if you keep the credit command.

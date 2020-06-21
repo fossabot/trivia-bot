@@ -1,0 +1,22 @@
+jobs:
+  build:
+    executor: python/default
+    steps:
+      - checkout
+      - python/load-cache
+      - python/install-deps
+      - python/save-cache
+      - run:
+          command: |
+            # pytest would be a dep in requirements.txt
+            pip install -r requirements.txt
+            python -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --ignore=F821,F632
+            python -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --ignore=F821,F632
+          name: Lint
+orbs:
+  python: circleci/python@0.1
+version: 2.1
+workflows:
+  main:
+    jobs:
+      - build

@@ -151,7 +151,10 @@ async def get_reaction_answer(msg, author, q, a, ctx):
         )
         message = await msg.edit(embed=qembed)
     return [yesemoji, noemoji].index(str(reaction.emoji)) + 1
+
+
 # returns correct emoji
+
 
 def tbpoints(statement, key, amount):
     if statement == "get":
@@ -233,13 +236,18 @@ async def on_guild_join(guild):
     channel = client.get_channel(722605186245197874)
     embed = discord.Embed(
         title="New Server! Name: {} ".format(guild.name),
-        description="Now in " + str(len(client.guilds)) + " servers! New server owned by <@{}> with {} members".format(guild.owner.id, len(guild.members)),
+        description="Now in "
+        + str(len(client.guilds))
+        + " servers! New server owned by <@{}> with {} members".format(
+            guild.owner.id, len(guild.members)
+        ),
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.set_thumbnail(
         url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
     )
     await channel.send(embed=embed)
+
 
 @client.command()
 async def bottedservers(ctx):
@@ -249,6 +257,7 @@ async def bottedservers(ctx):
         for guild in client.guilds:
             if len(guild.members) < 3:
                 await ctx.send("{} owned by <@{}>".format(str(guild.name), str(guild.owner.id)))
+
 
 @client.command()
 async def trivia(ctx, category=None):
@@ -897,57 +906,69 @@ async def shop(ctx):
     )
     embed.add_field(
         name="`;buy pog       `",
-        value="Pog gif (25 points)",
+        value="Pog gif (;pog) (25 points)",
         inline=True,
     )
     embed.add_field(
         name="`;buy kappa       `",
-        value="Kappa gif for people who don't understand sarcasm (25 points)",
+        value="Kappa gif (;kappa) for people who don't understand sarcasm (25 points)",
         inline=True,
     )
     embed.add_field(
         name="`;buy lmao       `",
-        value="Laugh at people with this gif (25 points)",
+        value="Laugh (;lmao) at people with this gif (25 points)",
         inline=True,
     )
     embed.add_field(
         name="`;buy cmon       `",
-        value="That one kid with the bad pun (25 points)",
+        value="That one kid with the bad pun (;cmon) (25 points)",
         inline=True,
     )
     await ctx.send(embed=embed)
 
+
 @client.command()
 async def kappa(ctx):
     if tbperms("check", ctx.message.author.id, "kappa"):
-        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724086311144783943/kappa.gif")
-        ctx.send(embed=embed)
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724086311144783943/kappa.gif"
+        )
+        await ctx.send(embed=embed)
     else:
-        ctx.send("Buy this gif in the shop!")
+        await ctx.send("Buy this gif in the shop!")
+
 
 @client.command()
 async def cmon(ctx):
     if tbperms("check", ctx.message.author.id, "cmon"):
-        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724131734131834930/cmon.gif")
-        ctx.send(embed=embed)
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724131734131834930/cmon.gif"
+        )
+        await ctx.send(embed=embed)
     else:
-        ctx.send("Buy this gif in the shop!")
+        await ctx.send("Buy this gif in the shop!")
+
 
 @client.command()
 async def pog(ctx):
     if tbperms("check", ctx.message.author.id, "pog"):
-        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724087526347767918/pog.gif")
-        ctx.send(embed=embed)
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724087526347767918/pog.gif"
+        )
+        await ctx.send(embed=embed)
     else:
-        ctx.send("Buy this gif in the shop!")
+        await ctx.send("Buy this gif in the shop!")
+
 
 @client.command()
 async def lmao(ctx):
     if tbperms("check", ctx.message.author.id, "lmao"):
-        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724087324022931586/lmao.gif")
-        ctx.send(embed=embed)
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724087324022931586/lmao.gif"
+        )
+        await ctx.send(embed=embed)
     else:
-        ctx.send("Buy this gif in the shop!")
+        await ctx.send("Buy this gif in the shop!")
 
 
 @client.command(pass_context=True)
@@ -965,7 +986,14 @@ async def buy(ctx, product=None):
         )
     else:
         products = ["1.5x", "viprole", "pog", "kappa", "lmao", "cmon"]
-        prices = {"1.5x": 2000, "viprole": 250, "pog": 25, "lmao": 25, "cmon": 25, "kappa": 25}
+        prices = {
+            "1.5x": 2000,
+            "viprole": 250,
+            "pog": 25,
+            "lmao": 25,
+            "cmon": 25,
+            "kappa": 25,
+        }
         if product in products:
             userpoints = tbpoints("get", str(ctx.message.author.id), 0)
             if userpoints >= prices[product]:
@@ -978,7 +1006,11 @@ async def buy(ctx, product=None):
                 else:
                     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
                     embed.set_author(name="Store")
-                    embed.add_field(name="Notice", value="`You have already bought this product!`", inline=True)
+                    embed.add_field(
+                        name="Notice",
+                        value="`You have already bought this product!`",
+                        inline=True,
+                    )
             else:
                 embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
                 embed.set_author(name="Store")
@@ -1052,6 +1084,7 @@ async def ping(ctx):
         title=None, description="Ping: {}".format(str(ping)), color=0xD75B45
     )
     await ctx.send(embed=embed)
+
 
 @client.command(pass_context=True)
 async def info(ctx, user: discord.Member = None):
@@ -1155,7 +1188,7 @@ async def on_ready():
     n = requests.get("https://opentdb.com/api_token.php?command=request").text
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)["token"])
-    print(triviatoken)
+    print("OPENTDB TOKEN --> " + triviatoken)
 
 
 try:
