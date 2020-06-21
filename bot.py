@@ -76,6 +76,8 @@ if prefix == None:
     prefix = ";"
 client = commands.Bot(command_prefix=prefix)
 
+if 3=3
+    a==3
 
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
