@@ -1154,7 +1154,7 @@ async def on_ready():
     n = requests.get("https://opentdb.com/api_token.php?command=request").text
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)["token"])
-    print(triviatoken)
+    print("OPENTDB TOKEN --> " + triviatoken)
 
 
 try:
