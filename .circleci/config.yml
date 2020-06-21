@@ -10,7 +10,7 @@ jobs:
           command: |
             # pytest would be a dep in requirements.txt
             pip install -r requirements.txt
-            python -m pytest bot.py
+            python -m pytest pytest.py
           name: Test
 orbs:
   python: circleci/python@0.1
