@@ -76,6 +76,7 @@ if prefix == None:
     prefix = ";"
 client = commands.Bot(command_prefix=prefix)
 
+
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 
@@ -150,7 +151,10 @@ async def get_reaction_answer(msg, author, q, a, ctx):
         )
         message = await msg.edit(embed=qembed)
     return [yesemoji, noemoji].index(str(reaction.emoji)) + 1
+
+
 # returns correct emoji
+
 
 def tbpoints(statement, key, amount):
     if statement == "get":
@@ -232,13 +236,18 @@ async def on_guild_join(guild):
     channel = client.get_channel(722605186245197874)
     embed = discord.Embed(
         title="New Server! Name: {} ".format(guild.name),
-        description="Now in " + str(len(client.guilds)) + " servers! New server owned by <@{}> with {} members".format(guild.owner.id, len(guild.members)),
+        description="Now in "
+        + str(len(client.guilds))
+        + " servers! New server owned by <@{}> with {} members".format(
+            guild.owner.id, len(guild.members)
+        ),
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.set_thumbnail(
         url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
     )
     await channel.send(embed=embed)
+
 
 @client.command()
 async def bottedservers(ctx):
@@ -247,6 +256,7 @@ async def bottedservers(ctx):
         for guild in client.guilds:
             if len(guild.members) < 3:
                 await ctx.send("{} owned by <@{}>").format(guild.name, guild.owner.id)
+
 
 @client.command()
 async def trivia(ctx, category=None):
@@ -915,34 +925,46 @@ async def shop(ctx):
     )
     await ctx.send(embed=embed)
 
+
 @client.command()
 async def kappa(ctx):
     if tbperms("check", ctx.message.author.id, "kappa"):
-        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724086311144783943/kappa.gif")
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724086311144783943/kappa.gif"
+        )
         await ctx.send(embed=embed)
     else:
         await ctx.send("Buy this gif in the shop!")
+
 
 @client.command()
 async def cmon(ctx):
     if tbperms("check", ctx.message.author.id, "cmon"):
-        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724131734131834930/cmon.gif")
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724131734131834930/cmon.gif"
+        )
         await ctx.send(embed=embed)
     else:
         await ctx.send("Buy this gif in the shop!")
+
 
 @client.command()
 async def pog(ctx):
     if tbperms("check", ctx.message.author.id, "pog"):
-        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724087526347767918/pog.gif")
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724087526347767918/pog.gif"
+        )
         await ctx.send(embed=embed)
     else:
         await ctx.send("Buy this gif in the shop!")
 
+
 @client.command()
 async def lmao(ctx):
     if tbperms("check", ctx.message.author.id, "lmao"):
-        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724087324022931586/lmao.gif")
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724087324022931586/lmao.gif"
+        )
         await ctx.send(embed=embed)
     else:
         await ctx.send("Buy this gif in the shop!")
@@ -963,7 +985,14 @@ async def buy(ctx, product=None):
         )
     else:
         products = ["1.5x", "viprole", "pog", "kappa", "lmao", "cmon"]
-        prices = {"1.5x": 2000, "viprole": 250, "pog": 25, "lmao": 25, "cmon": 25, "kappa": 25}
+        prices = {
+            "1.5x": 2000,
+            "viprole": 250,
+            "pog": 25,
+            "lmao": 25,
+            "cmon": 25,
+            "kappa": 25,
+        }
         if product in products:
             userpoints = tbpoints("get", str(ctx.message.author.id), 0)
             if userpoints >= prices[product]:
@@ -976,7 +1005,11 @@ async def buy(ctx, product=None):
                 else:
                     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
                     embed.set_author(name="Store")
-                    embed.add_field(name="Notice", value="`You have already bought this product!`", inline=True)
+                    embed.add_field(
+                        name="Notice",
+                        value="`You have already bought this product!`",
+                        inline=True,
+                    )
             else:
                 embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
                 embed.set_author(name="Store")
@@ -1050,6 +1083,7 @@ async def ping(ctx):
         title=None, description="Ping: {}".format(str(ping)), color=0xD75B45
     )
     await ctx.send(embed=embed)
+
 
 @client.command(pass_context=True)
 async def info(ctx, user: discord.Member = None):
