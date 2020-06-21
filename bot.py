@@ -927,7 +927,7 @@ async def kappa(ctx):
 @client.command()
 async def cmon(ctx):
     if tbperms("check", ctx.message.author.id, "cmon"):
-        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724068711421575228/cmon.gif")
+        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724131734131834930/cmon.gif")
         ctx.send(embed=embed)
     else:
         ctx.send("Buy this gif in the shop!")
