@@ -245,9 +245,10 @@ async def on_guild_join(guild):
 async def bottedservers(ctx):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
+        await ctx.send("Servers with only 1 person:")
         for guild in client.guilds:
-            if len(guild.members) < 3:
-                await ctx.send("{} owned by <@{}>").format(guild.name, guild.owner.id)
+            if int(len(guild.members)) < 3:
+                await ctx.send("{} owned by <@{}>").format(str(guild.name), str(guild.owner.id)
 
 @client.command()
 async def trivia(ctx, category=None):
