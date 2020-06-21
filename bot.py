@@ -241,6 +241,13 @@ async def on_guild_join(guild):
     )
     await channel.send(embed=embed)
 
+@client.command()
+async def bottedservers(ctx)
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
+        for guild in client.guilds:
+            if len(guild.members) < 3:
+                await ctx.send("{} owned by <@{}>").format(guild.name, guild.owner.id)
 
 @client.command()
 async def trivia(ctx, category=None):
@@ -762,7 +769,7 @@ async def vote(ctx):
 async def botservers(ctx):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
-        await ctx.send("I'm in " + str(len(client.guilds)) + " servers! (Goal 75)")
+        await ctx.send("I'm in " + str(len(client.guilds)) + " servers!")
     else:
         await ctx.send("This command is admin-only")
 
@@ -887,7 +894,59 @@ async def shop(ctx):
         value="Buy a 1.5x point multiplier! (2000 points). Stacks multiplicatively with voting",
         inline=True,
     )
+    embed.add_field(
+        name="`;buy pog       `",
+        value="Pog gif (25 points)",
+        inline=True,
+    )
+    embed.add_field(
+        name="`;buy kappa       `",
+        value="Kappa gif for people who don't understand sarcasm (25 points)",
+        inline=True,
+    )
+    embed.add_field(
+        name="`;buy lmao       `",
+        value="Laugh at people with this gif (25 points)",
+        inline=True,
+    )
+    embed.add_field(
+        name="`;buy cmon       `",
+        value="That one kid with the bad pun (25 points)",
+        inline=True,
+    )
     await ctx.send(embed=embed)
+
+@client.command()
+async def kappa(ctx):
+    if tbperms("check", ctx.message.author.id, "kappa"):
+        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724086311144783943/kappa.gif")
+        ctx.send(embed=embed)
+    else:
+        ctx.send("Buy this gif in the shop!")
+
+@client.command()
+async def cmon(ctx):
+    if tbperms("check", ctx.message.author.id, "cmon"):
+        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724068711421575228/cmon.gif")
+        ctx.send(embed=embed)
+    else:
+        ctx.send("Buy this gif in the shop!")
+
+@client.command()
+async def pog(ctx):
+    if tbperms("check", ctx.message.author.id, "pog"):
+        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724087526347767918/pog.gif")
+        ctx.send(embed=embed)
+    else:
+        ctx.send("Buy this gif in the shop!")
+
+@client.command()
+async def lmao(ctx):
+    if tbperms("check", ctx.message.author.id, "lmao"):
+        embed = discord.Embed().set_image(url="https://cdn.discordapp.com/attachments/724068633591939143/724087324022931586/lmao.gif")
+        ctx.send(embed=embed)
+    else:
+        ctx.send("Buy this gif in the shop!")
 
 
 @client.command(pass_context=True)
@@ -904,16 +963,21 @@ async def buy(ctx, product=None):
             inline=True,
         )
     else:
-        products = ["1.5x", "viprole", "pog"]
-        prices = {"1.5x": 2000, "viprole": 250, "pog": 500}
+        products = ["1.5x", "viprole", "pog", "kappa", "lmao", "cmon"]
+        prices = {"1.5x": 2000, "viprole": 250, "pog": 25, "lmao": 25, "cmon": 25, "kappa": 25}
         if product in products:
             userpoints = tbpoints("get", str(ctx.message.author.id), 0)
             if userpoints >= prices[product]:
-                tbperms("give", ctx.message.author.id, product)
-                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-                embed.set_author(name="Store")
-                embed.add_field(name="Notice", value="`Purchased!`", inline=True)
-                tbpoints("take", str(ctx.message.author.id), prices[product])
+                if not tbperms("check", str(ctx.message.author.id), product):
+                    tbperms("give", ctx.message.author.id, product)
+                    embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                    embed.set_author(name="Store")
+                    embed.add_field(name="Notice", value="`Purchased!`", inline=True)
+                    tbpoints("take", str(ctx.message.author.id), prices[product])
+                else:
+                    embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                    embed.set_author(name="Store")
+                    embed.add_field(name="Notice", value="`You have already bought this product!`", inline=True)
             else:
                 embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
                 embed.set_author(name="Store")
