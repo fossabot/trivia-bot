@@ -9,6 +9,7 @@ jobs:
       - run:
           command: |
             # pytest would be a dep in requirements.txt
+            pip install -r requirements.txt
             pytest bot.py
           name: Test
 orbs:
