@@ -8,4 +8,4 @@ future==0.18.2
 redis==3.5.3
 dblpy==0.3.4
 dpytest==0.0.20
-flake8==3.8.3
+flake8==3.7.3
