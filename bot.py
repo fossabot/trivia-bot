@@ -81,7 +81,7 @@ async def determineprefix(bot, message):
     if guild:
         return [tbprefix("get", guild.id)]
     else:
-        return [defaultprefix, "<@715047504126804000>"]
+        return [defaultprefix, bot.user.mention + ' ', '<@!%s> ' % bot.user.id]
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 client = commands.Bot(command_prefix=determineprefix)
@@ -267,6 +267,7 @@ async def on_guild_join(guild):
 @client.command()
 @commands.guild_only()
 async def setprefix(ctx, prefix):
+    error = False
     try:
         tbprefix("set", ctx.guild.id, prefix)
     except Exception:
@@ -916,6 +917,9 @@ async def help(ctx):
     )
     embed.add_field(
         name="`;gamble      `", value="Gamble for more points! ", inline=True
+    )
+    embed.add_field(
+        name="`;setprefix   `", value="Set the guild prefix    ", inline=True
     )
     await ctx.send(embed=embed)
 
