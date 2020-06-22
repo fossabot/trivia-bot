@@ -985,7 +985,7 @@ async def doubleornothing(ctx, points=None):
     else:
         if points <= userpoints:
             if random.randint(1, 10) <= 4:
-                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                embed = discord.Embed(color=discord.Colour.from_rgb(72, 232, 227))
                 embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
                 embed.set_author(name="Gambling")
                 embed.add_field(
