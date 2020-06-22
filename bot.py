@@ -970,6 +970,51 @@ async def lmao(ctx):
     else:
         await ctx.send("Buy this gif in the shop!")
 
+@client.command(aliases=["gamble"])
+async def doubleornothing(ctx, points=None):
+    userpoints = tbpoints("get", str(ctx.message.author.id), 0)
+    if points == None:
+        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+        embed.set_author(name="Gambling")
+        embed.add_field(
+            name="Notice",
+            value="`Please specify how many points you would like to gamble`",
+            inline=True,
+        )
+
+    else:
+        if points <= userpoints:
+            if random.randint(1, 10) <= 4:
+                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+                embed.set_author(name="Gambling")
+                embed.add_field(
+                    name="You won!",
+                    value="`You have won {} points! Poggers!`".format(points),
+                    inline=True,
+                )
+                tbpoints("give", str(ctx.message.author.id), points)
+
+            else:
+                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+                embed.set_author(name="Gambling")
+                embed.add_field(
+                    name="You lost",
+                    value="`You have lost {} points, F in the chat`".format(points),
+                    inline=True,
+                )
+                tbpoints("take", str(ctx.message.author.id), points)
+        else:
+            embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+            embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+            embed.set_author(name="Gambling")
+            embed.add_field(
+                name="You don't have that much!",
+                value="`You don't have that many points!`".format(points),
+                inline=True,
+            )
+    ctx.send(embed=embed)
 
 @client.command(pass_context=True)
 async def buy(ctx, product=None):
