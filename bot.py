@@ -81,7 +81,7 @@ async def determineprefix(bot, message):
     if guild:
         return [tbprefix("get", guild.id)]
     else:
-        return [default_prefix]
+        return [defaultprefix]
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 
