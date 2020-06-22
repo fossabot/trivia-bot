@@ -81,7 +81,7 @@ async def determineprefix(bot, message):
     if guild:
         return [tbprefix("get", guild.id)]
     else:
-        return [defaultprefix, "<@715047504126804000>"]
+        return [defaultprefix, client.user.mention + ' ', '<@!%s> ' % bot.user.id]
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 client = commands.Bot(command_prefix=determineprefix)
