@@ -70,13 +70,18 @@ HEROKU_SLUG_DESCRIPTION = os.getenv("HEROKU_SLUG_DESCRIPTION")
 
 triviadb = redis.from_url(redisurl)
 
-prefix = os.getenv("prefix")
+defaultprefix = os.getenv("prefix")
 
-if prefix == None:
-    prefix = ";"
-client = commands.Bot(command_prefix=prefix)
+if defaultprefix == None:
+    defaultprefix = ";"
+client = commands.Bot(command_prefix=determine_prefix)
 
-
+async def determineprefix(bot, message):
+    guild = message.guild
+    if guild:
+        return [tbprefix("get", guild.id)]
+    else:
+        return [default_prefix]
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 
@@ -215,7 +220,16 @@ def tbperms(statement, user, key):
             return False
     if statement == "give":
         triviadb.hmset(str(user) + "-" + str(key) + "-data", {1: 1})
-
+def tbprefix(statement, guild, setto=None):
+    if statement == "get":
+        try:
+            bytedata = triviadb.hgetall(str(guild)"-prefix")
+            data = bytedata.decode("ascii")
+            return data
+        except:
+            return defaultprefix
+    elif statement == "set" and not setto == None:
+        triviadb.hmset(str(guild)"-prefix", setto)
 
 @client.event
 async def on_guild_join(guild):
@@ -248,7 +262,20 @@ async def on_guild_join(guild):
     )
     await channel.send(embed=embed)
 
-
+@client.command()
+@commands.guild_only()
+async def setprefix(ctx, prefix):
+    try:
+        tbprefix("set", ctx.guild.id, prefix)
+    except Exception:
+        error = True
+    if not error:
+        await ctx.message.add_reaction(yesemoji)
+        await ctx.send("Set guild prefix to {}".format(prefix))
+    else:
+        await ctx.message.add_reaction(yesemoji)
+        await ctx.send("There was an issue setting your prefix!".format(prefix))
+    
 @client.command()
 async def bottedservers(ctx):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
