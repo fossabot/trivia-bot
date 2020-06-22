@@ -5,7 +5,7 @@ import os
 
 dbl_token = os.getenv('DBL_TOKEN')
 if dbl_token == None:
-    dbl_token = input('Please enter the REDIS URL:')
+    dbl_token = input('Please enter the DBL Token:')
 
 class TopGG(commands.Cog):
     """Handles interactions with the top.gg API"""

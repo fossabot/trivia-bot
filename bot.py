@@ -53,7 +53,6 @@ categories = {
     "anime": "31",
     "cartoons": "32",
 }
-
 TOKEN = os.getenv("bottoken")
 if TOKEN == None:
     TOKEN = input("Token Please:")
@@ -97,6 +96,7 @@ def checkvote(userid):
     else:
         return False
 
+
 async def get_multi_reaction_answer(msg, author, ctx):
     def checkreaction(reaction, user):
         return (
@@ -104,6 +104,7 @@ async def get_multi_reaction_answer(msg, author, ctx):
             and reaction.message.id == msg.id
             and str(reaction.emoji) in numberemojis
         )
+
     for numreact in numberemojis:
         await msg.add_reaction(numreact)
     try:
@@ -113,6 +114,7 @@ async def get_multi_reaction_answer(msg, author, ctx):
     except asyncio.TimeoutError:
         return None
     return numberemojis.index(str(reaction.emoji))
+
 
 async def get_reaction_answer(msg, author, q, a, ctx):
     def checkreaction(reaction, user):
@@ -149,6 +151,9 @@ async def get_reaction_answer(msg, author, q, a, ctx):
         )
         message = await msg.edit(embed=qembed)
     return [yesemoji, noemoji].index(str(reaction.emoji)) + 1
+
+
+# returns correct emoji
 
 
 def tbpoints(statement, key, amount):
@@ -195,13 +200,30 @@ def tbpoints(statement, key, amount):
         return stringdb
 
 
+def tbperms(statement, user, key):
+    if statement == "check":
+        try:
+            bytedata = triviadb.hgetall(str(user) + "-" + str(key) + "-data")
+            data = {}
+            for key in bytedata.keys():
+                data[key.decode("ascii")] = bytedata[key].decode("ascii")
+            if data["1"] == "1":
+                return True
+            else:
+                return False
+        except:
+            return False
+    if statement == "give":
+        triviadb.hmset(str(user) + "-" + str(key) + "-data", {1: 1})
+
+
 @client.event
 async def on_guild_join(guild):
+    r = 215
+    g = 91
+    b = 69
     general = find(lambda x: x.name == "general", guild.text_channels)
     if general and general.permissions_for(guild.me).send_messages:
-        r = 215
-        g = 91
-        b = 69
         embed = discord.Embed(
             title="Thank you for adding Trivia Bot!",
             description="Please do ;help for info and ;trivia to start playing!",
@@ -212,7 +234,30 @@ async def on_guild_join(guild):
         )
         await general.send(embed=embed)
     channel = client.get_channel(722605186245197874)
-    await channel.send("New Server! Now in " + str(len(client.guilds)) + " servers!")
+    embed = discord.Embed(
+        title="New Server! Name: {} ".format(guild.name),
+        description="Now in "
+        + str(len(client.guilds))
+        + " servers! New server owned by <@{}> with {} members".format(
+            guild.owner.id, len(guild.members)
+        ),
+        color=discord.Colour.from_rgb(r, g, b),
+    )
+    embed.set_thumbnail(
+        url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
+    )
+    await channel.send(embed=embed)
+
+
+@client.command()
+async def bottedservers(ctx):
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
+        await ctx.send("Servers with only 1 person:")
+        for guild in client.guilds:
+            if len(guild.members) < 3:
+                await ctx.send("{} owned by <@{}>".format(str(guild.name), str(guild.owner.id)))
+
 
 @client.command()
 async def trivia(ctx, category=None):
@@ -220,6 +265,8 @@ async def trivia(ctx, category=None):
         await multichoice(ctx, category)
     else:
         await truefalse(ctx, category)
+
+
 @client.command(aliases=["tf"])
 async def truefalse(ctx, category=None):
     global triviatoken
@@ -357,13 +404,18 @@ async def truefalse(ctx, category=None):
         multiplier = 1.5
     else:
         multiplier = 1
+    if tbperms("check", ctx.message.author.id, "1.5x"):
+        mult2 = 1.5
+    else:
+        mult2 = 1
+
     if lesspoints:
-        pointstogive = 1 * multiplier
+        pointstogive = 1 * multiplier * mult2
         message = ""
         if diduservote:
             message = " (Voted)"
     else:
-        pointstogive = 1 * multiplier
+        pointstogive = 1 * multiplier * mult2
         message = ""
         if diduservote:
             message = " (Voted)"
@@ -459,21 +511,37 @@ async def truefalse(ctx, category=None):
             message = await msg.edit(embed=qembed)
             await msg.add_reaction("✅")
 
+
 @client.command(aliases=["multi", "multiplechoice", "multiple"])
 async def multichoice(ctx, category=None):
     if not category in categories.keys():
-        r = requests.get("https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&token=" + str(triviatoken)).text
+        r = requests.get(
+            "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&token="
+            + str(triviatoken)
+        ).text
     else:
-        r = requests.get("https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=" + str(categories[category]) + "&token=" + str(triviatoken)).text
+        r = requests.get(
+            "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category="
+            + str(categories[category])
+            + "&token="
+            + str(triviatoken)
+        ).text
     r = json.loads(r)
     q = urllib.parse.unquote(r["results"][0]["question"])
-    answers = [urllib.parse.unquote(r["results"][0]["correct_answer"])] + [urllib.parse.unquote(x) for x in r["results"][0]["incorrect_answers"]]
+    answers = [urllib.parse.unquote(r["results"][0]["correct_answer"])] + [
+        urllib.parse.unquote(x) for x in r["results"][0]["incorrect_answers"]
+    ]
     random.shuffle(answers)
     correct = answers.index(urllib.parse.unquote(r["results"][0]["correct_answer"]))
     uid = ctx.author.id
     qembed = discord.Embed(
-        title="YOUR QUESTION FROM CATEGORY "+category.upper() if category in categories.keys() else "YOUR QUESTION",
-        description="Use the below reactions to answer this multiple choice question:\n" + q + "\n\n\n" + "\n\n".join([numberemojis[qnum] + " " + answers[qnum] for qnum in range(4)]),
+        title="YOUR QUESTION FROM CATEGORY " + category.upper()
+        if category in categories.keys()
+        else "YOUR QUESTION",
+        description="Use the below reactions to answer this multiple choice question:\n"
+        + q
+        + "\n\n\n"
+        + "\n\n".join([numberemojis[qnum] + " " + answers[qnum] for qnum in range(4)]),
         color=0xFF0000,
     )
     msg = await ctx.send(embed=qembed)
@@ -485,16 +553,20 @@ async def multichoice(ctx, category=None):
             color=0xFF0000,
         )
         if category in categories.keys():
-            qembed.add_field(name="The Chosen Category Was:", value=str(category), inline=False)
+            qembed.add_field(
+                name="The Chosen Category Was:", value=str(category), inline=False
+            )
         qembed.add_field(name="The Question Was:", value=str(q), inline=False)
         qembed.add_field(
-            name="The Submitted Answer Was:", value="EXPIRED (you lost 1 point)", inline=False
+            name="The Submitted Answer Was:",
+            value="EXPIRED (you lost 1 point)",
+            inline=False,
         )
-        qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
-        message = await msg.edit(embed=qembed)
         qembed.add_field(
-            name="Points", value="You lost 1 point!", inline=False
+            name="The Correct Answer Was:", value=answers[correct], inline=False
         )
+        message = await msg.edit(embed=qembed)
+        qembed.add_field(name="Points", value="You lost 1 point!", inline=False)
         tbpoints("give", str(uid), -1)
     else:
         try:
@@ -503,7 +575,14 @@ async def multichoice(ctx, category=None):
             diduservote = False
         pointstogive = 1 if category in categories.keys() else 2
         if diduservote:
-            pointstogive += 1.5
+            mult = 1.5
+        else:
+            mult = 1
+        if tbperms("check", ctx.message.author.id, "1.5x"):
+            mult2 = 1.5
+        else:
+            mult2 = 1
+        pointstogive = pointstogive * mult * mult2
         await msg.clear_reactions()
         if answered == correct:
             await msg.add_reaction("✅")
@@ -519,15 +598,25 @@ async def multichoice(ctx, category=None):
             color=0xFF0000,
         )
         if category in categories.keys():
-            qembed.add_field(name="The Chosen Category Was:", value=str(category), inline=False)
+            qembed.add_field(
+                name="The Chosen Category Was:", value=str(category), inline=False
+            )
         qembed.add_field(name="The Question Was:", value=str(q), inline=False)
         qembed.add_field(
             name="The Submitted Answer Was:", value=answers[answered], inline=False
         )
         qembed.add_field(
-            name="Points", value="You {0} {1} point{2}!".format("lost" if pointchange < 0 else "gained", str(abs(pointchange)).replace(".0", ""), "s" if abs(pointchange) > 1 else ""), inline=False
+            name="Points",
+            value="You {0} {1} point{2}!".format(
+                "lost" if pointchange < 0 else "gained",
+                str(abs(pointchange)).replace(".0", ""),
+                "s" if abs(pointchange) > 1 else "",
+            ),
+            inline=False,
         )
-        qembed.add_field(name="The Correct Answer Was:", value=answers[correct], inline=False)
+        qembed.add_field(
+            name="The Correct Answer Was:", value=answers[correct], inline=False
+        )
         if not diduservote:
             qembed.add_field(
                 name="Tip:",
@@ -535,6 +624,8 @@ async def multichoice(ctx, category=None):
                 inline=False,
             )
         message = await msg.edit(embed=qembed)
+
+
 @client.command(aliases=["debug"])
 async def triviadebug(ctx):
     data = tbpoints("data", 0, 0)
@@ -686,7 +777,11 @@ async def vote(ctx):
 
 @client.command(pass_context=True)
 async def botservers(ctx):
-    await ctx.send("I'm in " + str(len(client.guilds)) + " servers! (Goal 75)")
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
+        await ctx.send("I'm in " + str(len(client.guilds)) + " servers!")
+    else:
+        await ctx.send("This command is admin-only")
 
 
 "NOTCIE: TO COMPLY WITH GPL3, THE CREDITS SECTION MUST NOT BE REMOVED"
@@ -694,7 +789,7 @@ async def botservers(ctx):
 
 @client.command(brief="Credits!", aliases=["credits"], pass_context="True")
 async def about(ctx):
-    devs = ["247594208779567105", "692652688407527474"]
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     r = 215
     g = 91
     b = 69
@@ -709,14 +804,14 @@ async def about(ctx):
             names.append(str(user))
         else:
             names.append("<@{}>".format(userid))
-    embed.add_field(name="Originally Coded by", value=" and ".join(names), inline=False)
+    embed.add_field(name="Originally Coded by", value=" , ".join(names), inline=False)
     await ctx.send(embed=embed)
 
 
 @client.command(brief="Invite Link", aliases=["link"], pass_context="True")
 async def invite(ctx):
     link = "[Invite Link](https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify)"
-    serverlink = "[Server Link](https://discord.gg/JwrrR5)"
+    serverlink = "[Server Link](https://discord.gg/UHQ33Qe)"
     r = 215
     g = 91
     b = 69
@@ -786,6 +881,219 @@ async def help(ctx):
     embed.add_field(
         name="`;truefalse  `", value="True/False question      ", inline=True
     )
+    embed.add_field(
+        name="`;shop       `", value="Visit the trivia shop!   ", inline=True
+    )
+    await ctx.send(embed=embed)
+
+
+@client.command(pass_context=True)
+async def shop(ctx):
+    r = 215
+    g = 91
+    b = 69
+    embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+    embed.set_author(name="Triva Bot Points Shop")
+    embed.add_field(
+        name="`;buy viprole       `",
+        value="Buy the vip role in the support sever! (250 points). Must do ;givemevip to activate once purchased.",
+        inline=True,
+    )
+    embed.add_field(
+        name="`;buy 1.5x       `",
+        value="Buy a 1.5x point multiplier! (2000 points). Stacks multiplicatively with voting",
+        inline=True,
+    )
+    embed.add_field(
+        name="`;buy pog       `",
+        value="Pog gif (;pog) (25 points)",
+        inline=True,
+    )
+    embed.add_field(
+        name="`;buy kappa       `",
+        value="Kappa gif (;kappa) for people who don't understand sarcasm (25 points)",
+        inline=True,
+    )
+    embed.add_field(
+        name="`;buy lmao       `",
+        value="Laugh (;lmao) at people with this gif (25 points)",
+        inline=True,
+    )
+    embed.add_field(
+        name="`;buy cmon       `",
+        value="That one kid with the bad pun (;cmon) (25 points)",
+        inline=True,
+    )
+    await ctx.send(embed=embed)
+
+
+@client.command()
+async def kappa(ctx):
+    if tbperms("check", ctx.message.author.id, "kappa"):
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724086311144783943/kappa.gif"
+        )
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send("Buy this gif in the shop!")
+
+
+@client.command()
+async def cmon(ctx):
+    if tbperms("check", ctx.message.author.id, "cmon"):
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724131734131834930/cmon.gif"
+        )
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send("Buy this gif in the shop!")
+
+
+@client.command()
+async def pog(ctx):
+    if tbperms("check", ctx.message.author.id, "pog"):
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724087526347767918/pog.gif"
+        )
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send("Buy this gif in the shop!")
+
+
+@client.command()
+async def lmao(ctx):
+    if tbperms("check", ctx.message.author.id, "lmao"):
+        embed = discord.Embed().set_image(
+            url="https://cdn.discordapp.com/attachments/724068633591939143/724087324022931586/lmao.gif"
+        )
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send("Buy this gif in the shop!")
+
+@client.command(aliases=["gamble"])
+async def doubleornothing(ctx, points=None):
+    userpoints = tbpoints("get", str(ctx.message.author.id), 0)
+    if points == None:
+        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+        embed.set_author(name="Gambling")
+        embed.add_field(
+            name="Notice",
+            value="`Please specify how many points you would like to gamble`",
+            inline=True,
+        )
+
+    else:
+        if points <= userpoints:
+            if random.randint(1, 10) <= 4:
+                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+                embed.set_author(name="Gambling")
+                embed.add_field(
+                    name="You won!",
+                    value="`You have won {} points! Poggers!`".format(points),
+                    inline=True,
+                )
+                tbpoints("give", str(ctx.message.author.id), points)
+
+            else:
+                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+                embed.set_author(name="Gambling")
+                embed.add_field(
+                    name="You lost",
+                    value="`You have lost {} points, F in the chat`".format(points),
+                    inline=True,
+                )
+                tbpoints("take", str(ctx.message.author.id), points)
+        else:
+            embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+            embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+            embed.set_author(name="Gambling")
+            embed.add_field(
+                name="You don't have that much!",
+                value="`You don't have that many points!`".format(points),
+                inline=True,
+            )
+    ctx.send(embed=embed)
+
+@client.command(pass_context=True)
+async def buy(ctx, product=None):
+    r = 215
+    g = 91
+    b = 69
+    if product == None:
+        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+        embed.set_author(name="Store")
+        embed.add_field(
+            name="Notice",
+            value="`You have not specified a item. Please do ;shop for info.`",
+            inline=True,
+        )
+    else:
+        products = ["1.5x", "viprole", "pog", "kappa", "lmao", "cmon"]
+        prices = {
+            "1.5x": 2000,
+            "viprole": 250,
+            "pog": 25,
+            "lmao": 25,
+            "cmon": 25,
+            "kappa": 25,
+        }
+        if product in products:
+            userpoints = tbpoints("get", str(ctx.message.author.id), 0)
+            if userpoints >= prices[product]:
+                if not tbperms("check", str(ctx.message.author.id), product):
+                    tbperms("give", ctx.message.author.id, product)
+                    embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                    embed.set_author(name="Store")
+                    embed.add_field(name="Notice", value="`Purchased!`", inline=True)
+                    tbpoints("take", str(ctx.message.author.id), prices[product])
+                else:
+                    embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                    embed.set_author(name="Store")
+                    embed.add_field(
+                        name="Notice",
+                        value="`You have already bought this product!`",
+                        inline=True,
+                    )
+            else:
+                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                embed.set_author(name="Store")
+                embed.add_field(
+                    name="Notice",
+                    value="`Not enough points. Please do ;shop for info.`",
+                    inline=True,
+                )
+        else:
+            embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+            embed.set_author(name="Store")
+            embed.add_field(
+                name="Notice",
+                value="`Incorrect item. Please do ;shop for info.`",
+                inline=True,
+            )
+    await ctx.send(embed=embed)
+
+
+@client.command(pass_context=True)
+async def givemevip(ctx, product=None):
+    r = 215
+    g = 91
+    b = 69
+    if tbperms("check", ctx.message.author.id, "viprole"):
+        viprole = ctx.guild.get_role(723304450957115495)
+        await ctx.message.author.add_roles(viprole)
+        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+        embed.set_author(name="VIP-ROLE")
+        embed.add_field(name="Notice", value="`Done, role granted`", inline=True)
+    else:
+        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+        embed.set_author(name="VIP-ROLE")
+        embed.add_field(
+            name="Notice",
+            value="`You do not have permission to do this. Buy this command using ;shop`",
+            inline=True,
+        )
     await ctx.send(embed=embed)
 
 
@@ -839,7 +1147,8 @@ async def info(ctx, user: discord.Member = None):
 
 @client.command(pass_context=True)
 async def servers(ctx):
-    if str(ctx.message.author.id) == "247594208779567105":
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
         await ctx.send("Servers connected to:")
         for server in client.guilds:
             await ctx.send(server.name)
@@ -847,7 +1156,8 @@ async def servers(ctx):
 
 @client.command(pass_context=True)
 async def setplaying(ctx, message=None):
-    if str(ctx.message.author.id) == "247594208779567105":
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
         if message == None:
             await ctx.send("Nothing Provided")
         else:
@@ -860,7 +1170,8 @@ async def setplaying(ctx, message=None):
 
 @client.command(pass_context=True)
 async def run(ctx, cmd=None):
-    if str(ctx.message.author.id) == "247594208779567105":
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
         eval(cmd)
         await ctx.send("Eval Complete.")
     else:
@@ -922,7 +1233,7 @@ async def on_ready():
     n = requests.get("https://opentdb.com/api_token.php?command=request").text
     global triviatoken
     triviatoken = urllib.parse.unquote(loads(n)["token"])
-    print(triviatoken)
+    print("OPENTDB TOKEN --> " + triviatoken)
 
 
 try:
