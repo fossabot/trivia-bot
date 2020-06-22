@@ -8,6 +8,7 @@ import asyncio
 import aiohttp
 import urllib
 import random
+import traceback
 import urllib.parse, urllib.request, re
 from discord import Game
 from json import loads
@@ -267,12 +268,13 @@ async def setprefix(ctx, prefix):
     try:
         tbprefix("set", ctx.guild.id, prefix)
     except Exception:
+        traceback.print_exc()
         error = True
     if not error:
         await ctx.message.add_reaction(yesemoji)
         await ctx.send("Set guild prefix to {}".format(prefix))
     else:
-        await ctx.message.add_reaction(yesemoji)
+        await ctx.message.add_reaction(noemoji)
         await ctx.send("There was an issue setting your prefix!".format(prefix))
     
 @client.command()
