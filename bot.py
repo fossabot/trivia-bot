@@ -74,7 +74,7 @@ defaultprefix = os.getenv("prefix")
 
 if defaultprefix == None:
     defaultprefix = ";"
-client = commands.Bot(command_prefix=determine_prefix)
+client = commands.Bot(command_prefix=determineprefix)
 
 async def determineprefix(bot, message):
     guild = message.guild
