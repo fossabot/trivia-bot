@@ -985,7 +985,7 @@ async def doubleornothing(ctx, points=None):
     else:
         if points <= userpoints:
             if random.randint(1, 10) <= 4:
-                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+                embed = discord.Embed(color=discord.Colour.from_rgb(72, 232, 227))
                 embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
                 embed.set_author(name="Gambling")
                 embed.add_field(
@@ -1152,6 +1152,20 @@ async def servers(ctx):
         await ctx.send("Servers connected to:")
         for server in client.guilds:
             await ctx.send(server.name)
+
+@client.command()
+async def givepoints(ctx, member: discord.Member, points=0):
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
+        tbpoints("give", str(member.id), points)
+        await ctx.send("Gave {} points to <@{}>".format(points, str(member.id)))
+
+@client.command()
+async def setpoints(ctx, member: discord.Member, points=0):
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
+        tbpoints("set", str(member.id), points)
+        await ctx.send("Set {} points as <@{}> 's point value'".format(points, str(member.id)))
 
 
 @client.command(pass_context=True)
