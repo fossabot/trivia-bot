@@ -74,7 +74,6 @@ defaultprefix = os.getenv("prefix")
 
 if defaultprefix == None:
     defaultprefix = ";"
-client = commands.Bot(command_prefix=determineprefix)
 
 async def determineprefix(bot, message):
     guild = message.guild
@@ -84,7 +83,7 @@ async def determineprefix(bot, message):
         return [defaultprefix]
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
-
+client = commands.Bot(command_prefix=determineprefix)
 
 def checkvote(userid):
     try:
