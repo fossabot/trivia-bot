@@ -223,13 +223,13 @@ def tbperms(statement, user, key):
 def tbprefix(statement, guild, setto=None):
     if statement == "get":
         try:
-            bytedata = triviadb.hgetall(str(guild)"-prefix")
+            bytedata = triviadb.hgetall(str(guild) + "-prefix")
             data = bytedata.decode("ascii")
             return data
         except:
             return defaultprefix
     elif statement == "set" and not setto == None:
-        triviadb.hmset(str(guild)"-prefix", setto)
+        triviadb.hmset(str(guild)+ "-prefix", setto)
 
 @client.event
 async def on_guild_join(guild):
