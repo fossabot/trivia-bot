@@ -224,12 +224,14 @@ def tbprefix(statement, guild, setto=None):
     if statement == "get":
         try:
             bytedata = triviadb.hgetall(str(guild) + "-prefix")
-            data = [strdata.decode("ascii") for strdata in bytedata]
-            return data[0]
+            data = {}
+            for key in bytedata.keys():
+                data[key.decode("ascii")] = bytedata[key].decode("ascii")
+            return data["prefix"]
         except:
             return defaultprefix
     elif statement == "set" and not setto == None:
-        triviadb.hmset(str(guild)+ "-prefix", [setto])
+        triviadb.hmset(str(guild)+ "-prefix", {"prefix":setto})
 
 @client.event
 async def on_guild_join(guild):
