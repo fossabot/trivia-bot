@@ -231,7 +231,7 @@ def tbprefix(statement, guild, setto=None):
         except:
             return defaultprefix
     elif statement == "set" and not setto == None:
-        triviadb.hmset(str(guild)+ "-prefix", {"prefix":setto])
+        triviadb.hmset(str(guild)+ "-prefix", {"prefix":setto})
 
 @client.event
 async def on_guild_join(guild):
