@@ -281,7 +281,7 @@ async def setprefix(ctx, prefix):
     else:
         await ctx.message.add_reaction(noemoji)
         await ctx.send("There was an issue setting your prefix!".format(prefix))
-    
+
 @client.command()
 async def bottedservers(ctx):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
@@ -683,9 +683,9 @@ async def botstatus(ctx):
     embed.add_field(name="CPU", value="{}%".format(round(psutil.cpu_percent())), inline=False)
     embed.add_field(name="RAM usage", value="{}% | {} / {}mb".format(round(psutil.virtual_memory().percent), round(psutil.virtual_memory().used/1048576), round(psutil.virtual_memory().total/1048576)), inline=True)
 
-    
+
     await ctx.send(embed=embed)
-    
+
 @client.command(aliases=["top"])
 async def globalleaderboard(ctx):
     data = tbpoints("data", 0, 0)
@@ -937,9 +937,9 @@ async def help(ctx):
     embed.add_field(
         name="`;shop       `", value="Visit the trivia shop!   ", inline=True
     )
-    embed.add_field(
-        name="`;gamble      `", value="Gamble for more points! ", inline=True
-    )
+#    embed.add_field(
+#        name="`;gamble      `", value="Gamble for more points! ", inline=True
+#    )
     embed.add_field(
         name="`;setprefix   `", value="Set the guild prefix    ", inline=True
     )
@@ -1031,52 +1031,51 @@ async def lmao(ctx):
 
 @client.command(aliases=["gamble"])
 async def doubleornothing(ctx, points=None):
-    r = 215
-    g = 91
-    b = 69
-    userpoints = tbpoints("get", str(ctx.message.author.id), 0)
-    if points == None:
-        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-        embed.set_author(name="Gambling")
-        embed.add_field(
-            name="Notice",
-            value="`Please specify how many points you would like to gamble`",
-            inline=True,
-        )
-
-    else:
-        if float(points) <= float(userpoints):
-            if random.randint(1, 10) <= 4:
-                embed = discord.Embed(color=discord.Colour.from_rgb(72, 232, 227))
-                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
-                embed.set_author(name="Gambling")
-                embed.add_field(
-                    name="You won!",
-                    value="`You have won {} points! Poggers!`".format(points),
-                    inline=True,
-                )
-                tbpoints("give", str(ctx.message.author.id), points)
-
-            else:
-                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
-                embed.set_author(name="Gambling")
-                embed.add_field(
-                    name="You lost",
-                    value="`You have lost {} points, F in the chat`".format(points),
-                    inline=True,
-                )
-                tbpoints("take", str(ctx.message.author.id), points)
-        else:
-            embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-            embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
-            embed.set_author(name="Gambling")
-            embed.add_field(
-                name="You don't have that much!",
-                value="`You don't have that many points!`".format(points),
-                inline=True,
-            )
-    await ctx.send(embed=embed)
+#    r = 215
+#    g = 91
+#    b = 69
+#    userpoints = tbpoints("get", str(ctx.message.author.id), 0)
+#    if points == None:
+#        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+#        embed.set_author(name="Gambling")
+#        embed.add_field(
+#            name="Notice",
+#            value="`Please specify how many points you would like to gamble`",
+#        )
+#
+#    else:
+#        if float(points) <= float(userpoints):
+#            if random.randint(1, 10) <= 4:
+#                embed = discord.Embed(color=discord.Colour.from_rgb(72, 232, 227))
+#                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+#                embed.set_author(name="Gambling")
+#                embed.add_field(
+#                    name="You won!",
+#                    value="`You have won {} points! Poggers!`".format(points),
+#                    inline=True,
+#                )
+#                tbpoints("give", str(ctx.message.author.id), points)
+#
+#            else:
+#                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+#                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+#                embed.set_author(name="Gambling")
+#                embed.add_field(
+#                    name="You lost",
+#                    value="`You have lost {} points, F in the chat`".format(points),
+#                    inline=True,
+#                )
+#                tbpoints("take", str(ctx.message.author.id), points)
+#        else:
+#            embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+#            embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+#            embed.set_author(name="Gambling")
+#            embed.add_field(
+#                name="You don't have that much!",
+#                value="`You don't have that many points!`".format(points),
+#                inline=True,
+#            )
+    await ctx.send("This command has been disabled. It may be back in the future.")
 
 @client.command(pass_context=True)
 async def buy(ctx, product=None):
