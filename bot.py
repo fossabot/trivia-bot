@@ -1054,7 +1054,7 @@ async def doubleornothing(ctx, points=None):
                 value="`You don't have that many points!`".format(points),
                 inline=True,
             )
-    ctx.send(embed=embed)
+    await ctx.send(embed=embed)
 
 @client.command(pass_context=True)
 async def buy(ctx, product=None):
