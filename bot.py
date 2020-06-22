@@ -1263,15 +1263,11 @@ async def version(ctx, cmd=None):
 async def status_task():
     while True:
         await client.change_presence(
-            activity=discord.Streaming(
-                name=";help || Discord Trivia", url="https://www.twitch.tv/mrbeoat6000"
-            )
+            activity=discord.Activity(name="Trivia! | Use ;trivia", type=1)
         )
         await asyncio.sleep(50)
         await client.change_presence(
-            activity=discord.Streaming(
-                name=";trivia || Play Trivia!", url="https://www.twitch.tv/mrbeoat6000"
-            )
+            activity=discord.Activity(name="Trivia! | Use ;help", type=1)
         )
         await asyncio.sleep(50)
 
