@@ -9,3 +9,4 @@ redis==3.5.3
 dblpy==0.3.4
 dpytest==0.0.20
 flake8==3.7.3
+psutil==5.7.0
