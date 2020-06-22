@@ -6,6 +6,7 @@ import requests
 import random
 import asyncio
 import aiohttp
+import psutil
 import urllib
 import random
 import traceback
@@ -663,7 +664,27 @@ async def triviadebug(ctx):
     datalist = data.items()
     await ctx.send(str(data))
 
+@client.command(pass_context=True, aliases=["stats", "botinfo"])
+async def botstatus(ctx):
 
+    start = time.perf_counter()
+    message = await ctx.send('Pinging...')
+    await message.delete()
+    end = time.perf_counter()
+    duration = (end - start) * 100
+    embed=discord.Embed(title=f"**{client.user.name}** Stats ", color=0x2f3136)
+    embed.add_field(name=":python: Python", value=(f"{platform.python_version()}"), inline=True)
+    embed.add_field(name=':discordpy: Discord.py', value=f"{discord.__version__}", inline=True)
+    embed.add_field(name="Bot latency", value=("{} ms (ws: {} ms)".format(round(duration), round(client.latency * 1000))), inline=False)
+    embed.add_field(name="Users", value=(f"{len(client.users)}"), inline=True)
+    embed.add_field(name="Guilds", value=(f"{len(client.guilds)}"), inline=True)
+    embed.add_field(name="Shards", value=(f"{client.shard_count}"), inline=True)
+    embed.add_field(name="CPU", value="{}%".format(round(psutil.cpu_percent())), inline=False)
+    embed.add_field(name="RAM usage", value="{}% | {} / {}mb".format(round(psutil.virtual_memory().percent), round(psutil.virtual_memory().used/1048576), round(psutil.virtual_memory().total/1048576)), inline=True)
+
+    
+    await ctx.send(embed=embed)
+    
 @client.command(aliases=["top"])
 async def globalleaderboard(ctx):
     data = tbpoints("data", 0, 0)
