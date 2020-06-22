@@ -708,9 +708,9 @@ async def globalleaderboard(ctx):
     firstmessage = "{0} with {1} points".format(str(user1), str(firstpoints))
     secondmessage = "{0} with {1} points".format(str(user2), str(secondpoints))
     thirdmessage = "{0} with {1} points".format(str(user3), str(thirdpoints))
-    embed.add_field(name="1st Place", value=firstmessage)
-    embed.add_field(name="2nd Place", value=secondmessage)
-    embed.add_field(name="3rd Place", value=thirdmessage)
+    embed.add_field(name="1st Place", value=firstmessage, inline=False)
+    embed.add_field(name="2nd Place", value=secondmessage, inline=False)
+    embed.add_field(name="3rd Place", value=thirdmessagev, inline=False)
     await ctx.send(embed=embed)
 
 
@@ -765,9 +765,9 @@ async def serverleaderboard(ctx):
         "<@" + str(seconduserid) + "> with " + str(secondpoints) + " points!"
     )
     thirdmessage = "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
-    embed.add_field(name="1st Place", value=firstmessage)
-    embed.add_field(name="2nd Place", value=secondmessage)
-    embed.add_field(name="3rd Place", value=thirdmessage)
+    embed.add_field(name="1st Place", value=firstmessage, inline=False)
+    embed.add_field(name="2nd Place", value=secondmessage, inline=False)
+    embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
     await ctx.send(embed=embed)
 
 
