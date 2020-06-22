@@ -884,6 +884,9 @@ async def help(ctx):
     embed.add_field(
         name="`;shop       `", value="Visit the trivia shop!   ", inline=True
     )
+    embed.add_field(
+        name="`;gamble      `", value="Gamble for more points! ", inline=True
+    )
     await ctx.send(embed=embed)
 
 
@@ -972,6 +975,9 @@ async def lmao(ctx):
 
 @client.command(aliases=["gamble"])
 async def doubleornothing(ctx, points=None):
+    r = 215
+    g = 91
+    b = 69
     userpoints = tbpoints("get", str(ctx.message.author.id), 0)
     if points == None:
         embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
