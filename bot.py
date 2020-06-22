@@ -8,6 +8,7 @@ import asyncio
 import aiohttp
 import urllib
 import random
+import traceback
 import urllib.parse, urllib.request, re
 from discord import Game
 from json import loads
@@ -70,16 +71,20 @@ HEROKU_SLUG_DESCRIPTION = os.getenv("HEROKU_SLUG_DESCRIPTION")
 
 triviadb = redis.from_url(redisurl)
 
-prefix = os.getenv("prefix")
+defaultprefix = os.getenv("prefix")
 
-if prefix == None:
-    prefix = ";"
-client = commands.Bot(command_prefix=prefix)
+if defaultprefix == None:
+    defaultprefix = ";"
 
-
+async def determineprefix(bot, message):
+    guild = message.guild
+    if guild:
+        return [tbprefix("get", guild.id), bot.user.mention + ' ', '<@!%s> ' % bot.user.id]
+    else:
+        return [defaultprefix, bot.user.mention + ' ', '<@!%s> ' % bot.user.id]
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
-
+client = commands.Bot(command_prefix=determineprefix)
 
 def checkvote(userid):
     try:
@@ -215,7 +220,18 @@ def tbperms(statement, user, key):
             return False
     if statement == "give":
         triviadb.hmset(str(user) + "-" + str(key) + "-data", {1: 1})
-
+def tbprefix(statement, guild, setto=None):
+    if statement == "get":
+        try:
+            bytedata = triviadb.hgetall(str(guild) + "-prefix")
+            data = {}
+            for key in bytedata.keys():
+                data[key.decode("ascii")] = bytedata[key].decode("ascii")
+            return data["prefix"]
+        except:
+            return defaultprefix
+    elif statement == "set" and not setto == None:
+        triviadb.hmset(str(guild)+ "-prefix", {"prefix":setto})
 
 @client.event
 async def on_guild_join(guild):
@@ -248,7 +264,22 @@ async def on_guild_join(guild):
     )
     await channel.send(embed=embed)
 
-
+@client.command()
+@commands.guild_only()
+async def setprefix(ctx, prefix):
+    error = False
+    try:
+        tbprefix("set", ctx.guild.id, prefix)
+    except Exception:
+        traceback.print_exc()
+        error = True
+    if not error:
+        await ctx.message.add_reaction(yesemoji)
+        await ctx.send("Set guild prefix to {}".format(prefix))
+    else:
+        await ctx.message.add_reaction(noemoji)
+        await ctx.send("There was an issue setting your prefix!".format(prefix))
+    
 @client.command()
 async def bottedservers(ctx):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
@@ -884,6 +915,12 @@ async def help(ctx):
     embed.add_field(
         name="`;shop       `", value="Visit the trivia shop!   ", inline=True
     )
+    embed.add_field(
+        name="`;gamble      `", value="Gamble for more points! ", inline=True
+    )
+    embed.add_field(
+        name="`;setprefix   `", value="Set the guild prefix    ", inline=True
+    )
     await ctx.send(embed=embed)
 
 
@@ -972,6 +1009,9 @@ async def lmao(ctx):
 
 @client.command(aliases=["gamble"])
 async def doubleornothing(ctx, points=None):
+    r = 215
+    g = 91
+    b = 69
     userpoints = tbpoints("get", str(ctx.message.author.id), 0)
     if points == None:
         embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
@@ -1154,18 +1194,18 @@ async def servers(ctx):
             await ctx.send(server.name)
 
 @client.command()
-async def givepoints(ctx, points=0):
+async def givepoints(ctx, member: discord.Member, points=0):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
-        tbpoints("give", str(ctx.message.author.id), points)
-        await ctx.send("Gave {} points to <@{}>".format(points, str(ctx.message.author.id)))
+        tbpoints("give", str(member.id), points)
+        await ctx.send("Gave {} points to <@{}>".format(points, str(member.id)))
 
 @client.command()
-async def setpoints(ctx, points=0):
+async def setpoints(ctx, member: discord.Member, points=0):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
-        tbpoints("set", str(ctx.message.author.id), points)
-        await ctx.send("Set {} points as <@{}> 's point value'".format(points, str(ctx.message.author.id)))
+        tbpoints("set", str(member.id), points)
+        await ctx.send("Set {} points as <@{}> 's point value'".format(points, str(member.id)))
 
 
 @client.command(pass_context=True)
