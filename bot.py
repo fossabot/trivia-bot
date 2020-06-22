@@ -710,7 +710,7 @@ async def globalleaderboard(ctx):
     thirdmessage = "{0} with {1} points".format(str(user3), str(thirdpoints))
     embed.add_field(name="1st Place", value=firstmessage, inline=False)
     embed.add_field(name="2nd Place", value=secondmessage, inline=False)
-    embed.add_field(name="3rd Place", value=thirdmessagev, inline=False)
+    embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
     await ctx.send(embed=embed)
 
 
