@@ -1154,18 +1154,18 @@ async def servers(ctx):
             await ctx.send(server.name)
 
 @client.command()
-async def givepoints(ctx, points=0):
+async def givepoints(ctx, member: discord.Member, points=0):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
-        tbpoints("give", str(ctx.message.author.id), points)
-        await ctx.send("Gave {} points to <@{}>".format(points, str(ctx.message.author.id)))
+        tbpoints("give", str(member.id), points)
+        await ctx.send("Gave {} points to <@{}>".format(points, str(member.id)))
 
 @client.command()
-async def setpoints(ctx, points=0):
+async def setpoints(ctx, member: discord.Member, points=0):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
-        tbpoints("set", str(ctx.message.author.id), points)
-        await ctx.send("Set {} points as <@{}> 's point value'".format(points, str(ctx.message.author.id)))
+        tbpoints("set", str(member.id), points)
+        await ctx.send("Set {} points as <@{}> 's point value'".format(points, str(member.id)))
 
 
 @client.command(pass_context=True)
