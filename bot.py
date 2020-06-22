@@ -970,7 +970,7 @@ async def lmao(ctx):
     else:
         await ctx.send("Buy this gif in the shop!")
 
-@client.command()
+@client.command(aliases=["gamble"])
 async def doubleornothing(ctx, points=None):
     userpoints = tbpoints("get", str(ctx.message.author.id), 0)
     if points == None:
@@ -984,13 +984,13 @@ async def doubleornothing(ctx, points=None):
 
     else:
         if points <= userpoints:
-            if random.randint(0, 1) == 1:
+            if random.randint(1, 10) <= 4:
                 embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
                 embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
                 embed.set_author(name="Gambling")
                 embed.add_field(
                     name="You won!",
-                    value="`You have won {} points!`".format(points),
+                    value="`You have won {} points! Poggers!`".format(points),
                     inline=True,
                 )
                 tbpoints("give", str(ctx.message.author.id), points)
@@ -1015,7 +1015,7 @@ async def doubleornothing(ctx, points=None):
                 inline=True,
             )
     ctx.send(embed=embed)
-    
+
 @client.command(pass_context=True)
 async def buy(ctx, product=None):
     r = 215
