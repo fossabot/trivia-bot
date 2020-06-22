@@ -81,7 +81,7 @@ async def determineprefix(bot, message):
     if guild:
         return [tbprefix("get", guild.id)]
     else:
-        return [defaultprefix]
+        return [defaultprefix, "<@715047504126804000>"]
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 client = commands.Bot(command_prefix=determineprefix)
@@ -224,12 +224,12 @@ def tbprefix(statement, guild, setto=None):
     if statement == "get":
         try:
             bytedata = triviadb.hgetall(str(guild) + "-prefix")
-            data = bytedata.decode("ascii")
-            return data
+            data = [strdata.decode("ascii") for strdata in bytedata]
+            return data[0]
         except:
             return defaultprefix
     elif statement == "set" and not setto == None:
-        triviadb.hmset(str(guild)+ "-prefix", setto)
+        triviadb.hmset(str(guild)+ "-prefix", [setto])
 
 @client.event
 async def on_guild_join(guild):
