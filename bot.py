@@ -9,6 +9,7 @@ import aiohttp
 import psutil
 import urllib
 import random
+import sys
 import traceback
 import urllib.parse, urllib.request, re
 from discord import Game
@@ -673,7 +674,7 @@ async def botstatus(ctx):
     end = time.perf_counter()
     duration = (end - start) * 100
     embed=discord.Embed(title=f"**{client.user.name}** Stats ", color=0x2f3136)
-    embed.add_field(name=":python: Python", value=(f"{platform.python_version()}"), inline=True)
+    embed.add_field(name=":python: Python", value=(f"{sys.version}"), inline=True)
     embed.add_field(name=':discordpy: Discord.py', value=f"{discord.__version__}", inline=True)
     embed.add_field(name="Bot latency", value=("{} ms (ws: {} ms)".format(round(duration), round(client.latency * 1000))), inline=False)
     embed.add_field(name="Users", value=(f"{len(client.users)}"), inline=True)
