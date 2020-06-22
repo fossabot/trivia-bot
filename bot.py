@@ -79,7 +79,7 @@ if defaultprefix == None:
 async def determineprefix(bot, message):
     guild = message.guild
     if guild:
-        return [tbprefix("get", guild.id)]
+        return [tbprefix("get", guild.id), bot.user.mention + ' ', '<@!%s> ' % bot.user.id]
     else:
         return [defaultprefix, bot.user.mention + ' ', '<@!%s> ' % bot.user.id]
 def check(ctx):
