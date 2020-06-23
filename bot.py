@@ -943,6 +943,7 @@ async def help(ctx):
     embed.add_field(
         name="`;setprefix   `", value="Set the guild prefix    ", inline=True
     )
+    embed.set_footer(text="Command invoked by {} || [TriviaBot](https://triviabot.tech/)".format(ctx.message.author.name))
     await ctx.send(embed=embed)
 
 
@@ -1191,6 +1192,11 @@ async def ping(ctx):
     )
     await ctx.send(embed=embed)
 
+@client.command(pass_context=True)
+    embed = discord.Embed(
+        title=None, description="[TriviaBot](https://triviabot.tech/)", color=0xD75B45
+    )
+    await ctx.send(embed=embed)
 
 @client.command(pass_context=True)
 async def info(ctx, user: discord.Member = None):
