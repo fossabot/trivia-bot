@@ -894,7 +894,7 @@ async def help(ctx):
     g = 91
     b = 69
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-    embed.set_author(name="Triva Bot Command List")
+    embed.set_author(name="Trivia Bot Command List")
     embed.add_field(
         name="`;vote       `", value="Vote for Trivia Bot!     ", inline=True
     )
@@ -953,7 +953,7 @@ async def shop(ctx):
     g = 91
     b = 69
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-    embed.set_author(name="Triva Bot Points Shop")
+    embed.set_author(name="Trivia Bot Points Shop")
     embed.add_field(
         name="`;buy viprole       `",
         value="Buy the vip role in the support sever! (250 points). Must do ;givemevip to activate once purchased.",
