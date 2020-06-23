@@ -15,7 +15,7 @@
     
     
       
-        <title>User Commands - Trivia-Bot Docs</title>
+        <title>Admin Commands - Trivia-Bot Docs</title>
       
     
     
@@ -49,7 +49,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#user-commands" class="md-skip">
+        <a href="#admin-commands" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              User Commands
+              Admin Commands
             
           </span>
         </div>
@@ -171,18 +171,6 @@
       
       
 
-
-  <li class="md-nav__item">
-    <a href="../admin_commands/" title="Admin Commands" class="md-nav__link">
-      Admin Commands
-    </a>
-  </li>
-
-    
-      
-      
-      
-
   
 
 
@@ -193,10 +181,22 @@
       
     
     
-    <a href="./" title="User Commands" class="md-nav__link md-nav__link--active">
-      User Commands
+    <a href="./" title="Admin Commands" class="md-nav__link md-nav__link--active">
+      Admin Commands
     </a>
     
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../commands/" title="User Commands" class="md-nav__link">
+      User Commands
+    </a>
   </li>
 
     
@@ -267,85 +267,55 @@
                   
                 
                 
-                <h1 id="user-commands">User Commands</h1>
+                <h1 id="admin-commands">Admin Commands</h1>
+<p>This is a list of all of the admin commands for the bot.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These commands only work for admins (Everyone with the manage bot permission).</p>
+</div>
 <table>
 <thead>
 <tr>
 <th>Command</th>
-<th>Usage</th>
-<th>Info</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>;vote</td>
-<td>;vote</td>
-<td>Sends a link so you can vote for the bot.</td>
+<td>;debug</td>
+<td>Prints the (data) redis key's value.</td>
 </tr>
 <tr>
-<td>;trivia</td>
-<td>;trivia [category]</td>
-<td>Play trivia.</td>
+<td>;servers</td>
+<td>Shows a list of all of the admins.</td>
 </tr>
 <tr>
-<td>;help</td>
-<td>;help</td>
-<td>Shows a help menu.</td>
+<td>;botservers</td>
+<td>Shows a list of all servers.</td>
 </tr>
 <tr>
-<td>;top</td>
-<td>;top</td>
-<td>Shows the top trivia players globally.</td>
+<td>;setplaying [message]</td>
+<td>Sets the "playing" message.</td>
 </tr>
 <tr>
-<td>;severtop</td>
-<td>;servertop</td>
-<td>Shows the top trivia players in the server.</td>
+<td>;run [python command]</td>
+<td>Evals a python command.</td>
 </tr>
 <tr>
-<td>;invite</td>
-<td>;invite</td>
-<td>Sends a link so you can invite the bot to other servers.</td>
+<td>;setpoints @user [amount of points]</td>
+<td>Sets a users points.</td>
 </tr>
 <tr>
-<td>;credits</td>
-<td>;credits</td>
-<td>Shows a list of contributors.</td>
+<td>;givepoints @user [amount of points]</td>
+<td>Give a user points.</td>
 </tr>
 <tr>
-<td>;categories</td>
-<td>;categories [amount]</td>
-<td>Shows all available categories.</td>
+<td>;bottedservers</td>
+<td>Shows a list of all the servers that only have 2 users.</td>
 </tr>
 <tr>
-<td>;ping</td>
-<td>;ping</td>
-<td>Shows the current ping.</td>
-</tr>
-<tr>
-<td>;feedback</td>
-<td>;feedback [the feedback]</td>
-<td>Gives feedback to the devs.</td>
-</tr>
-<tr>
-<td>;points</td>
-<td>;points</td>
-<td>Shows how many points you have.</td>
-</tr>
-<tr>
-<td>;multichoice</td>
-<td>;multi</td>
-<td>Play a multi choice trivia question.</td>
-</tr>
-<tr>
-<td>;truefalse</td>
-<td>;tf</td>
-<td>Play a true or false trivia question.</td>
-</tr>
-<tr>
-<td>;setprefix</td>
-<td>;setprefix [the prefix]</td>
-<td>Sets the current prefix for the server.</td>
+<td>;stats</td>
+<td>Give stats about the bot</td>
 </tr>
 </tbody>
 </table>
@@ -367,7 +337,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../admin_commands/" title="Admin Commands" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../LICENSE/" title="License" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -376,19 +346,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Admin Commands
+                License
               </div>
             </div>
           </a>
         
         
-          <a href="../contributing/" title="Contributing" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../commands/" title="User Commands" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Contributing
+                User Commands
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
