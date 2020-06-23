@@ -943,7 +943,7 @@ async def help(ctx):
     embed.add_field(
         name="`;setprefix   `", value="Set the guild prefix    ", inline=True
     )
-    embed.set_footer(text="Command invoked by {} || [TriviaBot](https://triviabot.tech/)".format(ctx.message.author.name))
+    embed.set_footer(text="Command invoked by {} || https://triviabot.tech/".format(ctx.message.author.name))
     await ctx.send(embed=embed)
 
 
