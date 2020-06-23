@@ -1193,6 +1193,7 @@ async def ping(ctx):
     await ctx.send(embed=embed)
 
 @client.command(pass_context=True)
+async def website(ctx):
     embed = discord.Embed(
         title=None, description="[TriviaBot](https://triviabot.tech/)", color=0xD75B45
     )
