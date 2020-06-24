@@ -418,7 +418,7 @@ async def truefalse(ctx, category=None):
     qembed.add_field(name=yesemoji, value="For true", inline=True)
     qembed.add_field(name=noemoji, value="For false", inline=True)
     try:
-        diduservote = True
+        diduservote = checkvote(ctx.message.author.id)
     except:
         diduservote = False
     if not diduservote:
@@ -611,7 +611,7 @@ async def multichoice(ctx, category=None):
         tbpoints("give", str(uid), -1)
     else:
         try:
-            diduservote = True
+            diduservote = checkvote(ctx.message.author.id)
         except:
             diduservote = False
         pointstogive = 1 if category in categories.keys() else 2
