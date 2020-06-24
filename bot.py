@@ -302,6 +302,7 @@ async def trivia(ctx, category=None):
 
 @client.command(aliases=["tf"])
 async def truefalse(ctx, category=None):
+    command_startup = time.perf_counter()
     global triviatoken
     if category == None:
         r = requests.get(
@@ -426,6 +427,9 @@ async def truefalse(ctx, category=None):
             value="Want to get 1.5 times the amount of points? Vote for us using ;vote",
             inline=False,
         )
+    command_send = time.perf_counter()
+    time_used = str(round(command_send - command_startup,5))
+    qembed.set_footer(text="Time Took: {} || https://triviabot.tech/".format(time_used))
     msg = await ctx.send(embed=qembed)
     answer = await get_reaction_answer(msg, ctx.message.author.id, q, a, ctx)
     uid = ctx.message.author.id
@@ -547,6 +551,7 @@ async def truefalse(ctx, category=None):
 
 @client.command(aliases=["multi", "multiplechoice", "multiple"])
 async def multichoice(ctx, category=None):
+    command_startup = time.perf_counter()
     if not category in categories.keys():
         r = requests.get(
             "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&token="
@@ -577,6 +582,9 @@ async def multichoice(ctx, category=None):
         + "\n\n".join([numberemojis[qnum] + " " + answers[qnum] for qnum in range(4)]),
         color=0xFF0000,
     )
+    command_send = time.perf_counter()
+    time_used = str(round(command_send - command_startup,5))
+    qembed.set_footer(text="Time Took: {} || https://triviabot.tech/".format(time_used))
     msg = await ctx.send(embed=qembed)
     answered = await get_multi_reaction_answer(msg, ctx.author, ctx)
     if answered == None:
