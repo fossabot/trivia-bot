@@ -1294,7 +1294,7 @@ async def setplaying(ctx, message=None):
         await ctx.send("You are not a admin :(")
 
 
-@client.command(pass_context=True, name=["eval", "run"])
+@client.command(pass_context=True, aliases=["eval", "run"])
 async def eval(ctx, *, code="You need to input code."):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
