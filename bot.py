@@ -78,15 +78,25 @@ defaultprefix = os.getenv("prefix")
 if defaultprefix == None:
     defaultprefix = ";"
 
+
 async def determineprefix(bot, message):
     guild = message.guild
     if guild:
-        return [tbprefix("get", guild.id), bot.user.mention + ' ', '<@!%s> ' % bot.user.id]
+        return [
+            tbprefix("get", guild.id),
+            bot.user.mention + " ",
+            "<@!%s> " % bot.user.id,
+        ]
     else:
-        return [defaultprefix, bot.user.mention + ' ', '<@!%s> ' % bot.user.id]
+        return [defaultprefix, bot.user.mention + " ", "<@!%s> " % bot.user.id]
+
+
 def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
+
+
 client = commands.Bot(command_prefix=determineprefix)
+
 
 def checkvote(userid):
     try:
@@ -222,6 +232,8 @@ def tbperms(statement, user, key):
             return False
     if statement == "give":
         triviadb.hmset(str(user) + "-" + str(key) + "-data", {1: 1})
+
+
 def tbprefix(statement, guild, setto=None):
     if statement == "get":
         try:
@@ -233,7 +245,8 @@ def tbprefix(statement, guild, setto=None):
         except:
             return defaultprefix
     elif statement == "set" and not setto == None:
-        triviadb.hmset(str(guild)+ "-prefix", {"prefix":setto})
+        triviadb.hmset(str(guild) + "-prefix", {"prefix": setto})
+
 
 @client.event
 async def on_guild_join(guild):
@@ -266,6 +279,7 @@ async def on_guild_join(guild):
     )
     await channel.send(embed=embed)
 
+
 @client.command()
 @commands.guild_only()
 async def setprefix(ctx, prefix):
@@ -282,6 +296,7 @@ async def setprefix(ctx, prefix):
         await ctx.message.add_reaction(noemoji)
         await ctx.send("There was an issue setting your prefix!".format(prefix))
 
+
 @client.command()
 async def bottedservers(ctx):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
@@ -289,7 +304,9 @@ async def bottedservers(ctx):
         await ctx.send("Servers with only 1 person:")
         for guild in client.guilds:
             if len(guild.members) < 3:
-                await ctx.send("{} owned by <@{}>".format(str(guild.name), str(guild.owner.id)))
+                await ctx.send(
+                    "{} owned by <@{}>".format(str(guild.name), str(guild.owner.id))
+                )
 
 
 @client.command()
@@ -420,7 +437,7 @@ async def truefalse(ctx, category=None):
             inline=False,
         )
     command_send = time.perf_counter()
-    time_used = str(round(command_send - command_startup,5))
+    time_used = str(round(command_send - command_startup, 5))
     qembed.set_footer(text="Time Took: {} || https://triviabot.tech/".format(time_used))
     msg = await ctx.send(embed=qembed)
     answer = await get_reaction_answer(msg, ctx.message.author.id, q, a, ctx)
@@ -572,7 +589,7 @@ async def multichoice(ctx, category=None):
         color=0xFF0000,
     )
     command_send = time.perf_counter()
-    time_used = str(round(command_send - command_startup,5))
+    time_used = str(round(command_send - command_startup, 5))
     qembed.set_footer(text="Time Took: {} || https://triviabot.tech/".format(time_used))
     msg = await ctx.send(embed=qembed)
     answered = await get_multi_reaction_answer(msg, ctx.author, ctx)
@@ -665,26 +682,43 @@ async def triviadebug(ctx):
     datalist = data.items()
     await ctx.send(str(data))
 
+
 @client.command(pass_context=True, aliases=["stats", "botinfo"])
 async def botstatus(ctx):
 
     start = time.perf_counter()
-    message = await ctx.send('Pinging...')
+    message = await ctx.send("Pinging...")
     await message.delete()
     end = time.perf_counter()
     duration = (end - start) * 100
-    embed=discord.Embed(title=f"**{client.user.name}** Stats ", color=0x2f3136)
+    embed = discord.Embed(title=f"**{client.user.name}** Stats ", color=0x2F3136)
     embed.add_field(name="Python", value=(f"{sys.version}"), inline=True)
-    embed.add_field(name='Discord.py', value=f"{discord.__version__}", inline=True)
-    embed.add_field(name="Bot latency", value=("{} ms (ws: {} ms)".format(round(duration), round(client.latency * 1000))), inline=False)
+    embed.add_field(name="Discord.py", value=f"{discord.__version__}", inline=True)
+    embed.add_field(
+        name="Bot latency",
+        value=(
+            "{} ms (ws: {} ms)".format(round(duration), round(client.latency * 1000))
+        ),
+        inline=False,
+    )
     embed.add_field(name="Users", value=(f"{len(client.users)}"), inline=True)
     embed.add_field(name="Guilds", value=(f"{len(client.guilds)}"), inline=True)
     embed.add_field(name="Shards", value=(f"{client.shard_count}"), inline=True)
-    embed.add_field(name="CPU", value="{}%".format(round(psutil.cpu_percent())), inline=False)
-    embed.add_field(name="RAM usage", value="{}% | {} / {}mb".format(round(psutil.virtual_memory().percent), round(psutil.virtual_memory().used/1048576), round(psutil.virtual_memory().total/1048576)), inline=True)
-
+    embed.add_field(
+        name="CPU", value="{}%".format(round(psutil.cpu_percent())), inline=False
+    )
+    embed.add_field(
+        name="RAM usage",
+        value="{}% | {} / {}mb".format(
+            round(psutil.virtual_memory().percent),
+            round(psutil.virtual_memory().used / 1048576),
+            round(psutil.virtual_memory().total / 1048576),
+        ),
+        inline=True,
+    )
 
     await ctx.send(embed=embed)
+
 
 @client.command(aliases=["top"])
 async def globalleaderboard(ctx):
@@ -937,13 +971,17 @@ async def help(ctx):
     embed.add_field(
         name="`;shop       `", value="Visit the trivia shop!   ", inline=True
     )
-#    embed.add_field(
-#        name="`;gamble      `", value="Gamble for more points! ", inline=True
-#    )
+    #    embed.add_field(
+    #        name="`;gamble      `", value="Gamble for more points! ", inline=True
+    #    )
     embed.add_field(
         name="`;setprefix   `", value="Set the guild prefix    ", inline=True
     )
-    embed.set_footer(text="Command invoked by {} || https://triviabot.tech/".format(ctx.message.author.name))
+    embed.set_footer(
+        text="Command invoked by {} || https://triviabot.tech/".format(
+            ctx.message.author.name
+        )
+    )
     await ctx.send(embed=embed)
 
 
@@ -965,9 +1003,7 @@ async def shop(ctx):
         inline=True,
     )
     embed.add_field(
-        name="`;buy pog       `",
-        value="Pog gif (;pog) (25 points)",
-        inline=True,
+        name="`;buy pog       `", value="Pog gif (;pog) (25 points)", inline=True,
     )
     embed.add_field(
         name="`;buy kappa       `",
@@ -1030,53 +1066,55 @@ async def lmao(ctx):
     else:
         await ctx.send("Buy this gif in the shop!")
 
+
 @client.command(aliases=["gamble"])
 async def doubleornothing(ctx, points=None):
-#    r = 215
-#    g = 91
-#    b = 69
-#    userpoints = tbpoints("get", str(ctx.message.author.id), 0)
-#    if points == None:
-#        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-#        embed.set_author(name="Gambling")
-#        embed.add_field(
-#            name="Notice",
-#            value="`Please specify how many points you would like to gamble`",
-#        )
-#
-#    else:
-#        if float(points) <= float(userpoints):
-#            if random.randint(1, 10) <= 4:
-#                embed = discord.Embed(color=discord.Colour.from_rgb(72, 232, 227))
-#                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
-#                embed.set_author(name="Gambling")
-#                embed.add_field(
-#                    name="You won!",
-#                    value="`You have won {} points! Poggers!`".format(points),
-#                    inline=True,
-#                )
-#                tbpoints("give", str(ctx.message.author.id), points)
-#
-#            else:
-#                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-#                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
-#                embed.set_author(name="Gambling")
-#                embed.add_field(
-#                    name="You lost",
-#                    value="`You have lost {} points, F in the chat`".format(points),
-#                    inline=True,
-#                )
-#                tbpoints("take", str(ctx.message.author.id), points)
-#        else:
-#            embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-#            embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
-#            embed.set_author(name="Gambling")
-#            embed.add_field(
-#                name="You don't have that much!",
-#                value="`You don't have that many points!`".format(points),
-#                inline=True,
-#            )
+    #    r = 215
+    #    g = 91
+    #    b = 69
+    #    userpoints = tbpoints("get", str(ctx.message.author.id), 0)
+    #    if points == None:
+    #        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+    #        embed.set_author(name="Gambling")
+    #        embed.add_field(
+    #            name="Notice",
+    #            value="`Please specify how many points you would like to gamble`",
+    #        )
+    #
+    #    else:
+    #        if float(points) <= float(userpoints):
+    #            if random.randint(1, 10) <= 4:
+    #                embed = discord.Embed(color=discord.Colour.from_rgb(72, 232, 227))
+    #                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+    #                embed.set_author(name="Gambling")
+    #                embed.add_field(
+    #                    name="You won!",
+    #                    value="`You have won {} points! Poggers!`".format(points),
+    #                    inline=True,
+    #                )
+    #                tbpoints("give", str(ctx.message.author.id), points)
+    #
+    #            else:
+    #                embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+    #                embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+    #                embed.set_author(name="Gambling")
+    #                embed.add_field(
+    #                    name="You lost",
+    #                    value="`You have lost {} points, F in the chat`".format(points),
+    #                    inline=True,
+    #                )
+    #                tbpoints("take", str(ctx.message.author.id), points)
+    #        else:
+    #            embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+    #            embed.set_image(url="https://cdn.discordapp.com/attachments/716471303682523147/724374290786549840/coinflip.gif")
+    #            embed.set_author(name="Gambling")
+    #            embed.add_field(
+    #                name="You don't have that much!",
+    #                value="`You don't have that many points!`".format(points),
+    #                inline=True,
+    #            )
     await ctx.send("This command has been disabled. It may be back in the future.")
+
 
 @client.command(pass_context=True)
 async def buy(ctx, product=None):
@@ -1192,12 +1230,14 @@ async def ping(ctx):
     )
     await ctx.send(embed=embed)
 
+
 @client.command(pass_context=True)
 async def website(ctx):
     embed = discord.Embed(
         title=None, description="[TriviaBot](https://triviabot.tech/)", color=0xD75B45
     )
     await ctx.send(embed=embed)
+
 
 @client.command(pass_context=True)
 async def info(ctx, user: discord.Member = None):
@@ -1221,6 +1261,7 @@ async def servers(ctx):
         for server in client.guilds:
             await ctx.send(server.name)
 
+
 @client.command()
 async def givepoints(ctx, member: discord.Member, points=0):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
@@ -1228,12 +1269,15 @@ async def givepoints(ctx, member: discord.Member, points=0):
         tbpoints("give", str(member.id), points)
         await ctx.send("Gave {} points to <@{}>".format(points, str(member.id)))
 
+
 @client.command()
 async def setpoints(ctx, member: discord.Member, points=0):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
         tbpoints("set", str(member.id), points)
-        await ctx.send("Set {} points as <@{}> 's point value'".format(points, str(member.id)))
+        await ctx.send(
+            "Set {} points as <@{}> 's point value'".format(points, str(member.id))
+        )
 
 
 @client.command(pass_context=True)
@@ -1250,14 +1294,57 @@ async def setplaying(ctx, message=None):
         await ctx.send("You are not a admin :(")
 
 
-@client.command(pass_context=True)
-async def run(ctx, cmd=None):
+@client.command(pass_context=True, name=["eval", "run"])
+async def _eval(ctx, *, code="You need to input code."):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
-        eval(cmd)
-        await ctx.send("Eval Complete.")
+        global_vars = globals().copy()
+        global_vars["bot"] = client
+        global_vars["ctx"] = ctx
+        global_vars["message"] = ctx.message
+        global_vars["author"] = ctx.message.author
+        global_vars["channel"] = ctx.message.channel
+        global_vars["server"] = ctx.message.guild
+
+        try:
+            result = eval(code, global_vars, locals())
+            if asyncio.iscoroutine(result):
+                result = await result
+            result = str(result)
+            embed = discord.Embed(title="Evaluated successfully.", color=0x80FF80)
+            embed.add_field(
+                name="**Input** :inbox_tray:",
+                value="```py\n" + code + "```",
+                inline=False,
+            )
+            embed.add_field(
+                name="**Output** :outbox_tray:",
+                value=f"```diff\n+ {result}```".replace(
+                    f"{env.TOKEN}", "no ur not getting my token die"
+                ),
+            )
+            await ctx.send(embed=embed)
+        except Exception as error:
+            embed = discord.Embed(title="Evaluation failed.", color=0xF7665F)
+            embed.add_field(
+                name="Input :inbox_tray:", value="```py\n" + code + "```", inline=False
+            )
+            embed.add_field(
+                name="Error :interrobang: ",
+                value="```diff\n- {}: {}```".format(type(error).__name__, str(error)),
+            )
+            await ctx.send(embed=embed)
+            return
     else:
-        await ctx.send("Eval Complete. Syncing with 25,132 other bots")
+        embed = discord.Embed(title="Evaluation failed.", color=0xF7665F)
+        embed.add_field(
+            name="Input :inbox_tray:", value="```py\n" + code + "```", inline=False
+        )
+        embed.add_field(
+            name="Error :interrobang: ",
+            value="```You are not a admin```".format(type(error).__name__, str(error)),
+        )
+        await ctx.send(embed=embed)
 
 
 @client.command(pass_context=True)
