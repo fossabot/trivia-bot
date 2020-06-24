@@ -306,8 +306,7 @@ async def truefalse(ctx, category=None):
     global triviatoken
     if category == None:
         r = requests.get(
-            "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="
-            + str(triviatoken)
+            "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986"
         ).text
         lesspoints = False
     else:
@@ -341,16 +340,13 @@ async def truefalse(ctx, category=None):
             categorynumber = listofdata[str(category)]
         except KeyError():
             r = requests.get(
-                "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="
-                + str(triviatoken)
+                "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986"
             ).text
             lesspoints = False
         else:
             r = requests.get(
                 "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="
                 + categorynumber
-                + "&token="
-                + str(triviatoken)
             ).text
             lesspoints = True
     rc = loads(r)["response_code"]
@@ -359,8 +355,7 @@ async def truefalse(ctx, category=None):
         triviatoken = urllib.parse.unquote(loads(n)["token"])
         if category == None:
             r = requests.get(
-                "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="
-                + str(triviatoken)
+                "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986"
             ).text
             lesspoints = False
         else:
@@ -394,16 +389,13 @@ async def truefalse(ctx, category=None):
                 categorynumber = listofdata[str(category)]
             except KeyError():
                 r = requests.get(
-                    "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&token="
-                    + str(triviatoken)
+                    "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986"
                 ).text
                 lesspoints = False
             else:
                 r = requests.get(
-                    "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986&category="
-                    + categorynumber
-                    + "&token="
-                    + str(triviatoken)
+                    "https://opentdb.com/api.php?amount=1&type=boolean&encode=url3986"
+                    + categorynumbe
                 ).text
                 lesspoints = True
     q = urllib.parse.unquote(loads(r)["results"][0]["question"])
@@ -554,15 +546,12 @@ async def multichoice(ctx, category=None):
     command_startup = time.perf_counter()
     if not category in categories.keys():
         r = requests.get(
-            "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&token="
-            + str(triviatoken)
+            "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986
         ).text
     else:
         r = requests.get(
             "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category="
             + str(categories[category])
-            + "&token="
-            + str(triviatoken)
         ).text
     r = json.loads(r)
     q = urllib.parse.unquote(r["results"][0]["question"])
