@@ -546,7 +546,7 @@ async def multichoice(ctx, category=None):
     command_startup = time.perf_counter()
     if not category in categories.keys():
         r = requests.get(
-            "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986
+            "https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986"
         ).text
     else:
         r = requests.get(
