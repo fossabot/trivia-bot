@@ -1320,8 +1320,8 @@ async def _eval(ctx, *, code="You need to input code."):
             embed.add_field(
                 name="**Output** :outbox_tray:",
                 value=f"```diff\n+ {result}```".replace(
-                        f"{TOKEN}", "no ur not getting my token die"
-                ),
+                    f"{TOKEN}", "no ur not getting my token die"
+                ).replace(f"{redisurl}", "no ur not getting my db url die"),
             )
             await ctx.send(embed=embed)
         except Exception as error:
