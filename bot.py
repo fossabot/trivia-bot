@@ -1341,8 +1341,7 @@ async def _eval(ctx, *, code="You need to input code."):
             name="Input :inbox_tray:", value="```py\n" + code + "```", inline=False
         )
         embed.add_field(
-            name="Error :interrobang: ",
-            value="```You are not a admin```".format(type(error).__name__, str(error)),
+            name="Error :interrobang: ", value="```You are not a admin```",
         )
         await ctx.send(embed=embed)
 
