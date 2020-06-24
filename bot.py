@@ -303,6 +303,7 @@ async def trivia(ctx, category=None):
 @client.command(aliases=["tf"])
 async def truefalse(ctx, category=None):
     command_startup = time.perf_counter()
+    print("command startup" + str(time.perf_counter()))
     global triviatoken
     if category == None:
         r = requests.get(
@@ -354,6 +355,7 @@ async def truefalse(ctx, category=None):
             ).text
             lesspoints = True
     rc = loads(r)["response_code"]
+    print("halfway" + str(time.perf_counter()))
     if rc != 0:
         n = requests.get("https://opentdb.com/api_token.php?command=request").text
         triviatoken = urllib.parse.unquote(loads(n)["token"])
@@ -409,6 +411,7 @@ async def truefalse(ctx, category=None):
     q = urllib.parse.unquote(loads(r)["results"][0]["question"])
     a = urllib.parse.unquote(loads(r)["results"][0]["correct_answer"])
     b = q + a
+    print("got opentdb" + str(time.perf_counter()))
     qembed = discord.Embed(
         title="YOUR QUESTION",
         description="Use the below reactions to answer this true/false question.",
