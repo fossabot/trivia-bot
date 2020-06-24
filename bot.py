@@ -1295,7 +1295,7 @@ async def setplaying(ctx, message=None):
 
 
 @client.command(pass_context=True, name=["eval", "run"])
-async def _eval(ctx, *, code="You need to input code."):
+async def eval(ctx, *, code="You need to input code."):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
         global_vars = globals().copy()
