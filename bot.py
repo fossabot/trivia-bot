@@ -613,7 +613,10 @@ async def multichoice(ctx, category=None):
         else:
             mult2 = 1
         pointstogive = pointstogive * mult * mult2
-        await msg.clear_reactions()
+        try:
+            await msg.clear_reactions()
+        except:
+            print("someone didnt give me perms to clear messages. not poggers")
         if answered == correct:
             await msg.add_reaction("✅")
             tbpoints("give", str(uid), float(pointstogive))
