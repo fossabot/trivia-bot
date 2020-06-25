@@ -279,6 +279,26 @@ async def on_guild_join(guild):
     )
     await channel.send(embed=embed)
 
+@client.event
+async def on_guild_remove(guild):
+    r = 215
+    g = 91
+    b = 69
+    channel = client.get_channel(722605186245197874)
+    embed = discord.Embed(
+        title="RIP removed from server. Name: {} ".format(guild.name),
+        description="Now in "
+        + str(len(client.guilds))
+        + " servers. Server owned by <@{}> with {} members".format(
+            guild.owner.id, len(guild.members)
+        ),
+        color=discord.Colour.from_rgb(r, g, b),
+    )
+    embed.set_thumbnail(
+        url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
+    )
+    await channel.send(embed=embed)
+
 
 @client.command()
 @commands.guild_only()
