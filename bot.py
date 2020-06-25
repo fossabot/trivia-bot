@@ -284,6 +284,7 @@ async def on_guild_join(guild):
     )
     await channel.send(embed=embed)
 
+
 @client.event
 async def on_guild_remove(guild):
     r = 215
@@ -1266,15 +1267,17 @@ async def website(ctx):
 
 @client.command(pass_context=True)
 async def info(ctx, user: discord.Member = None):
-    if user is None:
-        await ctx.send("Please input a user.")
-    else:
-        await ctx.send(
-            "The user's name is: {}".format(user.name)
-            + "\nThe user's ID is: {}".format(user.id)
-            + "\nThe user's current status is: {}".format(user.status)
-            + "\nThe user's highest role is: {}".format(user.top_role)
-            + "\nThe user joined at: {}".format(user.joined_at)
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
+        if user is None:
+            await ctx.send("Please input a user.")
+        else:
+            await ctx.send(
+                "The user's name is: {}".format(user.name)
+                + "\nThe user's ID is: {}".format(user.id)
+                + "\nThe user's current status is: {}".format(user.status)
+                + "\nThe user's highest role is: {}".format(user.top_role)
+                + "\nThe user joined at: {}".format(user.joined_at)
         )
 
 
