@@ -783,9 +783,9 @@ async def globalleaderboard(ctx):
         color=discord.Colour.from_rgb(r, g, b),
     )
     data = str(data)
-    user1 = pf.censor(client.get_user(firstuserid))
-    user2 = pf.censor(client.get_user(seconduserid))
-    user3 = pf.censor(client.get_user(thirduserid))
+    user1 = pf.censor(str(client.get_user(firstuserid)))
+    user2 = pf.censor(str(client.get_user(seconduserid)))
+    user3 = pf.censor(str(client.get_user(thirduserid)))
     firstmessage = "{0} with {1} points".format(str(user1), str(firstpoints))
     secondmessage = "{0} with {1} points".format(str(user2), str(secondpoints))
     thirdmessage = "{0} with {1} points".format(str(user3), str(thirdpoints))
