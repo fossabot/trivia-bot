@@ -25,6 +25,11 @@ import json
 import dbl
 import logging
 import subprocess
+from profanityfilter import ProfanityFilter
+
+pf = ProfanityFilter()
+
+pf.set_censor("#")
 
 userspecific = True
 yesemoji = "👍"
@@ -758,9 +763,9 @@ async def globalleaderboard(ctx):
         color=discord.Colour.from_rgb(r, g, b),
     )
     data = str(data)
-    user1 = client.get_user(firstuserid)
-    user2 = client.get_user(seconduserid)
-    user3 = client.get_user(thirduserid)
+    user1 = pf.censor(client.get_user(firstuserid))
+    user2 = pf.censor(client.get_user(seconduserid))
+    user3 = pf.censor(client.get_user(thirduserid))
     firstmessage = "{0} with {1} points".format(str(user1), str(firstpoints))
     secondmessage = "{0} with {1} points".format(str(user2), str(secondpoints))
     thirdmessage = "{0} with {1} points".format(str(user3), str(thirdpoints))
@@ -1325,14 +1330,17 @@ async def _eval(ctx, *, code="You need to input code."):
             )
             await ctx.send(embed=embed)
         except Exception as error:
-            error_value = "```diff\n- {}: {}```".format(type(error).__name__, str(error)).replace(f"{TOKEN}", "no ur not getting my token die").replace(f"{redisurl}", "no ur not getting my db url die")
+            error_value = (
+                "```diff\n- {}: {}```".format(type(error).__name__, str(error))
+                .replace(f"{TOKEN}", "no ur not getting my token die")
+                .replace(f"{redisurl}", "no ur not getting my db url die")
+            )
             embed = discord.Embed(title="Evaluation failed.", color=0xF7665F)
             embed.add_field(
                 name="Input :inbox_tray:", value="```py\n" + code + "```", inline=False
             )
             embed.add_field(
-                name="Error :interrobang: ",
-                value=error_value,
+                name="Error :interrobang: ", value=error_value,
             )
             await ctx.send(embed=embed)
             return
