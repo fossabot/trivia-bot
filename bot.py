@@ -31,7 +31,7 @@ pf = ProfanityFilter()
 
 pf.set_censor("#")
 
-homoglyphs = hg.Homoglyphs(languages={'en'}, strategy=hg.STRATEGY_LOAD)
+homoglyphs = hg.Homoglyphs(languages={"en"}, strategy=hg.STRATEGY_LOAD)
 
 userspecific = True
 yesemoji = "👍"
@@ -85,10 +85,11 @@ defaultprefix = os.getenv("prefix")
 if defaultprefix == None:
     defaultprefix = ";"
 
+
 def stop_copy(input):
     output = ""
     for letter in input:
-        if random.randint(1,9) == 1:
+        if random.randint(1, 9) == 1:
             if letter == " ":
                 new_letter = " "
             else:
@@ -98,6 +99,7 @@ def stop_copy(input):
             new_letter = letter
         output += new_letter
     return output
+
 
 async def determineprefix(bot, message):
     guild = message.guild
@@ -1297,7 +1299,7 @@ async def info(ctx, user: discord.Member = None):
                 + "\nThe user's current status is: {}".format(user.status)
                 + "\nThe user's highest role is: {}".format(user.top_role)
                 + "\nThe user joined at: {}".format(user.joined_at)
-        )
+            )
 
 
 @client.command(pass_context=True)
