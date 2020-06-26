@@ -709,7 +709,7 @@ async def triviadebug(ctx):
     await ctx.send(str(data))
 
 
-@client.command(pass_context=True, aliases=["stats", "botinfo"])
+@client.command(pass_context=True, aliases=["botstats", "botinfo"])
 async def botstatus(ctx):
 
     start = time.perf_counter()
@@ -887,7 +887,21 @@ async def vote(ctx):
     )
     await ctx.send(embed=embed)
 
-
+@client.command()
+async def stats(ctx):
+    r = 215
+    g = 91
+    b = 69
+    embed = discord.Embed(
+        title="Your stats webpage!",
+        description='[Stats- TriviaBot.tech](https://stats.triviabot.tech/user/'+ str(ctx.message.author.id) + ')',
+        color=discord.Colour.from_rgb(r, g, b),
+    )
+    embed.set_thumbnail(
+        url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
+    )
+    await ctx.send(embed=embed)
+    
 @client.command(pass_context=True)
 async def botservers(ctx):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
