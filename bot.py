@@ -462,7 +462,7 @@ async def truefalse(ctx, category=None):
     q = urllib.parse.unquote(loads(r)["results"][0]["question"])
     a = urllib.parse.unquote(loads(r)["results"][0]["correct_answer"])
     b = q + a
-    if tbpoints("get", str(ctx.message.author.id), 0) > 200:
+    if tbpoints("get", str(ctx.message.author.id), 0) > 800:
         q = stop_copy(q)
     qembed = discord.Embed(
         title="YOUR QUESTION",
@@ -618,7 +618,7 @@ async def multichoice(ctx, category=None):
         ).text
     r = json.loads(r)
     q = urllib.parse.unquote(r["results"][0]["question"])
-    if tbpoints("get", str(ctx.message.author.id), 0) > 200:
+    if tbpoints("get", str(ctx.message.author.id), 0) > 800:
         q = stop_copy(q)
     answers = [urllib.parse.unquote(r["results"][0]["correct_answer"])] + [
         urllib.parse.unquote(x) for x in r["results"][0]["incorrect_answers"]
@@ -909,6 +909,7 @@ async def vote(ctx):
     )
     await ctx.send(embed=embed)
 
+
 @client.command()
 async def stats(ctx):
     r = 215
@@ -916,13 +917,16 @@ async def stats(ctx):
     b = 69
     embed = discord.Embed(
         title="Your stats webpage!",
-        description='[Stats - TriviaBot.tech](https://stats.triviabot.tech/user/'+ str(ctx.message.author.id) + ')',
+        description="[Stats - TriviaBot.tech](https://stats.triviabot.tech/user/"
+        + str(ctx.message.author.id)
+        + ")",
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.set_thumbnail(
         url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
     )
     await ctx.send(embed=embed)
+
 
 @client.command(pass_context=True)
 async def botservers(ctx):
