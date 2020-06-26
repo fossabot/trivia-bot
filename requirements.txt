@@ -1,0 +1,12 @@
+websockets==6.0
+requests==2.23.0
+asyncio==3.4.3
+aiohttp==3.6.2
+typing==3.7.4.1
+future==0.18.2
+redis==3.5.3
+dblpy==0.3.4
+dpytest==0.0.20
+flake8==3.7.3
+psutil==5.7.0
+profanityfilter==2.0.6
