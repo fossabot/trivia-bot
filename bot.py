@@ -31,6 +31,8 @@ pf = ProfanityFilter()
 
 pf.set_censor("#")
 
+homoglyphs = hg.Homoglyphs(languages={'en'}, strategy=hg.STRATEGY_LOAD)
+
 userspecific = True
 yesemoji = "👍"
 noemoji = "👎"
@@ -83,6 +85,19 @@ defaultprefix = os.getenv("prefix")
 if defaultprefix == None:
     defaultprefix = ";"
 
+def stop_copy(input):
+    output = ""
+    for letter in input:
+        if random.randint(1,9) == 1:
+            if letter == " ":
+                new_letter = " "
+            else:
+                new_letters = hg.Homoglyphs().get_combinations(letter)
+                new_letter = random.choice(new_letters)
+        else:
+            new_letter = letter
+        output += new_letter
+    return output
 
 async def determineprefix(bot, message):
     guild = message.guild
@@ -444,6 +459,8 @@ async def truefalse(ctx, category=None):
     q = urllib.parse.unquote(loads(r)["results"][0]["question"])
     a = urllib.parse.unquote(loads(r)["results"][0]["correct_answer"])
     b = q + a
+    if tbpoints("get", str(ctx.message.author.id), 0) > 200:
+        q = stop_copy(q)
     qembed = discord.Embed(
         title="YOUR QUESTION",
         description="Use the below reactions to answer this true/false question.",
@@ -598,6 +615,8 @@ async def multichoice(ctx, category=None):
         ).text
     r = json.loads(r)
     q = urllib.parse.unquote(r["results"][0]["question"])
+    if tbpoints("get", str(ctx.message.author.id), 0) > 200:
+        q = stop_copy(q)
     answers = [urllib.parse.unquote(r["results"][0]["correct_answer"])] + [
         urllib.parse.unquote(x) for x in r["results"][0]["incorrect_answers"]
     ]
