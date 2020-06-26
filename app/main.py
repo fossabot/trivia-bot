@@ -1,3 +1,4 @@
+from operator import itemgetter
 from discord.ext.commands import Bot, has_permissions, MissingPermissions
 from discord.ext import commands, tasks
 from discord.utils import find
@@ -7,6 +8,8 @@ from flask import Flask, render_template
 import discord
 from profanityfilter import ProfanityFilter
 import threading
+from json import loads
+import requests 
 
 pf = ProfanityFilter()
 
@@ -37,7 +40,7 @@ def checkvote(userid):
         ).text
         voted = int(loads(voteurl)["voted"])
     except:
-        print(str(loads(voteurl)))
+        voted = 0
     if voted == 1:
         return True
     else:
@@ -120,7 +123,7 @@ def server_view(gid):
     third_found = False
     datalist = data.items()
     sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
-    for id in client.get_guild(gid).members:
+    for id in client.get_guild(715289968368418968).members:
         id = id.id
         server_members.append(str(id))
     server_members = sorted(server_members, key=lambda x: data.get(x, 0), reverse=True)
@@ -153,7 +156,7 @@ def server_view(gid):
     user3 = pf.censor(str(client.get_user(thirduserid)))
     guild_name = str(client.get_guild(gid).name)
     return render_template(
-        "guild.html",
+        "user.html",
         guild_name=guild_name,
         firstuser=user1,
         seconduser=user2,
@@ -162,12 +165,19 @@ def server_view(gid):
 
 
 @app.route("/user/<uid>")
-def user_view():
+def user_view(uid):
+    current_points = tbpoints("get", str(uid), 0)
     """Serve homepage template."""
+    if checkvote(uid):
+        uservoted = "Yes"
+    else:
+        uservoted = "No"
     return render_template(
-        "index.html", title="Flask-Login Tutorial.", body="You are now logged in!"
+        "user.html",
+        uid=uid,
+        uservoted=uservoted,
+        userpoints=current_points
     )
-
 
 @client.event
 async def on_ready():
