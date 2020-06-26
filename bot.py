@@ -894,7 +894,7 @@ async def stats(ctx):
     b = 69
     embed = discord.Embed(
         title="Your stats webpage!",
-        description='[Stats- TriviaBot.tech](https://stats.triviabot.tech/user/'+ str(ctx.message.author.id) + ')',
+        description='[Stats - TriviaBot.tech](https://stats.triviabot.tech/user/'+ str(ctx.message.author.id) + ')',
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.set_thumbnail(
