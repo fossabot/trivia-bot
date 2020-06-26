@@ -26,6 +26,7 @@ import dbl
 import logging
 import subprocess
 from profanityfilter import ProfanityFilter
+import homoglyphs as hg
 
 pf = ProfanityFilter()
 
@@ -922,7 +923,7 @@ async def stats(ctx):
         url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
     )
     await ctx.send(embed=embed)
-    
+
 @client.command(pass_context=True)
 async def botservers(ctx):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
