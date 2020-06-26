@@ -1,3 +1,8 @@
+from discord.ext.commands import Bot, has_permissions, MissingPermissions
+from discord.ext import commands, tasks
+from discord.utils import find
+import redis
+import os
 from flask import Flask, render_template
 import discord
 from profanityfilter import ProfanityFilter
