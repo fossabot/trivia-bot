@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import smtplib
 import discord
+import base64
 from operator import itemgetter
 import requests
 import random
@@ -915,11 +916,12 @@ async def stats(ctx):
     r = 215
     g = 91
     b = 69
+    encoded = base64.urlsafe_b64encode(str(ctx.message.author.name) + str(ctx.message.author.discriminator))
     embed = discord.Embed(
         title="Your stats webpage!",
         description="[Stats - TriviaBot.tech](https://stats.triviabot.tech/user/"
         + str(ctx.message.author.id)
-        + ")",
+        + "/" + encoded + ")",
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.set_thumbnail(
