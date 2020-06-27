@@ -169,7 +169,7 @@ def server_view(gid):
 def user_view(uid, user):
     current_points = tbpoints("get", str(uid), 0)
     """Serve homepage template."""
-    username = base64.urlsafe_b64decode(user)
+    username = base64.urlsafe_b64decode(user).decode("utf-8")
     if checkvote(uid):
         uservoted = "Yes"
     else:
