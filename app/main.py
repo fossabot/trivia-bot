@@ -174,7 +174,7 @@ def user_view(uid, user):
         uservoted = "Yes"
     else:
         uservoted = "No"
-    if tbperms("check", str(uid), "viprole")
+    if tbperms("check", str(uid), "viprole"):
         vip = "Yes"
     else:
         vip = "No"
