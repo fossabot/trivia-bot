@@ -357,7 +357,7 @@ async def bottedservers(ctx):
 async def delete(ctx, channel_id, message_id):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
-        channel = client.get_channel(str(channel_id))
+        channel = client.get_channel(int(channel_id))
         msg = await channel.fetch_message(message_id)
         await msg.delete()
         
