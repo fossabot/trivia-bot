@@ -353,7 +353,13 @@ async def bottedservers(ctx):
                     "{} owned by <@{}>".format(str(guild.name), str(guild.owner.id))
                 )
 
-
+@client.command()
+async def delete(ctx, message_id):
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
+        msg = await channel.fetch_message(message_id)
+        await msg.delete()
+        
 @client.command()
 async def trivia(ctx, category=None):
     if random.randint(1, 3) > 1:
