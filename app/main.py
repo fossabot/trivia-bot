@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 from discord.utils import find
 import redis
 import os
+import base64
 from flask import Flask, render_template
 import discord
 from profanityfilter import ProfanityFilter
@@ -164,19 +165,26 @@ def server_view(gid):
     )
 
 
-@app.route("/user/<uid>")
-def user_view(uid):
+@app.route("/user/<uid>/<user>")
+def user_view(uid, user):
     current_points = tbpoints("get", str(uid), 0)
     """Serve homepage template."""
+    username = base64.urlsafe_b64decode(user)
     if checkvote(uid):
         uservoted = "Yes"
     else:
         uservoted = "No"
+    if tbperms("check", str(uid), "viprole")
+        vip = "Yes"
+    else:
+        vip = "No"
     return render_template(
         "user.html",
+        user=username,
         uid=uid,
         uservoted=uservoted,
-        userpoints=current_points
+        userpoints=current_points,
+        vip=vip
     )
 
 @client.event
