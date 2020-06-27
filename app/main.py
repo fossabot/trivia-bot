@@ -166,7 +166,7 @@ def server_view(gid):
 
 
 @app.route("/user/<uid>/<user>")
-def user_view(uid):
+def user_view(uid, user):
     current_points = tbpoints("get", str(uid), 0)
     """Serve homepage template."""
     username = base64.urlsafe_b64decode(user)
