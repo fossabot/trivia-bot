@@ -916,7 +916,9 @@ async def stats(ctx):
     r = 215
     g = 91
     b = 69
-    encoded = base64.urlsafe_b64encode(str(ctx.message.author.name) + str(ctx.message.author.discriminator))
+    data_string = str(ctx.message.author.name) + str(ctx.message.author.discriminator)
+    data_bytes = data_string.encode("utf-8")
+    encoded = base64.urlsafe_b64encode(data_bytes)
     embed = discord.Embed(
         title="Your stats webpage!",
         description="[Stats - TriviaBot.tech](https://stats.triviabot.tech/user/"
