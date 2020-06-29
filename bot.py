@@ -1382,7 +1382,7 @@ async def setpoints(ctx, member: discord.Member, points=0):
         )
 
 @client.command(pass_context=True)
-async def uptime(ctx: commands.Context):
+async def uptime(ctx):
     now = datetime.datetime.utcnow() # Timestamp of when uptime function is run
     delta = now - start_time
     hours, remainder = divmod(int(delta.total_seconds()), 3600)
@@ -1393,7 +1393,7 @@ async def uptime(ctx: commands.Context):
     else:
         time_format = "**{h}** hours, **{m}** minutes, and **{s}** seconds."
     uptime_stamp = time_format.format(d=days, h=hours, m=minutes, s=seconds)
-    await client.say("{} has been up for {}".format(client.user.name, uptime_stamp))
+    await ctx.send("{} has been up for {}".format(client.user.name, uptime_stamp))
     
 @client.command(pass_context=True)
 async def setplaying(ctx, message=None):
