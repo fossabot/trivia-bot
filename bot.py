@@ -40,7 +40,6 @@ from json import loads
 from discord.ext.commands import Bot, has_permissions, MissingPermissions
 from discord.ext import commands, tasks
 from discord.utils import find
-import sys
 import time
 import redis
 import os
