@@ -30,6 +30,7 @@ import asyncio
 import aiohttp
 import psutil
 import urllib
+import datetime
 import random
 import sys
 import traceback
@@ -1380,7 +1381,20 @@ async def setpoints(ctx, member: discord.Member, points=0):
             "Set {} points as <@{}> 's point value'".format(points, str(member.id))
         )
 
-
+@client.command(pass_context=True)
+async def uptime(ctx: commands.Context):
+    now = datetime.datetime.utcnow() # Timestamp of when uptime function is run
+    delta = now - start_time
+    hours, remainder = divmod(int(delta.total_seconds()), 3600)
+    minutes, seconds = divmod(remainder, 60)
+    days, hours = divmod(hours, 24)
+    if days:
+        time_format = "**{d}** days, **{h}** hours, **{m}** minutes, and **{s}** seconds."
+    else:
+        time_format = "**{h}** hours, **{m}** minutes, and **{s}** seconds."
+    uptime_stamp = time_format.format(d=days, h=hours, m=minutes, s=seconds)
+    await client.say("{} has been up for {}".format(client.user.name, uptime_stamp))
+    
 @client.command(pass_context=True)
 async def setplaying(ctx, message=None):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
@@ -1509,7 +1523,7 @@ try:
     client.load_extension("cogs.topgg")
 except:
     print("Top.gg Loading Failed")
-
+start_time = datetime.datetime.utcnow() # Timestamp of when it came online
 try:
     client.load_extension("cogs.errors")
 except:
