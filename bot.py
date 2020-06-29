@@ -803,6 +803,14 @@ async def globalleaderboard(ctx):
     data = tbpoints("data", 0, 0)
     datalist = data.items()
     sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
+    i = 0
+    found = False
+    while not found:
+        if sorteddata[i][0] == str(ctx.message.author.id):
+            position = "You are position #"+str(int(i)+1)+"!"
+            found = True
+        else:
+            i+=1
     try:
         firstuserid = int(sorteddata[0][0])
     except:
@@ -845,6 +853,7 @@ async def globalleaderboard(ctx):
     embed.add_field(name="1st Place", value=firstmessage, inline=False)
     embed.add_field(name="2nd Place", value=secondmessage, inline=False)
     embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
+    embed.add_field(name="Your Position", value=position, inline=False)
     await ctx.send(embed=embed)
 
 
