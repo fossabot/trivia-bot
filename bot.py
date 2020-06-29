@@ -805,12 +805,15 @@ async def globalleaderboard(ctx):
     sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
     i = 0
     found = False
-    while not found:
-        if sorteddata[i][0] == str(ctx.message.author.id):
-            position = "You are position #"+str(int(i)+1)+"!"
-            found = True
-        else:
-            i+=1
+    try:
+        while not found:
+            if sorteddata[i][0] == str(ctx.message.author.id):
+                position = "You are position #"+str(int(i)+1)+"!"
+                found = True
+            else:
+                i+=1
+    except:
+        position = "You have not played trivia yet :("
     try:
         firstuserid = int(sorteddata[0][0])
     except:
