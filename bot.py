@@ -786,110 +786,110 @@ async def multichoice(ctx, category=None):
                 )
             message = await msg.edit(embed=qembed)
 
-    @client.command(aliases=["debug"])
-    async def triviadebug(ctx):
-        data = tbpoints("data", 0, 0)
-        datalist = data.items()
-        await ctx.send(str(data))
+@client.command(aliases=["debug"])
+async def triviadebug(ctx):
+    data = tbpoints("data", 0, 0)
+    datalist = data.items()
+    await ctx.send(str(data))
 
-    @client.command(pass_context=True, aliases=["botstats", "botinfo"])
-    async def botstatus(ctx):
+@client.command(pass_context=True, aliases=["botstats", "botinfo"])
+async def botstatus(ctx):
 
-        start = time.perf_counter()
-        message = await ctx.send("Pinging...")
-        await message.delete()
-        end = time.perf_counter()
-        duration = (end - start) * 100
-        embed = discord.Embed(title=f"**{client.user.name}** Stats ", color=0x2F3136)
-        embed.add_field(name="Python", value=(f"{sys.version}"), inline=True)
-        embed.add_field(name="Discord.py", value=f"{discord.__version__}", inline=True)
-        embed.add_field(
-            name="Bot latency",
-            value=(
-                "{} ms (ws: {} ms)".format(
-                    round(duration), round(client.latency * 1000)
-                )
-            ),
-            inline=False,
-        )
-        embed.add_field(name="Users", value=(f"{len(client.users)}"), inline=True)
-        embed.add_field(name="Guilds", value=(f"{len(client.guilds)}"), inline=True)
-        embed.add_field(name="Shards", value=(f"{client.shard_count}"), inline=True)
-        embed.add_field(
-            name="CPU", value="{}%".format(round(psutil.cpu_percent())), inline=False
-        )
-        embed.add_field(
-            name="RAM usage",
-            value="{}% | {} / {}mb".format(
-                round(psutil.virtual_memory().percent),
-                round(psutil.virtual_memory().used / 1048576),
-                round(psutil.virtual_memory().total / 1048576),
-            ),
-            inline=True,
-        )
+    start = time.perf_counter()
+    message = await ctx.send("Pinging...")
+    await message.delete()
+    end = time.perf_counter()
+    duration = (end - start) * 100
+    embed = discord.Embed(title=f"**{client.user.name}** Stats ", color=0x2F3136)
+    embed.add_field(name="Python", value=(f"{sys.version}"), inline=True)
+    embed.add_field(name="Discord.py", value=f"{discord.__version__}", inline=True)
+    embed.add_field(
+        name="Bot latency",
+        value=(
+            "{} ms (ws: {} ms)".format(
+                round(duration), round(client.latency * 1000)
+            )
+        ),
+        inline=False,
+    )
+    embed.add_field(name="Users", value=(f"{len(client.users)}"), inline=True)
+    embed.add_field(name="Guilds", value=(f"{len(client.guilds)}"), inline=True)
+    embed.add_field(name="Shards", value=(f"{client.shard_count}"), inline=True)
+    embed.add_field(
+        name="CPU", value="{}%".format(round(psutil.cpu_percent())), inline=False
+    )
+    embed.add_field(
+        name="RAM usage",
+        value="{}% | {} / {}mb".format(
+            round(psutil.virtual_memory().percent),
+            round(psutil.virtual_memory().used / 1048576),
+            round(psutil.virtual_memory().total / 1048576),
+        ),
+        inline=True,
+    )
 
-        await ctx.send(embed=embed)
+    await ctx.send(embed=embed)
 
-    @client.command(aliases=["top"])
-    async def globalleaderboard(ctx):
-        data = tbpoints("data", 0, 0)
-        datalist = data.items()
-        sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
-        i = 0
-        found = False
-        try:
-            while not found:
-                if sorteddata[i][0] == str(ctx.message.author.id):
-                    position = "You are position #" + str(int(i) + 1) + "!"
-                    found = True
-                else:
-                    i += 1
-        except:
-            position = "You have not played trivia yet :("
-        try:
-            firstuserid = int(sorteddata[0][0])
-        except:
-            firstuserid = "null"
-        try:
-            seconduserid = int(sorteddata[1][0])
-        except:
-            seconduserid = "null"
-        try:
-            thirduserid = int(sorteddata[2][0])
-        except:
-            thirduserid = "null"
-        try:
-            firstpoints = data[str(firstuserid)]
-        except:
-            firstpoints = "null"
-        try:
-            secondpoints = data[str(seconduserid)]
-        except:
-            secondpoints = "null"
-        try:
-            thirdpoints = data[str(thirduserid)]
-        except:
-            thirdpoints = "null"
-        r = 215
-        g = 91
-        b = 69
-        embed = discord.Embed(
-            title="Leaderboard",
-            description="Top Globally",
-            color=discord.Colour.from_rgb(r, g, b),
-        )
-        data = str(data)
-        user1 = pf.censor(str(client.get_user(firstuserid)))
-        user2 = pf.censor(str(client.get_user(seconduserid)))
-        user3 = pf.censor(str(client.get_user(thirduserid)))
-        firstmessage = "{0} with {1} points".format(str(user1), str(firstpoints))
-        secondmessage = "{0} with {1} points".format(str(user2), str(secondpoints))
-        thirdmessage = "{0} with {1} points".format(str(user3), str(thirdpoints))
-        embed.add_field(name="1st Place", value=firstmessage, inline=False)
-        embed.add_field(name="2nd Place", value=secondmessage, inline=False)
-        embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
-        embed.add_field(name="Your Position", value=position, inline=False)
-        await ctx.send(embed=embed)
+@client.command(aliases=["top"])
+async def globalleaderboard(ctx):
+    data = tbpoints("data", 0, 0)
+    datalist = data.items()
+    sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
+    i = 0
+    found = False
+    try:
+        while not found:
+            if sorteddata[i][0] == str(ctx.message.author.id):
+                position = "You are position #" + str(int(i) + 1) + "!"
+                found = True
+            else:
+                i += 1
+    except:
+        position = "You have not played trivia yet :("
+    try:
+        firstuserid = int(sorteddata[0][0])
+    except:
+        firstuserid = "null"
+    try:
+        seconduserid = int(sorteddata[1][0])
+    except:
+        seconduserid = "null"
+    try:
+        thirduserid = int(sorteddata[2][0])
+    except:
+        thirduserid = "null"
+    try:
+        firstpoints = data[str(firstuserid)]
+    except:
+        firstpoints = "null"
+    try:
+        secondpoints = data[str(seconduserid)]
+    except:
+        secondpoints = "null"
+    try:
+        thirdpoints = data[str(thirduserid)]
+    except:
+        thirdpoints = "null"
+    r = 215
+    g = 91
+    b = 69
+    embed = discord.Embed(
+        title="Leaderboard",
+        description="Top Globally",
+        color=discord.Colour.from_rgb(r, g, b),
+    )
+    data = str(data)
+    user1 = pf.censor(str(client.get_user(firstuserid)))
+    user2 = pf.censor(str(client.get_user(seconduserid)))
+    user3 = pf.censor(str(client.get_user(thirduserid)))
+    firstmessage = "{0} with {1} points".format(str(user1), str(firstpoints))
+    secondmessage = "{0} with {1} points".format(str(user2), str(secondpoints))
+    thirdmessage = "{0} with {1} points".format(str(user3), str(thirdpoints))
+    embed.add_field(name="1st Place", value=firstmessage, inline=False)
+    embed.add_field(name="2nd Place", value=secondmessage, inline=False)
+    embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
+    embed.add_field(name="Your Position", value=position, inline=False)
+    await ctx.send(embed=embed)
 
 
 @client.command(aliases=["servertop"])
