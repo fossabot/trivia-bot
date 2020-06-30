@@ -1451,7 +1451,7 @@ async def setpoints(ctx, member: discord.Member, points=0):
 
 
 @client.command()
-async def setpoints(ctx, member: discord.Member):
+async def ban(ctx, member: discord.Member):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
         tbpoints("set", str(member.id), -100000000000)
