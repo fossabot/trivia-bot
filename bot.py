@@ -1445,9 +1445,7 @@ async def setpoints(ctx, member: discord.Member, points=0):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
     if str(ctx.message.author.id) in devs:
         tbpoints("set", str(member.id), points)
-        await ctx.send(
-            "Set {} points as <@{}> 's point value'".format(points, str(member.id))
-        )
+        await ctx.send("Set <@{}>'s points to {}.".format(str(member.id), points))
 
 
 @client.command()
