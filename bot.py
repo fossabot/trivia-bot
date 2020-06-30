@@ -1355,6 +1355,13 @@ async def ping(ctx):
     )
     await ctx.send(embed=embed)
 
+@client.command(pass_context=True)
+async def topgg(ctx):
+    embed = discord.Embed(
+        title=None, description="[![Discord Bots](https://top.gg/api/widget/715047504126804000.svg)](https://top.gg/bot/715047504126804000)", color=0xD75B45
+    )
+    await ctx.send(embed=embed)
+
 
 @client.command(pass_context=True)
 async def website(ctx):
