@@ -1357,10 +1357,8 @@ async def ping(ctx):
 
 @client.command(pass_context=True)
 async def topgg(ctx):
-    embed = discord.Embed(
-        title=None, description="Our top.gg page!", color=0xD75B45
-    )
-    embed.add_field(name="Trivia Bot Top.gg Page", value="`![Discord Bots](https://top.gg/api/widget/715047504126804000.svg)", inline=True)
+    embed = discord.Embed()
+    embed.set_image(url="https://top.gg/api/widget/715047504126804000.svg")
     await ctx.send(embed=embed)
 
 
