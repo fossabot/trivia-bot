@@ -917,16 +917,19 @@ async def serverleaderboard(ctx):
 
 
 @client.command()
-async def points(ctx):
+async def points(ctx, member: discord.Member = None):
     r = 215
     g = 91
     b = 69
-    uid = ctx.message.author.id
+    if not member:
+        uid = ctx.message.author.id
+    else:
+        uid = member.id
     username = "<@" + str(uid) + ">"
     current_points = tbpoints("get", str(uid), 0)
     embed = discord.Embed(
         title="Your Points",
-        description="The amount of points you have.",
+        description="Lookup user points.",
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.add_field(name="Username", value=username)
