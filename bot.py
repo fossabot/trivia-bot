@@ -491,7 +491,7 @@ async def truefalse(ctx, category=None):
     q = urllib.parse.unquote(loads(r)["results"][0]["question"])
     a = urllib.parse.unquote(loads(r)["results"][0]["correct_answer"])
     b = q + a
-    if tbpoints("get", str(ctx.message.author.id), 0) > 800:
+    if tbpoints("get", str(ctx.message.author.id), 0) > 500:
         q = stop_copy(q)
     qembed = discord.Embed(
         title="YOUR QUESTION",
