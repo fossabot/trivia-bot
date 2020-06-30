@@ -1,24 +1,24 @@
- # -*- coding: utf8 -*-
+# -*- coding: utf8 -*-
 
- #
- # This file is part of the Trivia Bot distribution (https://github.com/gubareve/trivia-bot).
- # Copyright (c) 2020 gubareve.
- #
- # This program is free software: you can redistribute it and/or modify
- # it under the terms of the GNU General Public License as published by
- # the Free Software Foundation, version 3.
- #
- # This program is distributed in the hope that it will be useful, but
- # WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- # General Public License for more details.
- #
- # To comply with the credit section of the GNU license, anyone
- # modifying this file must not remove the credit command.
- #
- # You should have received a copy of the GNU General Public License
- # along with this program. If not, see <http://www.gnu.org/licenses/>.
- #
+#
+# This file is part of the Trivia Bot distribution (https://github.com/gubareve/trivia-bot).
+# Copyright (c) 2020 gubareve.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# To comply with the credit section of the GNU license, anyone
+# modifying this file must not remove the credit command.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
 
 import smtplib
 import discord
@@ -374,6 +374,7 @@ async def bottedservers(ctx):
                     "{} owned by <@{}>".format(str(guild.name), str(guild.owner.id))
                 )
 
+
 @client.command()
 async def delete(ctx, channel_id, message_id):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
@@ -381,6 +382,7 @@ async def delete(ctx, channel_id, message_id):
         channel = client.get_channel(int(channel_id))
         msg = await channel.fetch_message(message_id)
         await msg.delete()
+
 
 @client.command()
 async def trivia(ctx, category=None):
@@ -491,146 +493,163 @@ async def truefalse(ctx, category=None):
     q = urllib.parse.unquote(loads(r)["results"][0]["question"])
     a = urllib.parse.unquote(loads(r)["results"][0]["correct_answer"])
     b = q + a
-    if tbpoints("get", str(ctx.message.author.id), 0) > 5000:
+    user_points = tbpoints("get", str(ctx.message.author.id), 0)
+    if user_points > 5000:
         q = stop_copy(q)
-    qembed = discord.Embed(
-        title="YOUR QUESTION",
-        description="Use the below reactions to answer this true/false question.",
-        color=0xFF0000,
-    )
-    qembed.add_field(name="Question:", value=str(q), inline=False)
-    qembed.add_field(name=yesemoji, value="For true", inline=True)
-    qembed.add_field(name=noemoji, value="For false", inline=True)
-    try:
-        diduservote = checkvote(ctx.message.author.id)
-    except:
-        diduservote = False
-    if not diduservote:
-        qembed.add_field(
-            name="Notice:",
-            value="Want to get 1.5 times the amount of points? Vote for us using ;vote",
-            inline=False,
+    if user_points < -10000000:
+        embed = discord.Embed(
+            title=None,
+            description="You have been banned from playing trivia. Join the support server using `;invite` to appeal",
+            color=0xD75B45,
         )
-    command_send = time.perf_counter()
-    time_used = str(round(command_send - command_startup, 5))
-    qembed.set_footer(text="Time Took: {} || https://triviabot.tech/".format(time_used))
-    msg = await ctx.send(embed=qembed)
-    answer = await get_reaction_answer(msg, ctx.message.author.id, q, a, ctx)
-    uid = ctx.message.author.id
-    if answer == 1:
-        textanswer = yesemoji
+        await ctx.send(embed=embed)
     else:
-        textanswer = noemoji
-    if diduservote:
-        multiplier = 1.5
-    else:
-        multiplier = 1
-    if tbperms("check", ctx.message.author.id, "1.5x"):
-        mult2 = 1.5
-    else:
-        mult2 = 1
-
-    if lesspoints:
-        pointstogive = 1 * multiplier * mult2
-        message = ""
-        if diduservote:
-            message = " (Voted)"
-    else:
-        pointstogive = 1 * multiplier * mult2
-        message = ""
-        if diduservote:
-            message = " (Voted)"
-
-    if a == "True":
-        if answer == 1:
-            tbpoints("give", str(uid), pointstogive)
-            try:
-                await msg.clear_reactions()
-            except:
-                hahalols = 1
-            qembed = discord.Embed(
-                title="Answered Problem",
-                description="This problem has already been answered",
-                color=0xFF0000,
-            )
-            qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+        qembed = discord.Embed(
+            title="YOUR QUESTION",
+            description="Use the below reactions to answer this true/false question.",
+            color=0xFF0000,
+        )
+        qembed.add_field(name="Question:", value=str(q), inline=False)
+        qembed.add_field(name=yesemoji, value="For true", inline=True)
+        qembed.add_field(name=noemoji, value="For false", inline=True)
+        try:
+            diduservote = checkvote(ctx.message.author.id)
+        except:
+            diduservote = False
+        if not diduservote:
             qembed.add_field(
-                name="The Submitted Answer Was", value=textanswer, inline=False
-            )
-            qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-            qembed.add_field(
-                name="Points",
-                value="You got " + str(pointstogive) + " point(s)! Nice Job!" + message,
+                name="Notice:",
+                value="Want to get 1.5 times the amount of points? Vote for us using ;vote",
                 inline=False,
             )
-            message = await msg.edit(embed=qembed)
-            await msg.add_reaction("✅")
-        elif answer == 2:
-            tbpoints("give", str(uid), -1)
-            try:
-                await msg.clear_reactions()
-            except:
-                chatgoesboom = 12
-            qembed = discord.Embed(
-                title="Answered Problem",
-                description="This problem has already been answered",
-                color=0xFF0000,
-            )
-            qembed.add_field(name="The Question Was:", value=str(q), inline=False)
-            qembed.add_field(
-                name="The Submitted Answer Was", value=textanswer, inline=False
-            )
-            qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-            qembed.add_field(
-                name="Points", value="You lost 1 point! Sorry :(", inline=False
-            )
-            message = await msg.edit(embed=qembed)
-            await msg.add_reaction("❌")
-    elif a == "False":
+        command_send = time.perf_counter()
+        time_used = str(round(command_send - command_startup, 5))
+        qembed.set_footer(
+            text="Time Took: {} || https://triviabot.tech/".format(time_used)
+        )
+        msg = await ctx.send(embed=qembed)
+        answer = await get_reaction_answer(msg, ctx.message.author.id, q, a, ctx)
+        uid = ctx.message.author.id
         if answer == 1:
-            tbpoints("give", str(uid), -1)
-            try:
-                await msg.clear_reactions()
-            except:
-                waitwhat = 9
-            qembed = discord.Embed(
-                title="Answered Problem",
-                description="This problem has already been answered",
-                color=0xFF0000,
-            )
-            qembed.add_field(name="The Question Was:", value=str(q), inline=False)
-            qembed.add_field(
-                name="The Submitted Answer Was", value=textanswer, inline=False
-            )
-            qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-            qembed.add_field(
-                name="Points", value="You lost 1 point! Sorry :(", inline=False
-            )
-            message = await msg.edit(embed=qembed)
-            await msg.add_reaction("❌")
-        elif answer == 2:
-            tbpoints("give", str(uid), pointstogive)
-            try:
-                await msg.clear_reactions()
-            except:
-                finaloneyay = 1993
-            qembed = discord.Embed(
-                title="Answered Problem",
-                description="This problem has already been answered",
-                color=0xFF0000,
-            )
-            qembed.add_field(name="The Question Was:", value=str(q), inline=False)
-            qembed.add_field(
-                name="The Submitted Answer Was", value=textanswer, inline=False
-            )
-            qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
-            qembed.add_field(
-                name="Points",
-                value="You got " + str(pointstogive) + " point(s)! Nice Job!" + message,
-                inline=False,
-            )
-            message = await msg.edit(embed=qembed)
-            await msg.add_reaction("✅")
+            textanswer = yesemoji
+        else:
+            textanswer = noemoji
+        if diduservote:
+            multiplier = 1.5
+        else:
+            multiplier = 1
+        if tbperms("check", ctx.message.author.id, "1.5x"):
+            mult2 = 1.5
+        else:
+            mult2 = 1
+
+        if lesspoints:
+            pointstogive = 1 * multiplier * mult2
+            message = ""
+            if diduservote:
+                message = " (Voted)"
+        else:
+            pointstogive = 1 * multiplier * mult2
+            message = ""
+            if diduservote:
+                message = " (Voted)"
+
+        if a == "True":
+            if answer == 1:
+                tbpoints("give", str(uid), pointstogive)
+                try:
+                    await msg.clear_reactions()
+                except:
+                    hahalols = 1
+                qembed = discord.Embed(
+                    title="Answered Problem",
+                    description="This problem has already been answered",
+                    color=0xFF0000,
+                )
+                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+                qembed.add_field(
+                    name="The Submitted Answer Was", value=textanswer, inline=False
+                )
+                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+                qembed.add_field(
+                    name="Points",
+                    value="You got "
+                    + str(pointstogive)
+                    + " point(s)! Nice Job!"
+                    + message,
+                    inline=False,
+                )
+                message = await msg.edit(embed=qembed)
+                await msg.add_reaction("✅")
+            elif answer == 2:
+                tbpoints("give", str(uid), -1)
+                try:
+                    await msg.clear_reactions()
+                except:
+                    chatgoesboom = 12
+                qembed = discord.Embed(
+                    title="Answered Problem",
+                    description="This problem has already been answered",
+                    color=0xFF0000,
+                )
+                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+                qembed.add_field(
+                    name="The Submitted Answer Was", value=textanswer, inline=False
+                )
+                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+                qembed.add_field(
+                    name="Points", value="You lost 1 point! Sorry :(", inline=False
+                )
+                message = await msg.edit(embed=qembed)
+                await msg.add_reaction("❌")
+        elif a == "False":
+            if answer == 1:
+                tbpoints("give", str(uid), -1)
+                try:
+                    await msg.clear_reactions()
+                except:
+                    waitwhat = 9
+                qembed = discord.Embed(
+                    title="Answered Problem",
+                    description="This problem has already been answered",
+                    color=0xFF0000,
+                )
+                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+                qembed.add_field(
+                    name="The Submitted Answer Was", value=textanswer, inline=False
+                )
+                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+                qembed.add_field(
+                    name="Points", value="You lost 1 point! Sorry :(", inline=False
+                )
+                message = await msg.edit(embed=qembed)
+                await msg.add_reaction("❌")
+            elif answer == 2:
+                tbpoints("give", str(uid), pointstogive)
+                try:
+                    await msg.clear_reactions()
+                except:
+                    finaloneyay = 1993
+                qembed = discord.Embed(
+                    title="Answered Problem",
+                    description="This problem has already been answered",
+                    color=0xFF0000,
+                )
+                qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+                qembed.add_field(
+                    name="The Submitted Answer Was", value=textanswer, inline=False
+                )
+                qembed.add_field(name="The Correct Answer Was  ", value=a, inline=False)
+                qembed.add_field(
+                    name="Points",
+                    value="You got "
+                    + str(pointstogive)
+                    + " point(s)! Nice Job!"
+                    + message,
+                    inline=False,
+                )
+                message = await msg.edit(embed=qembed)
+                await msg.add_reaction("✅")
 
 
 @client.command(aliases=["multi", "multiplechoice", "multiple"])
@@ -647,216 +666,230 @@ async def multichoice(ctx, category=None):
         ).text
     r = json.loads(r)
     q = urllib.parse.unquote(r["results"][0]["question"])
-    if tbpoints("get", str(ctx.message.author.id), 0) > 800:
+    user_points = tbpoints("get", str(ctx.message.author.id), 0)
+    if user_points > 5000:
         q = stop_copy(q)
-    answers = [urllib.parse.unquote(r["results"][0]["correct_answer"])] + [
-        urllib.parse.unquote(x) for x in r["results"][0]["incorrect_answers"]
-    ]
-    random.shuffle(answers)
-    correct = answers.index(urllib.parse.unquote(r["results"][0]["correct_answer"]))
-    uid = ctx.author.id
-    qembed = discord.Embed(
-        title="YOUR QUESTION FROM CATEGORY " + category.upper()
-        if category in categories.keys()
-        else "YOUR QUESTION",
-        description="Use the below reactions to answer this multiple choice question:\n"
-        + q
-        + "\n\n\n"
-        + "\n\n".join([numberemojis[qnum] + " " + answers[qnum] for qnum in range(4)]),
-        color=0xFF0000,
-    )
-    command_send = time.perf_counter()
-    time_used = str(round(command_send - command_startup, 5))
-    qembed.set_footer(text="Time Took: {} || https://triviabot.tech/".format(time_used))
-    msg = await ctx.send(embed=qembed)
-    answered = await get_multi_reaction_answer(msg, ctx.author, ctx)
-    if answered == None:
-        qembed = discord.Embed(
-            title="Answered Problem",
-            description="This problem has already been answered",
-            color=0xFF0000,
+    if user_points < -10000000:
+        embed = discord.Embed(
+            title=None,
+            description="You have been banned from playing trivia. Join the support server using `;invite` to appeal",
+            color=0xD75B45,
         )
-        if category in categories.keys():
-            qembed.add_field(
-                name="The Chosen Category Was:", value=str(category), inline=False
-            )
-        qembed.add_field(name="The Question Was:", value=str(q), inline=False)
-        qembed.add_field(
-            name="The Submitted Answer Was:",
-            value="EXPIRED (you lost 1 point)",
-            inline=False,
-        )
-        qembed.add_field(
-            name="The Correct Answer Was:", value=answers[correct], inline=False
-        )
-        message = await msg.edit(embed=qembed)
-        qembed.add_field(name="Points", value="You lost 1 point!", inline=False)
-        tbpoints("give", str(uid), -1)
+        await ctx.send(embed=embed)
     else:
-        try:
-            diduservote = checkvote(ctx.message.author.id)
-        except:
-            diduservote = False
-        pointstogive = 1 if category in categories.keys() else 2
-        if diduservote:
-            mult = 1.5
-        else:
-            mult = 1
-        if tbperms("check", ctx.message.author.id, "1.5x"):
-            mult2 = 1.5
-        else:
-            mult2 = 1
-        pointstogive = pointstogive * mult * mult2
-        try:
-            await msg.clear_reactions()
-        except:
-            print("someone didnt give me perms to clear messages. not poggers")
-        if answered == correct:
-            await msg.add_reaction("✅")
-            tbpoints("give", str(uid), float(pointstogive))
-            pointchange = pointstogive
-        else:
-            await msg.add_reaction("❌")
-            tbpoints("give", str(uid), -0.5 if category in categories.keys() else -1.0)
-            pointchange = -0.5 if category in categories.keys() else -1.0
+        answers = [urllib.parse.unquote(r["results"][0]["correct_answer"])] + [
+            urllib.parse.unquote(x) for x in r["results"][0]["incorrect_answers"]
+        ]
+        random.shuffle(answers)
+        correct = answers.index(urllib.parse.unquote(r["results"][0]["correct_answer"]))
+        uid = ctx.author.id
         qembed = discord.Embed(
-            title="Answered Problem",
-            description="This problem has already been answered",
+            title="YOUR QUESTION FROM CATEGORY " + category.upper()
+            if category in categories.keys()
+            else "YOUR QUESTION",
+            description="Use the below reactions to answer this multiple choice question:\n"
+            + q
+            + "\n\n\n"
+            + "\n\n".join(
+                [numberemojis[qnum] + " " + answers[qnum] for qnum in range(4)]
+            ),
             color=0xFF0000,
         )
-        if category in categories.keys():
-            qembed.add_field(
-                name="The Chosen Category Was:", value=str(category), inline=False
-            )
-        qembed.add_field(name="The Question Was:", value=str(q), inline=False)
-        qembed.add_field(
-            name="The Submitted Answer Was:", value=answers[answered], inline=False
+        command_send = time.perf_counter()
+        time_used = str(round(command_send - command_startup, 5))
+        qembed.set_footer(
+            text="Time Took: {} || https://triviabot.tech/".format(time_used)
         )
-        qembed.add_field(
-            name="Points",
-            value="You {0} {1} point{2}!".format(
-                "lost" if pointchange < 0 else "gained",
-                str(abs(pointchange)).replace(".0", ""),
-                "s" if abs(pointchange) > 1 else "",
+        msg = await ctx.send(embed=qembed)
+        answered = await get_multi_reaction_answer(msg, ctx.author, ctx)
+        if answered == None:
+            qembed = discord.Embed(
+                title="Answered Problem",
+                description="This problem has already been answered",
+                color=0xFF0000,
+            )
+            if category in categories.keys():
+                qembed.add_field(
+                    name="The Chosen Category Was:", value=str(category), inline=False
+                )
+            qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+            qembed.add_field(
+                name="The Submitted Answer Was:",
+                value="EXPIRED (you lost 1 point)",
+                inline=False,
+            )
+            qembed.add_field(
+                name="The Correct Answer Was:", value=answers[correct], inline=False
+            )
+            message = await msg.edit(embed=qembed)
+            qembed.add_field(name="Points", value="You lost 1 point!", inline=False)
+            tbpoints("give", str(uid), -1)
+        else:
+            try:
+                diduservote = checkvote(ctx.message.author.id)
+            except:
+                diduservote = False
+            pointstogive = 1 if category in categories.keys() else 2
+            if diduservote:
+                mult = 1.5
+            else:
+                mult = 1
+            if tbperms("check", ctx.message.author.id, "1.5x"):
+                mult2 = 1.5
+            else:
+                mult2 = 1
+            pointstogive = pointstogive * mult * mult2
+            try:
+                await msg.clear_reactions()
+            except:
+                print("someone didnt give me perms to clear messages. not poggers")
+            if answered == correct:
+                await msg.add_reaction("✅")
+                tbpoints("give", str(uid), float(pointstogive))
+                pointchange = pointstogive
+            else:
+                await msg.add_reaction("❌")
+                tbpoints(
+                    "give", str(uid), -0.5 if category in categories.keys() else -1.0
+                )
+                pointchange = -0.5 if category in categories.keys() else -1.0
+            qembed = discord.Embed(
+                title="Answered Problem",
+                description="This problem has already been answered",
+                color=0xFF0000,
+            )
+            if category in categories.keys():
+                qembed.add_field(
+                    name="The Chosen Category Was:", value=str(category), inline=False
+                )
+            qembed.add_field(name="The Question Was:", value=str(q), inline=False)
+            qembed.add_field(
+                name="The Submitted Answer Was:", value=answers[answered], inline=False
+            )
+            qembed.add_field(
+                name="Points",
+                value="You {0} {1} point{2}!".format(
+                    "lost" if pointchange < 0 else "gained",
+                    str(abs(pointchange)).replace(".0", ""),
+                    "s" if abs(pointchange) > 1 else "",
+                ),
+                inline=False,
+            )
+            qembed.add_field(
+                name="The Correct Answer Was:", value=answers[correct], inline=False
+            )
+            if not diduservote:
+                qembed.add_field(
+                    name="Tip:",
+                    value="Want to get 1.5 times the amount of points? Vote for us using ;vote",
+                    inline=False,
+                )
+            message = await msg.edit(embed=qembed)
+
+    @client.command(aliases=["debug"])
+    async def triviadebug(ctx):
+        data = tbpoints("data", 0, 0)
+        datalist = data.items()
+        await ctx.send(str(data))
+
+    @client.command(pass_context=True, aliases=["botstats", "botinfo"])
+    async def botstatus(ctx):
+
+        start = time.perf_counter()
+        message = await ctx.send("Pinging...")
+        await message.delete()
+        end = time.perf_counter()
+        duration = (end - start) * 100
+        embed = discord.Embed(title=f"**{client.user.name}** Stats ", color=0x2F3136)
+        embed.add_field(name="Python", value=(f"{sys.version}"), inline=True)
+        embed.add_field(name="Discord.py", value=f"{discord.__version__}", inline=True)
+        embed.add_field(
+            name="Bot latency",
+            value=(
+                "{} ms (ws: {} ms)".format(
+                    round(duration), round(client.latency * 1000)
+                )
             ),
             inline=False,
         )
-        qembed.add_field(
-            name="The Correct Answer Was:", value=answers[correct], inline=False
+        embed.add_field(name="Users", value=(f"{len(client.users)}"), inline=True)
+        embed.add_field(name="Guilds", value=(f"{len(client.guilds)}"), inline=True)
+        embed.add_field(name="Shards", value=(f"{client.shard_count}"), inline=True)
+        embed.add_field(
+            name="CPU", value="{}%".format(round(psutil.cpu_percent())), inline=False
         )
-        if not diduservote:
-            qembed.add_field(
-                name="Tip:",
-                value="Want to get 1.5 times the amount of points? Vote for us using ;vote",
-                inline=False,
-            )
-        message = await msg.edit(embed=qembed)
+        embed.add_field(
+            name="RAM usage",
+            value="{}% | {} / {}mb".format(
+                round(psutil.virtual_memory().percent),
+                round(psutil.virtual_memory().used / 1048576),
+                round(psutil.virtual_memory().total / 1048576),
+            ),
+            inline=True,
+        )
 
+        await ctx.send(embed=embed)
 
-@client.command(aliases=["debug"])
-async def triviadebug(ctx):
-    data = tbpoints("data", 0, 0)
-    datalist = data.items()
-    await ctx.send(str(data))
-
-
-@client.command(pass_context=True, aliases=["botstats", "botinfo"])
-async def botstatus(ctx):
-
-    start = time.perf_counter()
-    message = await ctx.send("Pinging...")
-    await message.delete()
-    end = time.perf_counter()
-    duration = (end - start) * 100
-    embed = discord.Embed(title=f"**{client.user.name}** Stats ", color=0x2F3136)
-    embed.add_field(name="Python", value=(f"{sys.version}"), inline=True)
-    embed.add_field(name="Discord.py", value=f"{discord.__version__}", inline=True)
-    embed.add_field(
-        name="Bot latency",
-        value=(
-            "{} ms (ws: {} ms)".format(round(duration), round(client.latency * 1000))
-        ),
-        inline=False,
-    )
-    embed.add_field(name="Users", value=(f"{len(client.users)}"), inline=True)
-    embed.add_field(name="Guilds", value=(f"{len(client.guilds)}"), inline=True)
-    embed.add_field(name="Shards", value=(f"{client.shard_count}"), inline=True)
-    embed.add_field(
-        name="CPU", value="{}%".format(round(psutil.cpu_percent())), inline=False
-    )
-    embed.add_field(
-        name="RAM usage",
-        value="{}% | {} / {}mb".format(
-            round(psutil.virtual_memory().percent),
-            round(psutil.virtual_memory().used / 1048576),
-            round(psutil.virtual_memory().total / 1048576),
-        ),
-        inline=True,
-    )
-
-    await ctx.send(embed=embed)
-
-
-@client.command(aliases=["top"])
-async def globalleaderboard(ctx):
-    data = tbpoints("data", 0, 0)
-    datalist = data.items()
-    sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
-    i = 0
-    found = False
-    try:
-        while not found:
-            if sorteddata[i][0] == str(ctx.message.author.id):
-                position = "You are position #"+str(int(i)+1)+"!"
-                found = True
-            else:
-                i+=1
-    except:
-        position = "You have not played trivia yet :("
-    try:
-        firstuserid = int(sorteddata[0][0])
-    except:
-        firstuserid = "null"
-    try:
-        seconduserid = int(sorteddata[1][0])
-    except:
-        seconduserid = "null"
-    try:
-        thirduserid = int(sorteddata[2][0])
-    except:
-        thirduserid = "null"
-    try:
-        firstpoints = data[str(firstuserid)]
-    except:
-        firstpoints = "null"
-    try:
-        secondpoints = data[str(seconduserid)]
-    except:
-        secondpoints = "null"
-    try:
-        thirdpoints = data[str(thirduserid)]
-    except:
-        thirdpoints = "null"
-    r = 215
-    g = 91
-    b = 69
-    embed = discord.Embed(
-        title="Leaderboard",
-        description="Top Globally",
-        color=discord.Colour.from_rgb(r, g, b),
-    )
-    data = str(data)
-    user1 = pf.censor(str(client.get_user(firstuserid)))
-    user2 = pf.censor(str(client.get_user(seconduserid)))
-    user3 = pf.censor(str(client.get_user(thirduserid)))
-    firstmessage = "{0} with {1} points".format(str(user1), str(firstpoints))
-    secondmessage = "{0} with {1} points".format(str(user2), str(secondpoints))
-    thirdmessage = "{0} with {1} points".format(str(user3), str(thirdpoints))
-    embed.add_field(name="1st Place", value=firstmessage, inline=False)
-    embed.add_field(name="2nd Place", value=secondmessage, inline=False)
-    embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
-    embed.add_field(name="Your Position", value=position, inline=False)
-    await ctx.send(embed=embed)
+    @client.command(aliases=["top"])
+    async def globalleaderboard(ctx):
+        data = tbpoints("data", 0, 0)
+        datalist = data.items()
+        sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
+        i = 0
+        found = False
+        try:
+            while not found:
+                if sorteddata[i][0] == str(ctx.message.author.id):
+                    position = "You are position #" + str(int(i) + 1) + "!"
+                    found = True
+                else:
+                    i += 1
+        except:
+            position = "You have not played trivia yet :("
+        try:
+            firstuserid = int(sorteddata[0][0])
+        except:
+            firstuserid = "null"
+        try:
+            seconduserid = int(sorteddata[1][0])
+        except:
+            seconduserid = "null"
+        try:
+            thirduserid = int(sorteddata[2][0])
+        except:
+            thirduserid = "null"
+        try:
+            firstpoints = data[str(firstuserid)]
+        except:
+            firstpoints = "null"
+        try:
+            secondpoints = data[str(seconduserid)]
+        except:
+            secondpoints = "null"
+        try:
+            thirdpoints = data[str(thirduserid)]
+        except:
+            thirdpoints = "null"
+        r = 215
+        g = 91
+        b = 69
+        embed = discord.Embed(
+            title="Leaderboard",
+            description="Top Globally",
+            color=discord.Colour.from_rgb(r, g, b),
+        )
+        data = str(data)
+        user1 = pf.censor(str(client.get_user(firstuserid)))
+        user2 = pf.censor(str(client.get_user(seconduserid)))
+        user3 = pf.censor(str(client.get_user(thirduserid)))
+        firstmessage = "{0} with {1} points".format(str(user1), str(firstpoints))
+        secondmessage = "{0} with {1} points".format(str(user2), str(secondpoints))
+        thirdmessage = "{0} with {1} points".format(str(user3), str(thirdpoints))
+        embed.add_field(name="1st Place", value=firstmessage, inline=False)
+        embed.add_field(name="2nd Place", value=secondmessage, inline=False)
+        embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
+        embed.add_field(name="Your Position", value=position, inline=False)
+        await ctx.send(embed=embed)
 
 
 @client.command(aliases=["servertop"])
@@ -872,7 +905,9 @@ async def serverleaderboard(ctx):
         for id in ctx.guild.members:
             id = id.id
             server_members.append(str(id))
-        server_members = sorted(server_members, key=lambda x: data.get(x, 0), reverse=True)
+        server_members = sorted(
+            server_members, key=lambda x: data.get(x, 0), reverse=True
+        )
         try:
             firstuserid = server_members[0]
         except:
@@ -906,20 +941,24 @@ async def serverleaderboard(ctx):
             color=discord.Colour.from_rgb(r, g, b),
         )
         data = str(data)
-        firstmessage = "<@" + str(firstuserid) + "> with " + str(firstpoints) + " points!"
+        firstmessage = (
+            "<@" + str(firstuserid) + "> with " + str(firstpoints) + " points!"
+        )
         secondmessage = (
             "<@" + str(seconduserid) + "> with " + str(secondpoints) + " points!"
         )
-        thirdmessage = "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
+        thirdmessage = (
+            "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
+        )
         embed.add_field(name="1st Place", value=firstmessage, inline=False)
         embed.add_field(name="2nd Place", value=secondmessage, inline=False)
         embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
     except:
-            embed = discord.Embed(
-                title="Error!",
-                description="This command has been temporarily disabled while we tidy up things on our end. (ETA: 1 hour)",
-                color=discord.Colour.from_rgb(r, g, b),
-            )
+        embed = discord.Embed(
+            title="Error!",
+            description="This command has been temporarily disabled while we tidy up things on our end. (ETA: 1 hour)",
+            color=discord.Colour.from_rgb(r, g, b),
+        )
     await ctx.send(embed=embed)
 
 
@@ -970,7 +1009,9 @@ async def stats(ctx):
     r = 215
     g = 91
     b = 69
-    data_string = str(ctx.message.author.name) + "#" + str(ctx.message.author.discriminator)
+    data_string = (
+        str(ctx.message.author.name) + "#" + str(ctx.message.author.discriminator)
+    )
     data_bytes = data_string.encode("utf-8")
     encoded = base64.urlsafe_b64encode(data_bytes)
     encoded = encoded.decode("utf-8")
@@ -978,7 +1019,9 @@ async def stats(ctx):
         title="Your stats webpage!",
         description="[Stats - TriviaBot.tech](https://stats.triviabot.tech/user/"
         + str(ctx.message.author.id)
-        + "/" + encoded + ")",
+        + "/"
+        + encoded
+        + ")",
         color=discord.Colour.from_rgb(r, g, b),
     )
     embed.set_thumbnail(
@@ -1406,19 +1449,31 @@ async def setpoints(ctx, member: discord.Member, points=0):
             "Set {} points as <@{}> 's point value'".format(points, str(member.id))
         )
 
+
+@client.command()
+async def setpoints(ctx, member: discord.Member):
+    devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
+    if str(ctx.message.author.id) in devs:
+        tbpoints("set", str(member.id), -100000000000)
+        await ctx.send("Banned <@{}>!".format(str(member.id)))
+
+
 @client.command(pass_context=True)
 async def uptime(ctx):
-    now = datetime.datetime.utcnow() # Timestamp of when uptime function is run
+    now = datetime.datetime.utcnow()  # Timestamp of when uptime function is run
     delta = now - start_time
     hours, remainder = divmod(int(delta.total_seconds()), 3600)
     minutes, seconds = divmod(remainder, 60)
     days, hours = divmod(hours, 24)
     if days:
-        time_format = "**{d}** days, **{h}** hours, **{m}** minutes, and **{s}** seconds."
+        time_format = (
+            "**{d}** days, **{h}** hours, **{m}** minutes, and **{s}** seconds."
+        )
     else:
         time_format = "**{h}** hours, **{m}** minutes, and **{s}** seconds."
     uptime_stamp = time_format.format(d=days, h=hours, m=minutes, s=seconds)
     await ctx.send("{} has been up for {}".format(client.user.name, uptime_stamp))
+
 
 @client.command(pass_context=True)
 async def setplaying(ctx, message=None):
@@ -1548,7 +1603,7 @@ try:
     client.load_extension("cogs.topgg")
 except:
     print("Top.gg Loading Failed")
-start_time = datetime.datetime.utcnow() # Timestamp of when it came online
+start_time = datetime.datetime.utcnow()  # Timestamp of when it came online
 try:
     client.load_extension("cogs.errors")
 except:
