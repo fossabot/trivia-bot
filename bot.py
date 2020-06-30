@@ -923,8 +923,12 @@ async def points(ctx, member: discord.Member = None):
     b = 69
     if not member:
         uid = ctx.message.author.id
+        title = "Lookup Points"
+        description = "Lookup other user's points."
     else:
         uid = member.id
+        title = "Your Points"
+        description = "Check your points."
     username = "<@" + str(uid) + ">"
     current_points = tbpoints("get", str(uid), 0)
     embed = discord.Embed(
