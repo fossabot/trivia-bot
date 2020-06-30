@@ -1,22 +1,22 @@
  # -*- coding: utf8 -*-
 
- # 
+ #
  # This file is part of the Trivia Bot distribution (https://github.com/gubareve/trivia-bot).
  # Copyright (c) 2020 gubareve.
- # 
- # This program is free software: you can redistribute it and/or modify  
- # it under the terms of the GNU General Public License as published by  
+ #
+ # This program is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
  # the Free Software Foundation, version 3.
  #
- # This program is distributed in the hope that it will be useful, but 
- # WITHOUT ANY WARRANTY; without even the implied warranty of 
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ # This program is distributed in the hope that it will be useful, but
+ # WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  # General Public License for more details.
  #
- # To comply with the credit section of the GNU license, anyone 
+ # To comply with the credit section of the GNU license, anyone
  # modifying this file must not remove the credit command.
  #
- # You should have received a copy of the GNU General Public License 
+ # You should have received a copy of the GNU General Public License
  # along with this program. If not, see <http://www.gnu.org/licenses/>.
  #
 
@@ -381,7 +381,7 @@ async def delete(ctx, channel_id, message_id):
         channel = client.get_channel(int(channel_id))
         msg = await channel.fetch_message(message_id)
         await msg.delete()
-        
+
 @client.command()
 async def trivia(ctx, category=None):
     if random.randint(1, 3) > 1:
@@ -861,58 +861,65 @@ async def globalleaderboard(ctx):
 
 @client.command(aliases=["servertop"])
 async def serverleaderboard(ctx):
-    data = tbpoints("data", 0, 0)
-    server_members = []
-    first_found = False
-    second_found = False
-    third_found = False
-    datalist = data.items()
-    sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
-    for id in ctx.guild.members:
-        id = id.id
-        server_members.append(str(id))
-    server_members = sorted(server_members, key=lambda x: data.get(x, 0), reverse=True)
     try:
-        firstuserid = server_members[0]
+        data = tbpoints("data", 0, 0)
+        server_members = []
+        first_found = False
+        second_found = False
+        third_found = False
+        datalist = data.items()
+        sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
+        for id in ctx.guild.members:
+            id = id.id
+            server_members.append(str(id))
+        server_members = sorted(server_members, key=lambda x: data.get(x, 0), reverse=True)
+        try:
+            firstuserid = server_members[0]
+        except:
+            firstuserid = "null"
+        try:
+            seconduserid = server_members[1]
+        except:
+            seconduserid = "null"
+        try:
+            thirduserid = server_members[2]
+        except:
+            thirduserid = "null"
+        try:
+            firstpoints = data[firstuserid]
+        except:
+            firstpoints = "null"
+        try:
+            secondpoints = data[seconduserid]
+        except:
+            secondpoints = "null"
+        try:
+            thirdpoints = data[thirduserid]
+        except:
+            thirdpoints = "null"
+        r = 215
+        g = 91
+        b = 69
+        embed = discord.Embed(
+            title="Leaderboard",
+            description="Top in this Server",
+            color=discord.Colour.from_rgb(r, g, b),
+        )
+        data = str(data)
+        firstmessage = "<@" + str(firstuserid) + "> with " + str(firstpoints) + " points!"
+        secondmessage = (
+            "<@" + str(seconduserid) + "> with " + str(secondpoints) + " points!"
+        )
+        thirdmessage = "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
+        embed.add_field(name="1st Place", value=firstmessage, inline=False)
+        embed.add_field(name="2nd Place", value=secondmessage, inline=False)
+        embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
     except:
-        firstuserid = "null"
-    try:
-        seconduserid = server_members[1]
-    except:
-        seconduserid = "null"
-    try:
-        thirduserid = server_members[2]
-    except:
-        thirduserid = "null"
-    try:
-        firstpoints = data[firstuserid]
-    except:
-        firstpoints = "null"
-    try:
-        secondpoints = data[seconduserid]
-    except:
-        secondpoints = "null"
-    try:
-        thirdpoints = data[thirduserid]
-    except:
-        thirdpoints = "null"
-    r = 215
-    g = 91
-    b = 69
-    embed = discord.Embed(
-        title="Leaderboard",
-        description="Top in this Server",
-        color=discord.Colour.from_rgb(r, g, b),
-    )
-    data = str(data)
-    firstmessage = "<@" + str(firstuserid) + "> with " + str(firstpoints) + " points!"
-    secondmessage = (
-        "<@" + str(seconduserid) + "> with " + str(secondpoints) + " points!"
-    )
-    thirdmessage = "<@" + str(thirduserid) + "> with " + str(thirdpoints) + " points!"
-    embed.add_field(name="1st Place", value=firstmessage, inline=False)
-    embed.add_field(name="2nd Place", value=secondmessage, inline=False)
-    embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
+            embed = discord.Embed(
+                title="Error!",
+                description="This command has been temporarily disabled while we tidy up things on our end. (ETA: 1 hour)",
+                color=discord.Colour.from_rgb(r, g, b),
+            )
     await ctx.send(embed=embed)
 
 
@@ -1412,7 +1419,7 @@ async def uptime(ctx):
         time_format = "**{h}** hours, **{m}** minutes, and **{s}** seconds."
     uptime_stamp = time_format.format(d=days, h=hours, m=minutes, s=seconds)
     await ctx.send("{} has been up for {}".format(client.user.name, uptime_stamp))
-    
+
 @client.command(pass_context=True)
 async def setplaying(ctx, message=None):
     devs = ["247594208779567105", "692652688407527474", "677343881351659570"]
