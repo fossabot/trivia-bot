@@ -494,7 +494,7 @@ async def truefalse(ctx, category=None):
     a = urllib.parse.unquote(loads(r)["results"][0]["correct_answer"])
     b = q + a
     user_points = tbpoints("get", str(ctx.message.author.id), 0)
-    if user_points > 5000:
+    if user_points > 50000:
         q = stop_copy(q)
     if user_points < -10000000:
         embed = discord.Embed(
@@ -667,7 +667,7 @@ async def multichoice(ctx, category=None):
     r = json.loads(r)
     q = urllib.parse.unquote(r["results"][0]["question"])
     user_points = tbpoints("get", str(ctx.message.author.id), 0)
-    if user_points > 5000:
+    if user_points > 50000:
         q = stop_copy(q)
     if user_points < -10000000:
         embed = discord.Embed(
