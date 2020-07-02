@@ -1,6 +1,7 @@
 # Trivia Bot
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2020)
+[![Discord Bots](https://top.gg/api/widget/servers/715047504126804000.svg)](https://top.gg/bot/715047504126804000)
 [![Discord Bots](https://top.gg/api/widget/status/715047504126804000.svg)](https://top.gg/bot/715047504126804000)
 [![Discord Bots](https://top.gg/api/widget/upvotes/715047504126804000.svg)](https://top.gg/bot/715047504126804000)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-6f42c1.svg)](http://makeapullrequest.com)
@@ -15,6 +16,10 @@ Push [here](https://discord.com/api/oauth2/authorize?client_id=71504750412680400
 ## About:
 
 Trivia bot is a easy to use multiple choice and true/false trivia bot for discord the includes a global leaderboard, categories, server leaderboards, and a infinite amount of control. You can copy this bot if you keep the credit command.
+
+## Support Server:
+
+<iframe src="https://discordapp.com/widget?id=715289968368418968&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
 
 ## Images:
 

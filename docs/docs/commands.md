@@ -11,8 +11,8 @@
 | ;credits     | ;credits                 | Shows a list of contributors.                            |
 | ;categories  | ;categories [amount]     | Shows all available categories.                          |
 | ;ping        | ;ping                    | Shows the current ping.                                  |
-| ;feedback    | ;feedback [the feedback] | Gives feedback to the devs.                              |
-| ;points      | ;points                  | Shows how many points you have.                          |
+| ;feedback    | ;feedback                | Gives feedback to the devs.                              |
+| ;points      | ;points [optional @user] | Shows how many points you / another person have.         |
 | ;multichoice | ;multi                   | Play a multi choice trivia question.                     |
 | ;truefalse   | ;tf                      | Play a true or false trivia question.                    |
 | ;setprefix   | ;setprefix [the prefix]  | Sets the current prefix for the server.                  |
