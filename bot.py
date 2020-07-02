@@ -1367,7 +1367,7 @@ async def givemevip(ctx, product=None):
 
 
 @client.command(pass_context=True)
-async def givemeroles(ctx, product=None):
+async def givemepro(ctx, product=None):
     r = 215
     g = 91
     b = 69
