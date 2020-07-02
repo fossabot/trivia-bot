@@ -27,7 +27,6 @@ if redisurl == None:
 
 triviadb = redis.from_url(redisurl)
 
-client = commands.Bot(command_prefix="jjsfjdif")
 
 app = Flask(__name__, template_folder="templates")
 
@@ -186,18 +185,3 @@ def user_view(uid, user):
         userpoints=current_points,
         vip=vip
     )
-
-@client.event
-async def on_ready():
-    print("Logged in as")
-    print(client.user.name)
-    print(client.user.id)
-    print("------")
-    main()
-
-
-def thread_function(name):
-    client.run(TOKEN)
-
-
-x = threading.Thread(target=thread_function, args=(1,))
