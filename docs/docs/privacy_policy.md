@@ -48,6 +48,10 @@ Trivia Bot collects the following analytics:
 
 This website may contain links to other web sites. Some of those web sites may be operated by third parties. We provide the links for your convenience, but we do not review, control, or monitor the privacy practices of web sites operated by others. We are not responsible for the performance of web sites operated by third parties or for your business dealings with them. Therefore, whenever you leave this web site we recommend that you review each web site's privacy practices and make your own conclusions regarding the adequacy of these practices.
 
+## Data stored:
+
+We store user ids and how many points the user has. You can ask us to remove this info by contacting us by doing `;invite` in any of the servers the bot is in.
+
 ## Contact us:
 
 You can contact us in our support server by doing `;invite` in any of the servers the bot is it.
