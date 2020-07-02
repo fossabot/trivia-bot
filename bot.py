@@ -1006,6 +1006,25 @@ async def vote(ctx):
 
 
 @client.command()
+async def privacy(ctx):
+    r = 215
+    g = 91
+    b = 69
+    embed = discord.Embed(
+        title="Privacy Policy for Trivia Bot",
+        description="We respect user privacy. Read our privacy policy.",
+        color=discord.Colour.from_rgb(r, g, b),
+    )
+    embed.add_field(
+        name="triviabot.tech", value="https://triviabot.tech/privacy_policy/"
+    )
+    embed.set_thumbnail(
+        url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
+    )
+    await ctx.send(embed=embed)
+
+
+@client.command()
 async def stats(ctx):
     r = 215
     g = 91
@@ -1061,6 +1080,11 @@ async def about(ctx):
         else:
             names.append("<@{}>".format(userid))
     embed.add_field(name="Originally Coded by", value=" , ".join(names), inline=False)
+    embed.add_field(
+        name="Privacy Policy:",
+        value="https://triviabot.tech/privacy_policy/",
+        inline=False,
+    )
     await ctx.send(embed=embed)
 
 
