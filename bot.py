@@ -1375,11 +1375,11 @@ async def givemepro(ctx, product=None):
         role = ctx.guild.get_role(728055031512825856)
         await ctx.message.author.add_roles(role)
         embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-        embed.set_author(name="Pro Trivia Player Role")
+        embed.set_author(name="Pro Trivia Role")
         embed.add_field(name="Notice", value="`Done, role granted`", inline=True)
     else:
         embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
-        embed.set_author(name="Pro Trivia Player Role")
+        embed.set_author(name="Pro Trivia Role")
         embed.add_field(
             name="Notice",
             value="`You do not have enough points, this command requires 100 points, but it will not take your points.`",
