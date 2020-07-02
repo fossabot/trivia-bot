@@ -786,11 +786,13 @@ async def multichoice(ctx, category=None):
                 )
             message = await msg.edit(embed=qembed)
 
+
 @client.command(aliases=["debug"])
 async def triviadebug(ctx):
     data = tbpoints("data", 0, 0)
     datalist = data.items()
     await ctx.send(str(data))
+
 
 @client.command(pass_context=True, aliases=["botstats", "botinfo"])
 async def botstatus(ctx):
@@ -806,9 +808,7 @@ async def botstatus(ctx):
     embed.add_field(
         name="Bot latency",
         value=(
-            "{} ms (ws: {} ms)".format(
-                round(duration), round(client.latency * 1000)
-            )
+            "{} ms (ws: {} ms)".format(round(duration), round(client.latency * 1000))
         ),
         inline=False,
     )
@@ -829,6 +829,7 @@ async def botstatus(ctx):
     )
 
     await ctx.send(embed=embed)
+
 
 @client.command(aliases=["top"])
 async def globalleaderboard(ctx):
@@ -1360,6 +1361,28 @@ async def givemevip(ctx, product=None):
         embed.add_field(
             name="Notice",
             value="`You do not have permission to do this. Buy this command using ;shop`",
+            inline=True,
+        )
+    await ctx.send(embed=embed)
+
+
+@client.command(pass_context=True)
+async def givemeroles(ctx, product=None):
+    r = 215
+    g = 91
+    b = 69
+    if tbpoints("get", str(ctx.message.author.id), 0) > 99:
+        role = ctx.guild.get_role(728055031512825856)
+        await ctx.message.author.add_roles(role)
+        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+        embed.set_author(name="Pro Trivia Player Role")
+        embed.add_field(name="Notice", value="`Done, role granted`", inline=True)
+    else:
+        embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
+        embed.set_author(name="Pro Trivia Player Role")
+        embed.add_field(
+            name="Notice",
+            value="`You do not have enough points, this command requires 100 points, but it will not take your points.`",
             inline=True,
         )
     await ctx.send(embed=embed)
