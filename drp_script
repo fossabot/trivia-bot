@@ -1,0 +1,17 @@
+from pypresence import Presence
+import time
+import random
+
+messages = ["Working on a ticket", "Giving a user support", "Working on triviabot-core", "Working on triviabot-backup", "Updating a new feature"]
+
+message = random.choice(messages)
+
+client_id = "728151592972582923"  
+RPC = Presence(client_id=client_id)
+RPC.connect()
+
+RPC.update(large_image="triviabot", large_text="Trivia!",
+            state=message, details="Developing/Playing Trivia", start=1507665886, end=250766900000)
+
+while 1:
+    time.sleep(15) #Can only update presence every 15 seconds
