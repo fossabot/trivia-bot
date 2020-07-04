@@ -1607,7 +1607,7 @@ async def status_task():
 async def status_task_two():
     while True:
         channel = client.get_channel(728808694011396168)
-        ctx.send(str(len(client.guilds)))
+        await channel.send(str(len(client.guilds)))
         await asyncio.sleep(14400)
 
 
