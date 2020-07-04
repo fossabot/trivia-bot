@@ -1604,10 +1604,18 @@ async def status_task():
         await asyncio.sleep(50)
 
 
+async def status_task_two():
+    while True:
+        channel = client.get_channel(728808694011396168)
+        ctx.send(str(len(client.guilds)))
+        await asyncio.sleep(14400)
+
+
 @client.event
 async def on_ready():
     # await client.change_presence(activity=discord.Activity(name=';help || Discord Trivia', type=3))
     client.loop.create_task(status_task())
+    client.loop.create_task(status_task_two())
     print("Logged in as")
     print(client.user.name)
     print(client.user.id)
