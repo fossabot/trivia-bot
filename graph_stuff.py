@@ -7,7 +7,10 @@ list = []
 
 while Running:
     ainput = input()
-    ainput = ainput.split()[-1]
+    try:
+        ainput = ainput.split()[-1]
+    except:
+        ainput = ainput
     if ainput != "x":
         try:
             int(ainput)
