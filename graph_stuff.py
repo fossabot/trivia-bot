@@ -7,10 +7,11 @@ list = []
 
 while Running:
     ainput = input()
+    ainput = ainput.split()[-1]
     if ainput != 'x':
         try:
             int(ainput)
-            list += str(ainput)
+            list.append(str(ainput))
         except:
             print('a')
     else:
