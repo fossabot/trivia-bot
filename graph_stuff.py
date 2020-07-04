@@ -25,4 +25,15 @@ print(str(y))
 
 fig = go.Figure(data=go.Scatter(x=x, y=y))
 
+fig.update_layout(
+    title="Trivia Bot Server Count",
+    xaxis_title="Time",
+    yaxis_title="Number of Servers",
+    font=dict(
+        family="Courier New, monospace",
+        size=18,
+        color="#7f7f7f"
+    )
+)
+
 fig.show()
