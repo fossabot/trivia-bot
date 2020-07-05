@@ -1,2 +1,0 @@
-redis-dump -h ec2-54-157-5-88.compute-1.amazonaws.com -p 18589 -a p918822330621c4bae315364cc2cda0dd21a6ba3a1d05a052a6959744d8f92ac7 > database_backup.json
-(webapp) EvanGs-MacBook-Air:trivia-bot evan$ rdcli -h ec2-54-157-5-88.compute-1.amazonaws.com -p 18589 -a p918822330621c4bae315364cc2cda0dd21a6ba3a1d05a052a6959744d8f92ac7
