@@ -1073,13 +1073,23 @@ async def vote(ctx):
 
 @client.command()
 async def receive(ctx, key=None, value=None):
+    r = 215
+    g = 91
+    b = 69
     if key != None and value != None:
-        if triviadb.get(key) == value:
+        if triviadb.get(key).decode("utf-8") == value:
             tbpoints("give", str(ctx.message.author.id), int(triviadb.get(value)))
             embed = discord.Embed(
                 title="Notice!",
                 description="You have gotten " + str(triviadb.get(value)) + " points.",
                 color=discord.Colour.from_rgb(r, g, b),
+            )
+            triviadb.set(
+                key,
+                "".join(
+                    secrets.choice(string.ascii_uppercase + string.digits)
+                    for i in range(8)
+                ),
             )
         else:
             embed = discord.Embed(
