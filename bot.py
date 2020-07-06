@@ -34,9 +34,6 @@ import datetime
 import random
 import sys
 import traceback
-import string
-import random
-import secrets
 import urllib.parse, urllib.request, re
 from discord import Game
 from json import loads
@@ -992,69 +989,6 @@ async def points(ctx, member: discord.Member = None):
 
 
 @client.command()
-async def withdraw(ctx, points=None):
-    r = 215
-    g = 91
-    b = 69
-    if points == None or float(points) <= 0.0:
-        embed = discord.Embed(
-            title="Notice:",
-            description="You need to enter the amount of points you want to withdraw. (The amount of points must be positive.)",
-            color=discord.Colour.from_rgb(r, g, b),
-        )
-    else:
-        uid = ctx.message.author.id
-        current_points = tbpoints("get", str(uid), 0)
-        if float(points) <= current_points:
-            key = "".join(
-                secrets.choice(string.ascii_uppercase + string.digits)
-                for i in range(12)
-            )
-            data = "".join(
-                secrets.choice(string.ascii_uppercase + string.digits) for i in range(8)
-            )
-            triviadb.set(key, data)
-            triviadb.set(data, str(points))
-            try:
-                userembed = discord.Embed(
-                    title="Withdraw Code:",
-                    description="Your withdraw code is `;receive "
-                    + key
-                    + " "
-                    + data
-                    + "`",
-                    color=discord.Colour.from_rgb(r, g, b),
-                )
-                await ctx.message.author.send(embed=userembed)
-                embed = discord.Embed(
-                    title="Notice!",
-                    description="Done, I have DM'ed you with your withdraw code.",
-                    color=discord.Colour.from_rgb(r, g, b),
-                )
-                tbpoints("take", str(ctx.message.author.id), points)
-            except:
-                triviadb.set(
-                    key,
-                    "".join(
-                        secrets.choice(string.ascii_uppercase + string.digits)
-                        for i in range(8)
-                    ),
-                )
-                embed = discord.Embed(
-                    title="Notice!",
-                    description="Something happened and your points have not been taken.",
-                    color=discord.Colour.from_rgb(r, g, b),
-                )
-        else:
-            embed = discord.Embed(
-                title="Notice:",
-                description="You don't have that many points.",
-                color=discord.Colour.from_rgb(r, g, b),
-            )
-    await ctx.send(embed=embed)
-
-
-@client.command()
 async def vote(ctx):
     r = 215
     g = 91
@@ -1068,43 +1002,6 @@ async def vote(ctx):
     embed.set_thumbnail(
         url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
     )
-    await ctx.send(embed=embed)
-
-
-@client.command()
-async def receive(ctx, key, value):
-    r = 215
-    g = 91
-    b = 69
-    if key != None and value != None:
-        if triviadb.get(key).decode("utf-8") == value:
-            tbpoints("give", str(ctx.message.author.id), int(triviadb.get(value)))
-            embed = discord.Embed(
-                title="Notice!",
-                description="You have gotten "
-                + str(triviadb.get(value).decode("utf-8"))
-                + " points.",
-                color=discord.Colour.from_rgb(r, g, b),
-            )
-            triviadb.set(
-                key,
-                "".join(
-                    secrets.choice(string.ascii_uppercase + string.digits)
-                    for i in range(8)
-                ),
-            )
-        else:
-            embed = discord.Embed(
-                title="Notice.",
-                description="Incorrect Key",
-                color=discord.Colour.from_rgb(r, g, b),
-            )
-    else:
-        embed = discord.Embed(
-            title="Notice:",
-            description="You must get a receive command from the `;withdraw` command first.",
-            color=discord.Colour.from_rgb(r, g, b),
-        )
     await ctx.send(embed=embed)
 
 
@@ -1200,55 +1097,52 @@ async def help(ctx):
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Trivia Bot Command List")
     embed.add_field(
-        name="`;vote            `", value="Vote for Trivia Bot!     ", inline=True
+        name="`;vote       `", value="Vote for Trivia Bot!     ", inline=True
     )
     embed.add_field(
-        name="`;trivia           `", value="Play Trivia!             ", inline=True
+        name="`;trivia     `", value="Play Trivia!             ", inline=True
     )
     embed.add_field(
-        name="`;top              `", value="Global Trivia Leaderboard", inline=True
+        name="`;top        `", value="Global Trivia Leaderboard", inline=True
     )
     embed.add_field(
-        name="`;points           `", value="List your points         ", inline=True
+        name="`;points     `", value="List your points         ", inline=True
     )
     embed.add_field(
-        name="`;servertop        `", value="Server Trivia Leaderboard", inline=True
+        name="`;servertop  `", value="Server Trivia Leaderboard", inline=True
     )
     embed.add_field(
-        name="`;invite           `", value="Invite Link              ", inline=True
+        name="`;invite     `", value="Invite Link              ", inline=True
     )
     embed.add_field(
-        name="`;credits          `", value="Credits!                 ", inline=True
+        name="`;credits    `", value="Credits!                 ", inline=True
     )
     embed.add_field(
-        name="`;categories       `", value="List avalible categories!", inline=True
+        name="`;categories `", value="List avalible categories!", inline=True
     )
     embed.add_field(
-        name="`;ping             `", value="Displays Ping            ", inline=True
+        name="`;ping       `", value="Displays Ping            ", inline=True
     )
     embed.add_field(
-        name="`;feedback         `", value="Shows Feedback Link!     ", inline=True
+        name="`;feedback   `", value="Shows Feedback Link!     ", inline=True
     )
     embed.add_field(
-        name="`;version          `", value="Shows current version    ", inline=True
+        name="`;version    `", value="Shows current version    ", inline=True
     )
     embed.add_field(
-        name="`;multichoice      `", value="Multiple choice question ", inline=True
+        name="`;multichoice`", value="Multiple choice question ", inline=True
     )
     embed.add_field(
-        name="`;truefalse        `", value="True/False question      ", inline=True
+        name="`;truefalse  `", value="True/False question      ", inline=True
     )
     embed.add_field(
-        name="`;shop             `", value="Visit the trivia shop!   ", inline=True
+        name="`;shop       `", value="Visit the trivia shop!   ", inline=True
     )
     #    embed.add_field(
     #        name="`;gamble      `", value="Gamble for more points! ", inline=True
     #    )
     embed.add_field(
-        name="`;setprefix        `", value="Set the guild prefix.    ", inline=True
-    )
-    embed.add_field(
-        name="`;withdraw [number]`", value="Give points to others.   ", inline=True
+        name="`;setprefix   `", value="Set the guild prefix    ", inline=True
     )
     embed.set_footer(
         text="Command invoked by {} || https://triviabot.tech/".format(
