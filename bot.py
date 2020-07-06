@@ -1014,6 +1014,7 @@ async def withdraw(ctx, points=None):
                 secrets.choice(string.ascii_uppercase + string.digits) for i in range(8)
             )
             triviadb.set(key, data)
+            triviadb.set(data, str(points))
             try:
                 userembed = discord.Embed(
                     title="Withdraw Code:",
@@ -1027,7 +1028,7 @@ async def withdraw(ctx, points=None):
                 await ctx.message.author.send(embed=userembed)
                 embed = discord.Embed(
                     title="Notice!",
-                    description="Done, I have DM'ed you your withdraw code.",
+                    description="Done, I have DM'ed you with your withdraw code.",
                     color=discord.Colour.from_rgb(r, g, b),
                 )
                 tbpoints("take", str(ctx.message.author.id), points)
@@ -1066,6 +1067,30 @@ async def vote(ctx):
     embed.add_field(name="top.gg", value="https://top.gg/bot/715047504126804000/vote")
     embed.set_thumbnail(
         url="https://cdn.discordapp.com/attachments/699123435514888243/715285709187186688/icons8-brain-96.png"
+    )
+    await ctx.send(embed=embed)
+
+
+@client.command()
+async def receive(ctx, key=None, value=None):
+    if key != None and value != None:
+        if triviadb.get(key) == value:
+            tbpoints("give", str(ctx.message.author.id), int(triviadb.get(value)))
+            embed = discord.Embed(
+                title="Notice!",
+                description="You have gotten " + str(triviadb.get(value)) + " points.",
+                color=discord.Colour.from_rgb(r, g, b),
+            )
+        else:
+            embed = discord.Embed(
+                title="Notice.",
+                description="Incorrect Key",
+                color=discord.Colour.from_rgb(r, g, b),
+            )
+    embed = discord.Embed(
+        title="Notice:",
+        description="You must get a receive command from the `;withdraw` command first.",
+        color=discord.Colour.from_rgb(r, g, b),
     )
     await ctx.send(embed=embed)
 
