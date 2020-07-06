@@ -1097,11 +1097,12 @@ async def receive(ctx, key=None, value=None):
                 description="Incorrect Key",
                 color=discord.Colour.from_rgb(r, g, b),
             )
-    embed = discord.Embed(
-        title="Notice:",
-        description="You must get a receive command from the `;withdraw` command first.",
-        color=discord.Colour.from_rgb(r, g, b),
-    )
+    else:
+        embed = discord.Embed(
+            title="Notice:",
+            description="You must get a receive command from the `;withdraw` command first.",
+            color=discord.Colour.from_rgb(r, g, b),
+        )
     await ctx.send(embed=embed)
 
 
