@@ -1200,13 +1200,13 @@ async def help(ctx):
     embed = discord.Embed(color=discord.Colour.from_rgb(r, g, b))
     embed.set_author(name="Trivia Bot Command List")
     embed.add_field(
-        name="`;vote       `", value="Vote for Trivia Bot!     ", inline=True
+        name="`;vote            `", value="Vote for Trivia Bot!     ", inline=True
     )
     embed.add_field(
-        name="`;trivia     `", value="Play Trivia!             ", inline=True
+        name="`;trivia           `", value="Play Trivia!             ", inline=True
     )
     embed.add_field(
-        name="`;top        `", value="Global Trivia Leaderboard", inline=True
+        name="`;top              `", value="Global Trivia Leaderboard", inline=True
     )
     embed.add_field(
         name="`;points           `", value="List your points         ", inline=True
