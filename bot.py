@@ -1741,8 +1741,4 @@ try:
     client.load_extension("cogs.errors")
 except:
     print("Error Cog Loading Failed")
-try:
-    client.load_extension("cogs.music")
-except:
-    print("Music Cog Loading Failed")
 client.run(TOKEN)
