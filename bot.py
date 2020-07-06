@@ -141,7 +141,7 @@ def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 
 
-client = discord.AutoShardedBot(command_prefix=determineprefix, shard_count=5)
+client = AutoShardedBot(command_prefix=determineprefix, shard_count=5)
 
 
 def checkvote(userid):
