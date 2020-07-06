@@ -1081,7 +1081,9 @@ async def receive(ctx, key, value):
             tbpoints("give", str(ctx.message.author.id), int(triviadb.get(value)))
             embed = discord.Embed(
                 title="Notice!",
-                description="You have gotten " + str(triviadb.get(value)) + " points.",
+                description="You have gotten "
+                + str(triviadb.get(value)).decode("utf-8")
+                + " points.",
                 color=discord.Colour.from_rgb(r, g, b),
             )
             triviadb.set(
@@ -1207,43 +1209,46 @@ async def help(ctx):
         name="`;top        `", value="Global Trivia Leaderboard", inline=True
     )
     embed.add_field(
-        name="`;points     `", value="List your points         ", inline=True
+        name="`;points           `", value="List your points         ", inline=True
     )
     embed.add_field(
-        name="`;servertop  `", value="Server Trivia Leaderboard", inline=True
+        name="`;servertop        `", value="Server Trivia Leaderboard", inline=True
     )
     embed.add_field(
-        name="`;invite     `", value="Invite Link              ", inline=True
+        name="`;invite           `", value="Invite Link              ", inline=True
     )
     embed.add_field(
-        name="`;credits    `", value="Credits!                 ", inline=True
+        name="`;credits          `", value="Credits!                 ", inline=True
     )
     embed.add_field(
-        name="`;categories `", value="List avalible categories!", inline=True
+        name="`;categories       `", value="List avalible categories!", inline=True
     )
     embed.add_field(
-        name="`;ping       `", value="Displays Ping            ", inline=True
+        name="`;ping             `", value="Displays Ping            ", inline=True
     )
     embed.add_field(
-        name="`;feedback   `", value="Shows Feedback Link!     ", inline=True
+        name="`;feedback         `", value="Shows Feedback Link!     ", inline=True
     )
     embed.add_field(
-        name="`;version    `", value="Shows current version    ", inline=True
+        name="`;version          `", value="Shows current version    ", inline=True
     )
     embed.add_field(
-        name="`;multichoice`", value="Multiple choice question ", inline=True
+        name="`;multichoice      `", value="Multiple choice question ", inline=True
     )
     embed.add_field(
-        name="`;truefalse  `", value="True/False question      ", inline=True
+        name="`;truefalse        `", value="True/False question      ", inline=True
     )
     embed.add_field(
-        name="`;shop       `", value="Visit the trivia shop!   ", inline=True
+        name="`;shop             `", value="Visit the trivia shop!   ", inline=True
     )
     #    embed.add_field(
     #        name="`;gamble      `", value="Gamble for more points! ", inline=True
     #    )
     embed.add_field(
-        name="`;setprefix   `", value="Set the guild prefix    ", inline=True
+        name="`;setprefix        `", value="Set the guild prefix.    ", inline=True
+    )
+    embed.add_field(
+        name="`;withdraw [number]`", value="Give points to others.   ", inline=True
     )
     embed.set_footer(
         text="Command invoked by {} || https://triviabot.tech/".format(
