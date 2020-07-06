@@ -1082,7 +1082,7 @@ async def receive(ctx, key, value):
             embed = discord.Embed(
                 title="Notice!",
                 description="You have gotten "
-                + str(triviadb.get(value)).decode("utf-8")
+                + str(triviadb.get(value).decode("utf-8"))
                 + " points.",
                 color=discord.Colour.from_rgb(r, g, b),
             )
