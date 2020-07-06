@@ -17,9 +17,24 @@ from discord.ext import commands
 from youtube_dl import YoutubeDL
 from async_timeout import timeout
 
-from bot.constants import ytdl_format_options, ffmpeg_options
-from bot.cogs.utils.checks import check_if_it_is_tortoise_guild
-from bot.cogs.utils.exceptions import TortoiseGuildCheckFailure
+ffmpeg_options = {
+    'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+    'options': '-vn',
+}
+
+ytdl_format_options = {
+    "format": "bestaudio/best",
+    "outtmpl": "downloads/%(extractor)s-%(id)s-%(title)s.%(ext)s",
+    "restrictfilenames": True,
+    "noplaylist": True,
+    "nocheckcertificate": True,
+    "ignoreerrors": False,
+    "logtostderr": False,
+    "quiet": True,
+    "no_warnings": True,
+    "default_search": "auto",
+    "source_address": "0.0.0.0"  # ipv6 addresses cause issues sometimes
+}
 
 ytdl = YoutubeDL(ytdl_format_options)
 
@@ -174,12 +189,6 @@ class Music(commands.Cog):
         except KeyError:
             pass
 
-    async def cog_check(self, ctx):
-        """A local check which applies to all commands in this cog."""
-        if not ctx.guild:
-            raise commands.NoPrivateMessage
-        else:
-            return check_if_it_is_tortoise_guild(ctx)
 
     async def cog_command_error(self, ctx, error):
         """A local error handler for all errors arising from commands in this cog."""
@@ -193,8 +202,6 @@ class Music(commands.Cog):
                 "Error connecting to Voice Channel. "
                 "Please make sure you are in a valid channel or provide me with one"
             )
-        elif isinstance(error, TortoiseGuildCheckFailure):
-            await ctx.send(f"{error}")
         else:
             print(f"Ignoring exception in command {ctx.command}:", file=sys.stderr)
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
