@@ -40,6 +40,7 @@ from json import loads
 from discord.ext.commands import Bot, has_permissions, MissingPermissions
 from discord.ext import commands, tasks
 from discord.utils import find
+from discord.ext.commands import AutoShardedBot
 import time
 import redis
 import os
@@ -140,7 +141,7 @@ def check(ctx):
     return lambda m: m.author == ctx.author and m.channel == ctx.channel
 
 
-client = commands.Bot(command_prefix=determineprefix)
+client = discord.AutoShardedBot(command_prefix=determineprefix, shard_count=5)
 
 
 def checkvote(userid):
