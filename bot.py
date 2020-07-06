@@ -34,13 +34,15 @@ import datetime
 import random
 import sys
 import traceback
+import string
+import random
+import secrets
 import urllib.parse, urllib.request, re
 from discord import Game
 from json import loads
 from discord.ext.commands import Bot, has_permissions, MissingPermissions
 from discord.ext import commands, tasks
 from discord.utils import find
-from discord.ext.commands import AutoShardedBot
 import time
 import redis
 import os
@@ -986,6 +988,68 @@ async def points(ctx, member: discord.Member = None):
     )
     embed.add_field(name="Username", value=username)
     embed.add_field(name="Points", value=current_points)
+    await ctx.send(embed=embed)
+
+
+@client.command()
+async def withdraw(ctx, points=None):
+    r = 215
+    g = 91
+    b = 69
+    if points == None:
+        embed = discord.Embed(
+            title="Notice:",
+            description="You need to enter the amount of points you want to withdraw.",
+            color=discord.Colour.from_rgb(r, g, b),
+        )
+    else:
+        uid = ctx.message.author.id
+        current_points = tbpoints("get", str(uid), 0)
+        if points >= current_points:
+            key = "".join(
+                secrets.choice(string.ascii_uppercase + string.digits)
+                for i in range(12)
+            )
+            data = "".join(
+                secrets.choice(string.ascii_uppercase + string.digits) for i in range(8)
+            )
+            triviadb.hmset(key, data)
+            try:
+                userembed = discord.Embed(
+                    title="Withdraw Code:",
+                    description="Your withdraw code is `;receive "
+                    + key
+                    + " "
+                    + data
+                    + "``",
+                    color=discord.Colour.from_rgb(r, g, b),
+                )
+                await ctx.message.author.send(embed=userembed)
+                embed = discord.Embed(
+                    title="Notice!",
+                    description="Done, I have DM'ed you your withdraw code.",
+                    color=discord.Colour.from_rgb(r, g, b),
+                )
+                tbpoints("take", str(ctx.message.author.id), points)
+            except:
+                triviadb.hmset(
+                    key,
+                    "".join(
+                        secrets.choice(string.ascii_uppercase + string.digits)
+                        for i in range(8)
+                    ),
+                )
+                embed = discord.Embed(
+                    title="Notice!",
+                    description="Something happened and your points have not been taken.",
+                    color=discord.Colour.from_rgb(r, g, b),
+                )
+        else:
+            embed = discord.Embed(
+                title="Notice:",
+                description="You don't have that many points.",
+                color=discord.Colour.from_rgb(r, g, b),
+            )
     await ctx.send(embed=embed)
 
 
