@@ -1005,7 +1005,7 @@ async def withdraw(ctx, points=None):
     else:
         uid = ctx.message.author.id
         current_points = tbpoints("get", str(uid), 0)
-        if float(points) >= current_points:
+        if float(points) <= current_points:
             key = "".join(
                 secrets.choice(string.ascii_uppercase + string.digits)
                 for i in range(12)
@@ -1013,7 +1013,7 @@ async def withdraw(ctx, points=None):
             data = "".join(
                 secrets.choice(string.ascii_uppercase + string.digits) for i in range(8)
             )
-            triviadb.hmset(key, data)
+            triviadb.set(key, data)
             try:
                 userembed = discord.Embed(
                     title="Withdraw Code:",
@@ -1021,7 +1021,7 @@ async def withdraw(ctx, points=None):
                     + key
                     + " "
                     + data
-                    + "``",
+                    + "`",
                     color=discord.Colour.from_rgb(r, g, b),
                 )
                 await ctx.message.author.send(embed=userembed)
@@ -1032,7 +1032,7 @@ async def withdraw(ctx, points=None):
                 )
                 tbpoints("take", str(ctx.message.author.id), points)
             except:
-                triviadb.hmset(
+                triviadb.set(
                     key,
                     "".join(
                         secrets.choice(string.ascii_uppercase + string.digits)
