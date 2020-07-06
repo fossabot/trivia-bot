@@ -1005,7 +1005,7 @@ async def withdraw(ctx, points=None):
     else:
         uid = ctx.message.author.id
         current_points = tbpoints("get", str(uid), 0)
-        if points >= current_points:
+        if float(points) >= current_points:
             key = "".join(
                 secrets.choice(string.ascii_uppercase + string.digits)
                 for i in range(12)
