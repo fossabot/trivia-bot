@@ -996,10 +996,10 @@ async def withdraw(ctx, points=None):
     r = 215
     g = 91
     b = 69
-    if points == None:
+    if points == None or points <= 0:
         embed = discord.Embed(
             title="Notice:",
-            description="You need to enter the amount of points you want to withdraw.",
+            description="You need to enter the amount of points you want to withdraw. (The amount of points must be positive.)",
             color=discord.Colour.from_rgb(r, g, b),
         )
     else:
