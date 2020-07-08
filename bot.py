@@ -1011,6 +1011,10 @@ async def serverleaderboard(ctx):
             description="This command has been temporarily disabled while we tidy up things on our end. (ETA: 1 hour)",
             color=discord.Colour.from_rgb(r, g, b),
         )
+        channel = client.get_channel(722605186245197874)
+        await channel.send(
+            "<@247594208779567105><@677343881351659570> Server Top Commmand is Down"
+        )
     await ctx.send(embed=embed)
 
 
