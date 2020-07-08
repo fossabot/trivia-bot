@@ -835,64 +835,106 @@ async def botstatus(ctx):
 
 
 @client.command(aliases=["top"])
-async def globalleaderboard(ctx):
-    data = tbpoints("data", 0, 0)
-    datalist = data.items()
-    sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
-    i = 0
-    found = False
-    try:
-        while not found:
-            if sorteddata[i][0] == str(ctx.message.author.id):
-                position = "You are position #" + str(int(i) + 1) + "!"
-                found = True
-            else:
-                i += 1
-    except:
-        position = "You have not played trivia yet :("
-    try:
-        firstuserid = int(sorteddata[0][0])
-    except:
-        firstuserid = "null"
-    try:
-        seconduserid = int(sorteddata[1][0])
-    except:
-        seconduserid = "null"
-    try:
-        thirduserid = int(sorteddata[2][0])
-    except:
-        thirduserid = "null"
-    try:
-        firstpoints = data[str(firstuserid)]
-    except:
-        firstpoints = "null"
-    try:
-        secondpoints = data[str(seconduserid)]
-    except:
-        secondpoints = "null"
-    try:
-        thirdpoints = data[str(thirduserid)]
-    except:
-        thirdpoints = "null"
-    r = 215
-    g = 91
-    b = 69
-    embed = discord.Embed(
-        title="Leaderboard",
-        description="Top Globally",
-        color=discord.Colour.from_rgb(r, g, b),
-    )
-    data = str(data)
-    user1 = pf.censor(str(client.get_user(firstuserid)))
-    user2 = pf.censor(str(client.get_user(seconduserid)))
-    user3 = pf.censor(str(client.get_user(thirduserid)))
-    firstmessage = "{0} with {1} points".format(str(user1), str(firstpoints))
-    secondmessage = "{0} with {1} points".format(str(user2), str(secondpoints))
-    thirdmessage = "{0} with {1} points".format(str(user3), str(thirdpoints))
-    embed.add_field(name="1st Place", value=firstmessage, inline=False)
-    embed.add_field(name="2nd Place", value=secondmessage, inline=False)
-    embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
-    embed.add_field(name="Your Position", value=position, inline=False)
+async def globalleaderboard(ctx, number = None):
+    if number == 3 or number == None:
+        data = tbpoints("data", 0, 0)
+        datalist = data.items()
+        sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
+        i = 0
+        found = False
+        try:
+            while not found:
+                if sorteddata[i][0] == str(ctx.message.author.id):
+                    position = "You are position #" + str(int(i) + 1) + "!"
+                    found = True
+                else:
+                    i += 1
+        except:
+            position = "You have not played trivia yet :("
+        try:
+            firstuserid = int(sorteddata[0][0])
+        except:
+            firstuserid = "null"
+        try:
+            seconduserid = int(sorteddata[1][0])
+        except:
+            seconduserid = "null"
+        try:
+            thirduserid = int(sorteddata[2][0])
+        except:
+            thirduserid = "null"
+        try:
+            firstpoints = data[str(firstuserid)]
+        except:
+            firstpoints = "null"
+        try:
+            secondpoints = data[str(seconduserid)]
+        except:
+            secondpoints = "null"
+        try:
+            thirdpoints = data[str(thirduserid)]
+        except:
+            thirdpoints = "null"
+        r = 215
+        g = 91
+        b = 69
+        embed = discord.Embed(
+            title="Leaderboard",
+            description="Top Globally",
+            color=discord.Colour.from_rgb(r, g, b),
+        )
+        data = str(data)
+        user1 = pf.censor(str(client.get_user(firstuserid)))
+        user2 = pf.censor(str(client.get_user(seconduserid)))
+        user3 = pf.censor(str(client.get_user(thirduserid)))
+        firstmessage = "{0} with {1} points".format(str(user1), str(firstpoints))
+        secondmessage = "{0} with {1} points".format(str(user2), str(secondpoints))
+        thirdmessage = "{0} with {1} points".format(str(user3), str(thirdpoints))
+        embed.add_field(name="1st Place", value=firstmessage, inline=False)
+        embed.add_field(name="2nd Place", value=secondmessage, inline=False)
+        embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
+        embed.add_field(name="Your Position", value=position, inline=False)
+    elif number > 3 and number <= 15 and type(number) is int:
+        data = tbpoints("data", 0, 0)
+        datalist = data.items()
+        sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
+        i = 0
+        found = False
+        try:
+            while not found:
+                if sorteddata[i][0] == str(ctx.message.author.id):
+                    position = "You are position #" + str(int(i) + 1) + "!"
+                    found = True
+                else:
+                    i += 1
+        except:
+            position = "You have not played trivia yet :("
+        userids = []
+        userpoints = []
+        for i in range(number):
+            id = int(sorteddata[int(i)][0])
+            points = data[str(id)]
+            userids.append(str(id))
+            userpoints.append(str(points))
+        users = []
+        messages = []
+        for i in range(number):
+            users.append(pf.censor(str(client.get_user(userids(i)))))
+            messages.append("{0} with {1} points".format(str(users[i]), str(points(i))))
+        embed = discord.Embed(
+            title="Leaderboard",
+            description="Top " + str(number) + " Globally",
+            color=discord.Colour.from_rgb(r, g, b),
+        )
+        for i in range(number):
+            embed.add_field(name="Place #" + str(i), value=messages(i), inline=False)
+        embed.add_field(name="Your Position", value=position, inline=False)
+    else:
+        embed = discord.Embed(
+            title="Error",
+            description="The usage of this command is `;top` or `;top 5` (max 15, min 4)",
+            color=discord.Colour.from_rgb(r, g, b),
+        )
     await ctx.send(embed=embed)
 
 
