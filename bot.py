@@ -836,6 +836,9 @@ async def botstatus(ctx):
 
 @client.command(aliases=["top"])
 async def globalleaderboard(ctx, number=None):
+    r = 215
+    g = 91
+    b = 69
     if number == 3 or number == None:
         data = tbpoints("data", 0, 0)
         datalist = data.items()
@@ -875,9 +878,6 @@ async def globalleaderboard(ctx, number=None):
             thirdpoints = data[str(thirduserid)]
         except:
             thirdpoints = "null"
-        r = 215
-        g = 91
-        b = 69
         embed = discord.Embed(
             title="Leaderboard",
             description="Top Globally",
@@ -920,7 +920,9 @@ async def globalleaderboard(ctx, number=None):
         messages = []
         for i in range(int(number)):
             users.append(pf.censor(str(client.get_user(userids[i]))))
-            messages.append("{0} with {1} points".format(str(users[i]), str(userpoints[i])))
+            messages.append(
+                "{0} with {1} points".format(str(users[i]), str(userpoints[i]))
+            )
         embed = discord.Embed(
             title="Leaderboard",
             description="Top " + str(number) + " Globally",
