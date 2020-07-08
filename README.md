@@ -7,6 +7,7 @@
 ![CircleCi](https://circleci.com/gh/gubareve/trivia-bot.svg?style=svg)
 ![Syntax Check](https://github.com/gubareve/trivia-bot/workflows/Syntax%20Check/badge.svg)
 [![Build Status](https://dev.azure.com/evchik2007/com.kd7t.triviabot/_apis/build/status/gubareve.trivia-bot?branchName=master)](https://dev.azure.com/evchik2007/com.kd7t.triviabot/_build/latest?definitionId=1&branchName=master)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fgubareve%2Ftrivia-bot.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fgubareve%2Ftrivia-bot?ref=badge_shield)
   
 ## [Invite Link:](https://discord.com/api/oauth2/authorize?client_id=715047504126804000&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorize%3Fclient_id%3D715047504126804000%26scope%3Dbot%26permissions%3D537263168&response_type=code&scope=identify)  
 
@@ -98,3 +99,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 ## Copyright
 
 (c) 2020 [KD7T Enterprises](https://github.com/gubareve)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fgubareve%2Ftrivia-bot.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fgubareve%2Ftrivia-bot?ref=badge_large)
