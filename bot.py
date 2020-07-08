@@ -839,7 +839,7 @@ async def globalleaderboard(ctx, number=None):
     r = 215
     g = 91
     b = 69
-    if number == 3 or number == None:
+    if int(number) == 3 or number == None:
         data = tbpoints("data", 0, 0)
         datalist = data.items()
         sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
@@ -938,7 +938,7 @@ async def globalleaderboard(ctx, number=None):
     else:
         embed = discord.Embed(
             title="Error",
-            description="The usage of this command is `;top` or `;top 5` (max 15, min 4)",
+            description="The usage of this command is `;top` or `;top 4 - 15` (max 15, min 4)",
             color=discord.Colour.from_rgb(r, g, b),
         )
     await ctx.send(embed=embed)
