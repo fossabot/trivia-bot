@@ -920,7 +920,7 @@ async def globalleaderboard(ctx, number=None):
         messages = []
         for i in range(int(number)):
             users.append(pf.censor(str(client.get_user(userids[i]))))
-            messages.append("{0} with {1} points".format(str(users[i]), str(points(i))))
+            messages.append("{0} with {1} points".format(str(users[i]), str(userpoints[i])))
         embed = discord.Embed(
             title="Leaderboard",
             description="Top " + str(number) + " Globally",
