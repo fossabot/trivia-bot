@@ -931,7 +931,9 @@ async def globalleaderboard(ctx, number=None):
             color=discord.Colour.from_rgb(r, g, b),
         )
         for i in range(int(number)):
-            embed.add_field(name="Place #" + str(i), value=messages[i], inline=False)
+            embed.add_field(
+                name="Place #" + str(int(i) + 1), value=messages[i], inline=False
+            )
         embed.add_field(name="Your Position", value=position, inline=False)
     else:
         embed = discord.Embed(
