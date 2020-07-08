@@ -916,12 +916,12 @@ async def globalleaderboard(ctx, number=None):
             points = data[str(id)]
             userids.append(str(id))
             userpoints.append(str(points))
-        users = []
         messages = []
         for i in range(int(number)):
-            users.append(pf.censor(str(client.get_user(userids[i]))))
             messages.append(
-                "{0} with {1} points".format(str(users[i]), str(userpoints[i]))
+                "{0} with {1} points".format(
+                    str(users[i]), str(pf.censor(str(client.get_user(userids[i]))))
+                )
             )
         embed = discord.Embed(
             title="Leaderboard",
