@@ -835,7 +835,7 @@ async def botstatus(ctx):
 
 
 @client.command(aliases=["top"])
-async def globalleaderboard(ctx, number = None):
+async def globalleaderboard(ctx, number=None):
     if number == 3 or number == None:
         data = tbpoints("data", 0, 0)
         datalist = data.items()
@@ -894,7 +894,7 @@ async def globalleaderboard(ctx, number = None):
         embed.add_field(name="2nd Place", value=secondmessage, inline=False)
         embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
         embed.add_field(name="Your Position", value=position, inline=False)
-    elif number > 3 and number <= 15 and type(number) is int:
+    elif int(number) > 3 and (number) <= 15 and type(number) is int:
         data = tbpoints("data", 0, 0)
         datalist = data.items()
         sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
@@ -911,14 +911,14 @@ async def globalleaderboard(ctx, number = None):
             position = "You have not played trivia yet :("
         userids = []
         userpoints = []
-        for i in range(number):
+        for i in range(int(number)):
             id = int(sorteddata[int(i)][0])
             points = data[str(id)]
             userids.append(str(id))
             userpoints.append(str(points))
         users = []
         messages = []
-        for i in range(number):
+        for i in range(int(number)):
             users.append(pf.censor(str(client.get_user(userids(i)))))
             messages.append("{0} with {1} points".format(str(users[i]), str(points(i))))
         embed = discord.Embed(
@@ -926,7 +926,7 @@ async def globalleaderboard(ctx, number = None):
             description="Top " + str(number) + " Globally",
             color=discord.Colour.from_rgb(r, g, b),
         )
-        for i in range(number):
+        for i in range(int(number)):
             embed.add_field(name="Place #" + str(i), value=messages(i), inline=False)
         embed.add_field(name="Your Position", value=position, inline=False)
     else:
