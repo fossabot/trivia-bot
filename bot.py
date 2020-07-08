@@ -922,7 +922,7 @@ async def globalleaderboard(ctx, number=None):
             users.append(pf.censor(str(client.get_user(userids[i]))))
             messages.append(
                 "{0} with {1} points".format(
-                    pf.censor(str(client.get_user(userids[i]))), str(userpoints[i])
+                    pf.censor(str(client.get_user(int(userids[i])))), str(userpoints[i])
                 )
             )
         embed = discord.Embed(
