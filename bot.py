@@ -894,7 +894,7 @@ async def globalleaderboard(ctx, number=None):
         embed.add_field(name="2nd Place", value=secondmessage, inline=False)
         embed.add_field(name="3rd Place", value=thirdmessage, inline=False)
         embed.add_field(name="Your Position", value=position, inline=False)
-    elif int(number) > 3 and (number) <= 15 and type(number) is int:
+    elif int(number) > 3 and int(number) <= 15:
         data = tbpoints("data", 0, 0)
         datalist = data.items()
         sorteddata = sorted(datalist, key=itemgetter(1), reverse=True)
