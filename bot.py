@@ -938,7 +938,7 @@ async def globalleaderboard(ctx, number=None):
     else:
         embed = discord.Embed(
             title="Error",
-            description="The usage of this command is `;top` or `;top 4 - 15` (max 15, min 4)",
+            description="The usage of this command is `;top` or `;top 3 - 15` (max 15, min 3)",
             color=discord.Colour.from_rgb(r, g, b),
         )
     await ctx.send(embed=embed)
